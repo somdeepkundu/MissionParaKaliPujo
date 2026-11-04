@@ -86,10 +86,10 @@ h2{font-size:var(--s-head);font-weight:300;font-stretch:80%;line-height:.98;lett
 .band h1{font-size:10vw;font-weight:700;font-stretch:75%;letter-spacing:-.035em;line-height:1.08;white-space:nowrap;text-align:center}
 .fit{display:inline-block;white-space:nowrap}
 .band h1 .fit span{color:var(--jaba)}
-.links{display:grid;grid-template-columns:repeat(4,1fr) auto;gap:var(--gap)}
+.links{display:grid;grid-template-columns:repeat(4,1fr) auto auto;gap:var(--gap)}
 .links a,.links button{background:var(--bg2);color:var(--fg);padding:14px 16px;text-decoration:none;font:inherit;border:0;text-align:left;cursor:pointer;transition:background .2s}
 .links a:hover,.links button:hover{background:var(--bg3)}
-.links a:first-child{display:flex;align-items:center;gap:.6rem}
+.links a{display:flex;align-items:center;gap:.6rem}
 .links a:first-child img{width:28px;height:28px}
 .theme{display:flex;align-items:center;gap:.5rem;white-space:nowrap}
 .theme svg{width:20px;height:20px;fill:currentColor}
@@ -307,30 +307,43 @@ dialog[open]{animation:pop .35s var(--ease)}
   .js [data-rise]{opacity:1;transform:none;transition:none}
   .main img,.marquee .track,dialog[open]{animation:none}
 }
+/* language switch (বাংলা / English / हिन्दी) */
+.lang{display:flex;background:var(--bg2)}
+.lang button{flex:1;font:inherit;font-size:var(--s-small);background:none;border:0;color:var(--fg-soft);padding:14px 10px;cursor:pointer;transition:color .2s}
+.lang button:hover{color:var(--fg)}
+.lang button[aria-pressed="true"]{color:var(--fg);text-decoration:underline;text-underline-offset:.3em}
+@media (max-width:860px){.links .lang{grid-column:1/-1}}
+/* Devanagari (Hindi) needs a face with those glyphs; Anek Bangla has none */
+html[lang="hi"] body,html[lang="hi"] .fitsvg text{font-family:"Noto Sans Devanagari","Nirmala UI",Mangal,"Anek Bangla",system-ui,sans-serif}
 </style>
 </head>
 <body>
-<a class="skip" href="#content">মূল অংশে যান</a>
+<a class="skip" href="#content" data-i="skip">মূল অংশে যান</a>
 
 <header class="hero">
-  <div class="band"><h1><span class="fit">মিশন পাড়া</span> <span class="fit">কালীপুজো <span>২০২৬</span></span></h1></div>
+  <div class="band"><h1><span class="fit" data-i="hero.name">মিশন পাড়া</span> <span class="fit"><span data-i="hero.sub">কালীপুজো</span> <span data-i="hero.year">২০২৬</span></span></h1></div>
 
-  <nav class="links" aria-label="পাতার অংশ">
-    <a href="#schedule"><img src="img/jaba.svg" alt="" width="28" height="28">নির্ঘণ্ট</a>
-    <a href="#photos">ছবি</a>
-    <a href="#chanda">চাঁদা</a>
-    <a href="#contact">যোগাযোগ</a>
-    <button type="button" class="theme" id="theme" aria-label="দিন আর রাতের রং বদলান"></button>
+  <nav class="links" aria-label="পাতার অংশ" data-ia="nav.aria">
+    <a href="#schedule"><img src="img/jaba.svg" alt="" width="28" height="28"><span data-i="nav.schedule">নির্ঘণ্ট</span></a>
+    <a href="#photos"><span data-i="nav.photos">ছবি</span></a>
+    <a href="#chanda"><span data-i="nav.chanda">চাঁদা</span></a>
+    <a href="#contact"><span data-i="nav.contact">যোগাযোগ</span></a>
+    <button type="button" class="theme" id="theme"></button>
+    <div class="lang" role="group" data-ia="lang.aria" aria-label="ভাষা">
+      <button type="button" data-lang="bn">বাংলা</button>
+      <button type="button" data-lang="en">English</button>
+      <button type="button" data-lang="hi">हिन्दी</button>
+    </div>
   </nav>
 
   <div class="body">
     <div class="rail-l">
-      <div class="tile art"><img src="img/kali-art.png" alt="চাঁদার রসিদে আঁকা মা কালীর মুখ" width="308" height="710"></div>
+      <div class="tile art"><img src="img/kali-art.png" alt="" data-ialt="art.alt" width="308" height="710"></div>
       <div class="tile facts">
         <ul>
-          <li><span class="k">কবে</span><br>রবিবার, ৮ নভেম্বর</li>
-          <li><span class="k">তিথি</span><br>দীপান্বিতা অমাবস্যা</li>
-          <li><span class="k">কোথায়</span><br>আপার মিশন পাড়া, আদ্রা</li>
+          <li><span class="k" data-i="facts.when">কবে</span><br><span data-i="facts.whenV">রবিবার, ৮ নভেম্বর</span></li>
+          <li><span class="k" data-i="facts.tithi">তিথি</span><br><span data-i="facts.tithiV">দীপান্বিতা অমাবস্যা</span></li>
+          <li><span class="k" data-i="facts.where">কোথায়</span><br><span data-i="facts.whereV">আপার মিশন পাড়া, আদ্রা</span></li>
         </ul>
       </div>
     </div>
@@ -338,20 +351,20 @@ dialog[open]{animation:pop .35s var(--ease)}
     <div class="tile main">
       <picture>
         <source media="(max-width:860px)" srcset="img/hero-tall.jpg">
-        <img src="img/hero-wide.jpg" alt="পুজোর রাতে থালায় থালায় জ্বলছে প্রদীপ" width="2000" height="930" fetchpriority="high">
+        <img src="img/hero-wide.jpg" alt="" data-ialt="main.alt" width="2000" height="930" fetchpriority="high">
       </picture>
       <div class="statement">
-        <p>অমাবস্যার রাতে মায়ের পুজো, রবিবার ৮ নভেম্বর</p>
-        <p>সন্ধ্যা ৬টা ৩০-এ পুজো শুরু</p>
+        <p data-i="st.main">অমাবস্যার রাতে মায়ের পুজো, রবিবার ৮ নভেম্বর</p>
+        <p data-i="st.time">সন্ধ্যা ৬টা ৩০-এ পুজো শুরু</p>
       </div>
     </div>
 
     <div class="rail-r">
-      <div class="r1"><span>পুজো</span><span class="big" id="count">৮ নভেম্বর</span></div>
-      <div class="r2"><span>১৪৩৩ বঙ্গাব্দ</span><button class="textbtn big" id="pj-open" type="button">পঞ্জিকা দেখুন</button></div>
-      <div class="r3"><span>আরতি</span><span class="big">রাত ৯টা</span></div>
-      <div class="r4"><span>রাতের ভোগ</span><span class="big">রাত ১০টা</span></div>
-      <a class="r5 wa" href="#" target="_blank" rel="noopener"><span>খবর আর ছবি</span><span class="big"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm4.5 12.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.3-.2-.6-.3Z"/></svg>WhatsApp গ্রুপে যোগ দিন</span></a>
+      <div class="r1"><span data-i="r.puja">পুজো</span><span class="big" id="count"></span></div>
+      <div class="r2"><span data-i="r.year">১৪৩৩ বঙ্গাব্দ</span><button class="textbtn big" id="pj-open" type="button" data-i="r.panjika">পঞ্জিকা দেখুন</button></div>
+      <div class="r3"><span data-i="r.arati">আরতি</span><span class="big" data-i="r.aratiT">রাত ৯টা</span></div>
+      <div class="r4"><span data-i="r.bhog">রাতের ভোগ</span><span class="big" data-i="r.bhogT">রাত ১০টা</span></div>
+      <a class="r5 wa" href="#" target="_blank" rel="noopener"><span data-i="r.news">খবর আর ছবি</span><span class="big"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm4.5 12.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.3-.2-.6-.3Z"/></svg><span data-i="wa.join">WhatsApp গ্রুপে যোগ দিন (২০২৬)</span></span></a>
     </div>
   </div>
 </header>
@@ -359,77 +372,77 @@ dialog[open]{animation:pop .35s var(--ease)}
 <main id="content">
   <section class="sec white intro" aria-labelledby="invite-h">
     <div class="grid12 intro-top">
-      <h2 id="invite-h" data-rise>সবারে করি আহ্বান</h2>
+      <h2 id="invite-h" data-rise data-i="inv.title">সবারে করি আহ্বান</h2>
       <div class="note" data-rise style="--i:1">
-        <p>অমাবস্যার রাতে, রবিবার ৮ নভেম্বর, আপার মিশন পাড়ায় মায়ের পুজোয় আপনাদের সবার সাদর আমন্ত্রণ।</p>
+        <p data-i="inv.text">অমাবস্যার রাতে, রবিবার ৮ নভেম্বর, আপার মিশন পাড়ায় মায়ের পুজোয় আপনাদের সবার সাদর আমন্ত্রণ।</p>
       </div>
     </div>
     <div class="factrow">
-      <div data-rise style="--i:2"><b>৮ নভেম্বর</b><span>রবিবার, অমাবস্যা</span></div>
-      <div data-rise style="--i:3"><b>সন্ধ্যা ৬টা ৩০</b><span>কালীপুজো শুরু</span></div>
-      <div data-rise style="--i:4"><b>রাত ১০টা</b><span>রাতের ভোগ</span></div>
-      <div data-rise style="--i:5"><b>সন্ধ্যা ৬টা</b><span>৯ নভেম্বর, বিসর্জন</span></div>
+      <div data-rise style="--i:2"><b data-i="f.d1">৮ নভেম্বর</b><span data-i="f.d1s">রবিবার, অমাবস্যা</span></div>
+      <div data-rise style="--i:3"><b data-i="f.t1">সন্ধ্যা ৬টা ৩০</b><span data-i="f.t1s">কালীপুজো শুরু</span></div>
+      <div data-rise style="--i:4"><b data-i="f.t2">রাত ১০টা</b><span data-i="f.t2s">রাতের ভোগ</span></div>
+      <div data-rise style="--i:5"><b data-i="f.t3">সন্ধ্যা ৬টা</b><span data-i="f.t3s">৯ নভেম্বর, বিসর্জন</span></div>
     </div>
     <div class="grid12">
-      <figure class="intro-photo" data-rise><img src="img/pandal-4x3.jpg" alt="দিনের আলোয় প্যান্ডেলে মা, সামনে বাবার হাত ধরে একটি শিশু" width="1440" height="1080" loading="lazy"></figure>
-      <p class="intro-cap">দিনের আলোয় প্যান্ডেল</p>
+      <figure class="intro-photo" data-rise><img src="img/pandal-4x3.jpg" alt="" data-ialt="intro.alt" width="1440" height="1080" loading="lazy"></figure>
+      <p class="intro-cap" data-i="intro.cap">দিনের আলোয় প্যান্ডেল</p>
     </div>
   </section>
 
   <section class="sec white sched" id="schedule" aria-labelledby="sched-h" style="padding-top:0">
-    <h2 id="sched-h" data-rise>পুজোর নির্ঘণ্ট</h2>
+    <h2 id="sched-h" data-rise data-i="s.title">পুজোর নির্ঘণ্ট</h2>
     <div class="grid12 sched-body">
-      <figure class="sched-photo" data-rise><img src="img/bhog-4x5.jpg" alt="ভোগ রান্নার কড়াই আর উনুন" width="960" height="1200" loading="lazy"></figure>
-      <p class="sched-word">দুদিন</p>
+      <figure class="sched-photo" data-rise><img src="img/bhog-4x5.jpg" alt="" data-ialt="s.bhogAlt" width="960" height="1200" loading="lazy"></figure>
+      <p class="sched-word" data-i="s.two">দুদিন</p>
       <div class="table" id="table"></div>
     </div>
   </section>
 
   <section class="bookwrap" id="photos" aria-labelledby="book-h">
     <div class="bookhead">
-      <h2 id="book-h" data-rise>ছবির খাতা</h2>
-      <p data-rise style="--i:1">মিশন পাড়ার কালীপুজো, ২০১৬ থেকে</p>
+      <h2 id="book-h" data-rise data-i="book.h">ছবির খাতা</h2>
+      <p data-rise style="--i:1" data-i="book.sub">মিশন পাড়ার কালীপুজো, ২০১৬ থেকে</p>
     </div>
     <div class="stage">
-    <div class="book" id="book" tabindex="0" role="region" aria-roledescription="ছবির খাতা" aria-label="ছবির খাতা, পাতা ওল্টাতে ডান বা বাঁ তীর চাপুন">
+    <div class="book" id="book" tabindex="0" role="region" data-ia="book.aria" aria-label="ছবির খাতা, পাতা ওল্টাতে ডান বা বাঁ তীর চাপুন">
       <div class="spread" id="spread"></div>
       <div class="spine" aria-hidden="true"></div>
     </div>
     <div class="bookctl">
       <span id="pageno" aria-live="polite"></span>
       <div class="arrows">
-        <button type="button" id="prev">আগের পাতা</button>
-        <button type="button" id="next">পরের পাতা</button>
+        <button type="button" id="prev" data-i="book.prev">আগের পাতা</button>
+        <button type="button" id="next" data-i="book.next">পরের পাতা</button>
       </div>
     </div>
     </div>
   </section>
 
-  <div class="marquee" aria-hidden="true"><div class="track"><span>জয় মা কালী</span><span>জয় মা কালী</span><span>জয় মা কালী</span><span>জয় মা কালী</span><span>জয় মা কালী</span><span>জয় মা কালী</span></div></div>
+  <div class="marquee" aria-hidden="true"><div class="track"><span data-i="f.jai">জয় মা কালী</span><span data-i="f.jai">জয় মা কালী</span><span data-i="f.jai">জয় মা কালী</span><span data-i="f.jai">জয় মা কালী</span><span data-i="f.jai">জয় মা কালী</span><span data-i="f.jai">জয় মা কালী</span></div></div>
 
   <section class="sec white chanda" id="chanda" aria-labelledby="ch-h">
     <div class="grid12">
       <div class="ch-list">
-        <h2 id="ch-h" data-rise>চাঁদা</h2>
+        <h2 id="ch-h" data-rise data-i="nav.chanda">চাঁদা</h2>
         <dl id="ch-dl"></dl>
         <details data-rise style="--i:4">
-          <summary>বিস্তারিত</summary>
-          <p>পাড়ার সকলকে ধন্যবাদ। এ বছরের পুজো আপনাদের চাঁদাতেই হচ্ছে। চাঁদা দিতে চাইলে কমিটির যে কাউকে ফোন করুন।</p>
+          <summary data-i="s.details">বিস্তারিত</summary>
+          <p data-i="ch.thanks">পাড়ার সকলকে ধন্যবাদ। এ বছরের পুজো আপনাদের চাঁদাতেই হচ্ছে। চাঁদা দিতে চাইলে কমিটির যে কাউকে ফোন করুন।</p>
         </details>
       </div>
-      <figure class="ch-photo" data-rise style="--i:2"><img src="img/aanka-sq.jpg" alt="২০২৫ সালের আঁকা প্রতিযোগিতার একটি ছবি" width="1000" height="1000" loading="lazy"></figure>
+      <figure class="ch-photo" data-rise style="--i:2"><img src="img/aanka-sq.jpg" alt="" data-ialt="ch.alt" width="1000" height="1000" loading="lazy"></figure>
     </div>
   </section>
 
   <section class="contact" id="contact" aria-labelledby="ct-h">
-    <h2 id="ct-h">যোগাযোগ</h2>
-    <p class="lead" data-rise>নির্ঘণ্টের খবর আর পুজোর ছবি, সব পাবেন গ্রুপে।</p>
-    <a class="display wa" href="#" target="_blank" rel="noopener" data-rise aria-label="WhatsApp গ্রুপে যোগ দিন"><svg class="fitsvg" viewBox="0 0 1000 120" aria-hidden="true"><text x="0" y="0">WhatsApp গ্রুপে যোগ দিন</text></svg></a>
+    <h2 id="ct-h" data-i="nav.contact">যোগাযোগ</h2>
+    <p class="lead" data-rise data-i="con.lead">নির্ঘণ্টের খবর আর পুজোর ছবি, সব পাবেন গ্রুপে।</p>
+    <a class="display wa" href="#" target="_blank" rel="noopener" data-rise data-ia="wa.join" aria-label="WhatsApp গ্রুপে যোগ দিন (২০২৬)"><svg class="fitsvg" viewBox="0 0 1000 120" aria-hidden="true"><text x="0" y="0" data-i="wa.join">WhatsApp গ্রুপে যোগ দিন (২০২৬)</text></svg></a>
     <div class="corners">
       <ul id="people"></ul>
       <ul class="r">
-        <li>আপার মিশন পাড়া, আদ্রা</li>
-        <li><a class="map" href="#" target="_blank" rel="noopener">Google Maps-এ দেখুন</a></li>
+        <li data-i="facts.whereV">আপার মিশন পাড়া, আদ্রা</li>
+        <li><a class="map" href="#" target="_blank" rel="noopener" data-i="map.btn">Google Maps-এ দেখুন</a></li>
       </ul>
     </div>
   </section>
@@ -437,34 +450,34 @@ dialog[open]{animation:pop .35s var(--ease)}
 
 <footer>
   <div class="fcols">
-    <ul><li>ঠিকানা</li><li>আপার মিশন পাড়া</li><li>আদ্রা, পুরুলিয়া</li></ul>
-    <ul><li>এই পাতায়</li><li><a href="#schedule">নির্ঘণ্ট</a></li><li><a href="#photos">ছবির খাতা</a></li><li><a href="#chanda">চাঁদা</a></li></ul>
-    <ul><li>পঞ্জিকা</li><li>১৪৩৩ বঙ্গাব্দ, কার্তিক</li><li>দীপান্বিতা অমাবস্যা</li></ul>
-    <ul><li>জয় মা কালী</li><li id="updated"></li></ul>
+    <ul><li data-i="f.addr">ঠিকানা</li><li data-i="f.place">আপার মিশন পাড়া</li><li data-i="f.town">আদ্রা, পুরুলিয়া</li></ul>
+    <ul><li data-i="f.page">এই পাতায়</li><li><a href="#schedule" data-i="nav.schedule">নির্ঘণ্ট</a></li><li><a href="#photos" data-i="book.h">ছবির খাতা</a></li><li><a href="#chanda" data-i="nav.chanda">চাঁদা</a></li></ul>
+    <ul><li data-i="f.panjika">পঞ্জিকা</li><li data-i="f.ym">১৪৩৩ বঙ্গাব্দ, কার্তিক</li><li data-i="facts.tithiV">দীপান্বিতা অমাবস্যা</li></ul>
+    <ul><li data-i="f.jai">জয় মা কালী</li><li id="updated"></li></ul>
   </div>
   <div>
-    <svg class="wordmark fitsvg" viewBox="0 0 1000 160" role="img" aria-label="মিশন পাড়া">
-      <text x="0" y="0">মিশন পাড়া</text>
+    <svg class="wordmark fitsvg" viewBox="0 0 1000 160" role="img" data-ia="hero.name" aria-label="মিশন পাড়া">
+      <text x="0" y="0" data-i="hero.name">মিশন পাড়া</text>
     </svg>
-    <div class="legal"><span>মিশন পাড়া কালীপুজো কমিটি</span></div>
+    <div class="legal"><span data-i="f.legal">মিশন পাড়া কালীপুজো কমিটি</span></div>
   </div>
 </footer>
 
 <dialog id="pj" aria-labelledby="pj-h">
   <div class="pj">
-    <div class="pj-top"><span>১৪৩৩ বঙ্গাব্দ</span><span id="pj-h">কার্তিক</span></div>
+    <div class="pj-top"><span data-i="r.year">১৪৩৩ বঙ্গাব্দ</span><span id="pj-h" data-i="pj.month">কার্তিক</span></div>
     <div class="pj-day">
-      <div class="pj-num">৮</div>
-      <p style="font-size:1.5rem">রবিবার</p>
-      <p>নভেম্বর ২০২৬</p>
-      <p style="color:var(--soft)">দীপান্বিতা অমাবস্যা</p>
+      <div class="pj-num" data-i="pj.day">৮</div>
+      <p style="font-size:1.5rem" data-i="pj.wd">রবিবার</p>
+      <p data-i="pj.date">নভেম্বর ২০২৬</p>
+      <p style="color:var(--soft)" data-i="facts.tithiV">দীপান্বিতা অমাবস্যা</p>
     </div>
     <table>
-      <tr><td>অমাবস্যা শুরু</td><td>রবিবার সকাল ১১টা ২৭ মিনিট</td></tr>
-      <tr><td>অমাবস্যা শেষ</td><td>সোমবার দুপুর ১২টা ৩১ মিনিট</td></tr>
-      <tr><td>ভূত চতুর্দশী</td><td>শনিবার, ৭ নভেম্বর</td></tr>
+      <tr><td data-i="pj.start">অমাবস্যা শুরু</td><td data-i="pj.startV">রবিবার সকাল ১১টা ২৭ মিনিট</td></tr>
+      <tr><td data-i="pj.end">অমাবস্যা শেষ</td><td data-i="pj.endV">সোমবার দুপুর ১২টা ৩১ মিনিট</td></tr>
+      <tr><td data-i="pj.bhoot">ভূত চতুর্দশী</td><td data-i="pj.bhootV">শনিবার, ৭ নভেম্বর</td></tr>
     </table>
-    <form method="dialog"><button class="btn" style="background:var(--ink)">বন্ধ করুন</button></form>
+    <form method="dialog"><button class="btn" style="background:var(--ink)" data-i="pj.close">বন্ধ করুন</button></form>
   </div>
 </dialog>
 
@@ -480,83 +493,231 @@ const SITE = {
   updated: "2026-11-04",
   chanda: { total: 26971, receipts: 45 },
 
-  // start/end are India time (IST); they light up "now" and "next"
+  // start/end are India time (IST); they light up "now" and "next". t / ev / day / note are keys in D below.
   schedule: [
-    { day: "রবিবার, ৮ নভেম্বর, অমাবস্যা", rows: [
-      { t: "সন্ধ্যা ৬টা ৩০", ev: "কালীপুজো শুরু", start: "2026-11-08T18:30", end: "2026-11-08T21:00" },
-      { t: "রাত ৯টা",       ev: "আরতি",          start: "2026-11-08T21:00", end: "2026-11-08T22:00" },
-      { t: "রাত ১০টা",      ev: "রাতের ভোগ",      start: "2026-11-08T22:00", end: "2026-11-08T23:59" },
+    { day: "s.day1", rows: [
+      { t: "s.t1", ev: "s.e1", start: "2026-11-08T18:30", end: "2026-11-08T21:00" },
+      { t: "s.t2", ev: "s.e2", start: "2026-11-08T21:00", end: "2026-11-08T22:00" },
+      { t: "s.t3", ev: "s.e3", start: "2026-11-08T22:00", end: "2026-11-08T23:59" },
     ]},
-    { day: "সোমবার, ৯ নভেম্বর", rows: [
-      { t: "সকাল ১০টা",     ev: "ছোটদের বসে আঁকো প্রতিযোগিতা", start: "2026-11-09T10:00", end: "2026-11-09T12:00" },
-      { t: "দুপুর ১২টা",     ev: "দুপুরের ভোগ",      start: "2026-11-09T12:00", end: "2026-11-09T14:00" },
-      { t: "বিকেল ৪টে–৬টা", ev: "প্রতিযোগিতা (পরে জানানো হবে)", start: "2026-11-09T16:00", end: "2026-11-09T18:00" },
-      { t: "সন্ধ্যা ৬টা",    ev: "বিসর্জন",          start: "2026-11-09T18:00", end: "2026-11-09T20:00" },
-    ], note: "বসে আঁকো প্রতিযোগিতা আর দুপুরের ভোগ গোরাদার বাড়িতে।" },
+    { day: "s.day2", rows: [
+      { t: "s.t4", ev: "s.e4", start: "2026-11-09T10:00", end: "2026-11-09T12:00" },
+      { t: "s.t5", ev: "s.e5", start: "2026-11-09T12:00", end: "2026-11-09T14:00" },
+      { t: "s.t6", ev: "s.e6", start: "2026-11-09T16:00", end: "2026-11-09T18:00" },
+      { t: "s.t7", ev: "s.e7", start: "2026-11-09T18:00", end: "2026-11-09T20:00" },
+    ], note: "s.note" },
   ],
 
   committee: [
-    { name: "রবি ব্যানার্জী", phone: "97321 24973" },
-    { name: "সোমদীপ কুণ্ডু", phone: "96794 43301" },
-    { name: "সুরজিৎ চেল",   phone: "79806 05309" },
+    { name: "name.rabi",    phone: "97321 24973" },
+    { name: "name.somdeep", phone: "96794 43301" },
+    { name: "name.suraj",   phone: "79806 05309" },
   ],
 
-  // The photo book, in order. year: a number, or "" when it is not known.
+  // The photo book, in order. year: a number, or "" when not known. cap: text in each language.
   // pos: which part of the photo to keep when it is cropped.
   photos: [
-    { year: 2016, src: "photos/2016/raat-adda.jpg", cap: "পুজোর রাতে পাড়ার আড্ডা", pos: "50% 35%" },
-    { year: 2020, src: "photos/2020/priest-puja.jpg", cap: "পুজোর ছবি", pos: "50% 30%" },
-    { year: 2020, src: "photos/2020/group-pandal-1.jpg", cap: "প্যান্ডেলে সবাই মিলে", pos: "50% 40%" },
-    { year: 2020, src: "photos/2020/group-pandal-2.jpg", cap: "প্যান্ডেলে সবাই মিলে", pos: "50% 40%" },
-    { year: 2020, src: "photos/2020/boys-gang.jpg", cap: "পাড়ার ছেলেরা", pos: "50% 40%" },
-    { year: 2021, src: "photos/2021/protima-aagomon.jpg", cap: "মা আসছেন, ৪ নভেম্বর ২০২১", pos: "70% 40%" },
-    { year: 2022, src: "photos/2022/priest-aarti.jpg", cap: "পুজোর ছবি", pos: "50% 40%" },
-    { year: 2022, src: "photos/2022/idol-procession.jpg", cap: "পুজোর ছবি", pos: "50% 40%" },
-    { year: 2025, src: "photos/2025/aanka-protijogita.jpg", cap: "ছোটদের আঁকা প্রতিযোগিতা", pos: "50% 45%" },
-    { year: "", src: "photos/more/prodip.jpg", cap: "পুজোর প্রদীপ", pos: "40% 80%" },
-    { year: "", src: "photos/more/pandal-din.jpg", cap: "দিনের আলোয় প্যান্ডেল", pos: "35% 50%" },
-    { year: "", src: "photos/more/bhog-ranna.jpg", cap: "ভোগ রান্না", pos: "45% 60%" },
-    { year: "", src: "photos/more/bondhura.jpg", cap: "প্যান্ডেলে সবাই মিলে", pos: "50% 40%" },
+    { year: 2016, src: "photos/2016/raat-adda.jpg",          cap: "cap.adda",     pos: "50% 35%" },
+    { year: 2020, src: "photos/2020/priest-puja.jpg",        cap: "cap.puja",     pos: "50% 30%" },
+    { year: 2020, src: "photos/2020/group-pandal-1.jpg",     cap: "cap.together", pos: "50% 40%" },
+    { year: 2020, src: "photos/2020/group-pandal-2.jpg",     cap: "cap.together", pos: "50% 40%" },
+    { year: 2020, src: "photos/2020/boys-gang.jpg",          cap: "cap.boys",     pos: "50% 40%" },
+    { year: 2021, src: "photos/2021/protima-aagomon.jpg",    cap: "cap.maa2021",  pos: "70% 40%" },
+    { year: 2022, src: "photos/2022/priest-aarti.jpg",       cap: "cap.puja",     pos: "50% 40%" },
+    { year: 2022, src: "photos/2022/idol-procession.jpg",    cap: "cap.puja",     pos: "50% 40%" },
+    { year: 2025, src: "photos/2025/aanka-protijogita.jpg",  cap: "cap.kidsDraw", pos: "50% 45%" },
+    { year: "",   src: "photos/more/prodip.jpg",             cap: "cap.diyas",    pos: "40% 80%" },
+    { year: "",   src: "photos/more/pandal-din.jpg",         cap: "cap.pandalDay",pos: "35% 50%" },
+    { year: "",   src: "photos/more/bhog-ranna.jpg",         cap: "cap.bhogPrep", pos: "45% 60%" },
+    { year: "",   src: "photos/more/bondhura.jpg",           cap: "cap.together", pos: "50% 40%" },
   ],
+};
+
+/* ---------------------------------------------------------------------
+   Text in three languages. Each entry: [Bengali, English, Hindi].
+   ------------------------------------------------------------------- */
+const D = {
+  "site.title": ["মিশন পাড়া কালীপুজো ২০২৬", "Mission Para Kali Puja 2026", "मिशन पाड़ा काली पूजा २०२६"],
+  "skip": ["মূল অংশে যান", "Skip to content", "मुख्य सामग्री पर जाएँ"],
+  "hero.name": ["মিশন পাড়া", "Mission Para", "मिशन पाड़ा"],
+  "hero.sub": ["কালীপুজো", "Kali Puja", "काली पूजा"],
+  "hero.year": ["২০২৬", "2026", "२०२६"],
+  "nav.aria": ["পাতার অংশ", "Page sections", "पेज के हिस्से"],
+  "nav.schedule": ["নির্ঘণ্ট", "Schedule", "समय-सूची"],
+  "nav.photos": ["ছবি", "Photos", "तस्वीरें"],
+  "nav.chanda": ["চাঁদা", "Donation", "चंदा"],
+  "nav.contact": ["যোগাযোগ", "Contact", "संपर्क"],
+  "lang.aria": ["ভাষা", "Language", "भाषा"],
+  "theme.toNight": ["রাত", "Night", "रात"],
+  "theme.toDay": ["দিন", "Day", "दिन"],
+  "theme.aria": ["দিন আর রাতের রং বদলান", "Switch between day and night colours", "दिन और रात के रंग बदलें"],
+  "art.alt": ["চাঁদার রসিদে আঁকা মা কালীর মুখ", "Maa Kali's face, from the artwork on our chanda receipt", "चंदे की रसीद पर बना माँ काली का चेहरा"],
+  "facts.when": ["কবে", "When", "कब"],
+  "facts.whenV": ["রবিবার, ৮ নভেম্বর", "Sunday, 8 November", "रविवार, ८ नवंबर"],
+  "facts.tithi": ["তিথি", "Tithi", "तिथि"],
+  "facts.tithiV": ["দীপান্বিতা অমাবস্যা", "Dipanwita Amavasya", "दीपान्विता अमावस्या"],
+  "facts.where": ["কোথায়", "Where", "कहाँ"],
+  "facts.whereV": ["আপার মিশন পাড়া, আদ্রা", "Upper Mission Para, Adra", "अपर मिशन पाड़ा, आद्रा"],
+  "main.alt": ["পুজোর রাতে থালায় থালায় জ্বলছে প্রদীপ", "Rows of lamps lit on puja night", "पूजा की रात थालियों में जलते दीये"],
+  "st.main": ["অমাবস্যার রাতে মায়ের পুজো, রবিবার ৮ নভেম্বর", "Maa's puja on Amavasya night, Sunday 8 November", "अमावस्या की रात माँ की पूजा, रविवार ८ नवंबर"],
+  "st.time": ["সন্ধ্যা ৬টা ৩০-এ পুজো শুরু", "Puja begins at 6:30 pm", "शाम ६:३० बजे पूजा शुरू"],
+  "r.puja": ["পুজো", "Puja", "पूजा"],
+  "r.year": ["১৪৩৩ বঙ্গাব্দ", "Bengali year 1433", "बंगाब्द १४३३"],
+  "r.panjika": ["পঞ্জিকা দেখুন", "See the panjika", "पंचांग देखें"],
+  "r.arati": ["আরতি", "Arati", "आरती"],
+  "r.aratiT": ["রাত ৯টা", "9 pm", "रात ९ बजे"],
+  "r.bhog": ["রাতের ভোগ", "Night bhog", "रात का भोग"],
+  "r.bhogT": ["রাত ১০টা", "10 pm", "रात १० बजे"],
+  "r.news": ["খবর আর ছবি", "News and photos", "खबर और तस्वीरें"],
+  "wa.join": ["WhatsApp গ্রুপে যোগ দিন (২০২৬)", "Join the WhatsApp group (2026)", "WhatsApp ग्रुप से जुड़ें (२०२६)"],
+  "inv.title": ["সবারে করি আহ্বান", "Everyone is invited", "सादर आमंत्रण"],
+  "inv.text": ["অমাবস্যার রাতে, রবিবার ৮ নভেম্বর, আপার মিশন পাড়ায় মায়ের পুজোয় আপনাদের সবার সাদর আমন্ত্রণ।",
+    "You are all warmly invited to Maa's puja at Upper Mission Para on Amavasya night, Sunday 8 November.",
+    "अमावस्या की रात, रविवार ८ नवंबर को अपर मिशन पाड़ा में माँ की पूजा में आप सभी सादर आमंत्रित हैं।"],
+  "f.d1": ["৮ নভেম্বর", "8 November", "८ नवंबर"],
+  "f.d1s": ["রবিবার, অমাবস্যা", "Sunday, Amavasya", "रविवार, अमावस्या"],
+  "f.t1": ["সন্ধ্যা ৬টা ৩০", "6:30 pm", "शाम ६:३० बजे"],
+  "f.t1s": ["কালীপুজো শুরু", "Kali Puja begins", "काली पूजा शुरू"],
+  "f.t2": ["রাত ১০টা", "10 pm", "रात १० बजे"],
+  "f.t2s": ["রাতের ভোগ", "Night bhog", "रात का भोग"],
+  "f.t3": ["সন্ধ্যা ৬টা", "6 pm", "शाम ६ बजे"],
+  "f.t3s": ["৯ নভেম্বর, বিসর্জন", "9 November, Visarjan", "९ नवंबर, विसर्जन"],
+  "intro.alt": ["দিনের আলোয় প্যান্ডেলে মা, সামনে বাবার হাত ধরে একটি শিশু", "Maa in the pandal in daylight, with a child in front", "दिन की रोशनी में पंडाल में माँ, सामने एक बच्चा"],
+  "intro.cap": ["দিনের আলোয় প্যান্ডেল", "The pandal in daylight", "दिन की रोशनी में पंडाल"],
+  "s.title": ["পুজোর নির্ঘণ্ট", "Puja schedule", "पूजा का कार्यक्रम"],
+  "s.bhogAlt": ["ভোগ রান্নার কড়াই আর উনুন", "Bhog cooking pots and stove", "भोग के बर्तन और चूल्हा"],
+  "s.two": ["দুদিন", "Two days", "दो दिन"],
+  "s.day1": ["রবিবার, ৮ নভেম্বর, অমাবস্যা", "Sunday, 8 November, Amavasya", "रविवार, ८ नवंबर, अमावस्या"],
+  "s.day2": ["সোমবার, ৯ নভেম্বর", "Monday, 9 November", "सोमवार, ९ नवंबर"],
+  "s.t1": ["সন্ধ্যা ৬টা ৩০", "6:30 pm", "शाम ६:३० बजे"],
+  "s.e1": ["কালীপুজো শুরু", "Kali Puja begins", "काली पूजा शुरू"],
+  "s.t2": ["রাত ৯টা", "9 pm", "रात ९ बजे"],
+  "s.e2": ["আরতি", "Arati", "आरती"],
+  "s.t3": ["রাত ১০টা", "10 pm", "रात १० बजे"],
+  "s.e3": ["রাতের ভোগ", "Night bhog", "रात का भोग"],
+  "s.t4": ["সকাল ১০টা", "10 am", "सुबह १० बजे"],
+  "s.e4": ["ছোটদের বসে আঁকো প্রতিযোগিতা", "Kids' drawing competition", "बच्चों की चित्रकला प्रतियोगिता"],
+  "s.t5": ["দুপুর ১২টা", "12 noon", "दोपहर १२ बजे"],
+  "s.e5": ["দুপুরের ভোগ", "Afternoon bhog", "दोपहर का भोग"],
+  "s.t6": ["বিকেল ৪টে–৬টা", "4 to 6 pm", "शाम ४ से ६ बजे"],
+  "s.e6": ["প্রতিযোগিতা (পরে জানানো হবে)", "Competitions (time to be announced)", "प्रतियोगिताएँ (समय बाद में बताया जाएगा)"],
+  "s.t7": ["সন্ধ্যা ৬টা", "6 pm", "शाम ६ बजे"],
+  "s.e7": ["বিসর্জন", "Visarjan (immersion)", "विसर्जन"],
+  "s.note": ["বসে আঁকো প্রতিযোগিতা আর দুপুরের ভোগ গোরাদার বাড়িতে।", "The drawing competition and the afternoon bhog are at Gora Da's home.", "चित्रकला प्रतियोगिता और दोपहर का भोग गोरा दा के घर पर होगा।"],
+  "s.details": ["বিস্তারিত", "Details", "विवरण"],
+  "s.now": ["এখন চলছে", "Happening now", "अभी चल रहा है"],
+  "s.next": ["এর পরে", "Next", "इसके बाद"],
+  "s.in": ["{n} মিনিট পরে", "in {n} min", "{n} मिनट में"],
+  "count.days": ["আর {n} দিন বাকি", "{n} days to go", "पूजा में अब {n} दिन बाकी हैं"],
+  "count.tomorrow": ["কাল পুজো", "Puja is tomorrow", "कल पूजा है"],
+  "count.today": ["আজ পুজো", "Puja is today", "आज पूजा है"],
+  "count.over": ["আসছে বছর আবার হবে", "See you next year", "अगले साल फिर मिलेंगे"],
+  "ch.h": ["চাঁদা", "Donation", "चंदा"],
+  "ch.total": ["{d} {m} পর্যন্ত মোট চাঁদা", "Total collected till {d} {m}", "{d} {m} तक कुल चंदा"],
+  "ch.receipts": ["টি রসিদ কাটা হয়েছে", "receipts issued", "रसीदें कटी हैं"],
+  "ch.days": ["দিনের পুজো, অমাবস্যার রাত থেকে বিসর্জন", "days of puja, from Amavasya night to Visarjan", "दिन की पूजा, अमावस्या की रात से विसर्जन तक"],
+  "ch.thanks": ["পাড়ার সকলকে ধন্যবাদ। এ বছরের পুজো আপনাদের চাঁদাতেই হচ্ছে। চাঁদা দিতে চাইলে কমিটির যে কাউকে ফোন করুন।",
+    "Thank you, everyone in the para. This year's puja is happening because of your chanda. If you would like to give, please call anyone on the committee.",
+    "पाड़ा के सभी लोगों को धन्यवाद। इस साल की पूजा आप सबके चंदे से ही हो रही है। अगर आप चंदा देना चाहते हैं, तो कमेटी के किसी भी सदस्य को फ़ोन करें।"],
+  "ch.alt": ["২০২৫ সালের আঁকা প্রতিযোগিতার একটি ছবি", "A picture from the 2025 drawing competition", "२०२५ की चित्रकला प्रतियोगिता की एक तस्वीर"],
+  "upd": ["শেষ আপডেট {d} {m} {y}", "Last updated {d} {m} {y}", "आखिरी अपडेट {d} {m} {y}"],
+  "book.h": ["ছবির খাতা", "Photo book", "तस्वीरों की किताब"],
+  "book.sub": ["মিশন পাড়ার কালীপুজো, ২০১৬ থেকে", "Mission Para Kali Puja, since 2016", "मिशन पाड़ा की काली पूजा, २०१६ से"],
+  "book.aria": ["ছবির খাতা, পাতা ওল্টাতে ডান বা বাঁ তীর চাপুন", "Photo book. Press the left or right arrow to turn pages", "तस्वीरों की किताब, पन्ने पलटने के लिए दायाँ या बायाँ तीर दबाएँ"],
+  "book.prev": ["আগের পাতা", "Previous page", "पिछला पन्ना"],
+  "book.next": ["পরের পাতা", "Next page", "अगला पन्ना"],
+  "book.page": ["পাতা {n} / {total}", "Page {n} / {total}", "पन्ना {n} / {total}"],
+  "book.pn": ["{n} / {total}", "{n} / {total}", "{n} / {total}"],
+  "book.label": ["মিশন পাড়া", "Mission Para", "मिशन पाड़ा"],
+  "book.unknown": ["সাল জানা নেই", "Year not known", "साल पता नहीं"],
+  "book.more": ["আরও ছবি?", "More photos?", "और तस्वीरें?"],
+  "book.end1": ["আপনার কাছে পুরোনো ছবি থাকলে", "Have old photos? Send them to the", "अगर आपके पास पुरानी तस्वीरें हैं, तो"],
+  "book.end2": ["WhatsApp গ্রুপে", "WhatsApp group.", "WhatsApp ग्रुप पर"],
+  "book.end3": ["পাঠান।", "", "भेजें।"],
+  "cap.adda": ["পুজোর রাতে পাড়ার আড্ডা", "The para gathering on puja night", "पूजा की रात पाड़ा की महफ़िल"],
+  "cap.puja": ["পুজোর ছবি", "A photo from the puja", "पूजा की एक तस्वीर"],
+  "cap.together": ["প্যান্ডেলে সবাই মিলে", "Everyone together at the pandal", "पंडाल में सब एक साथ"],
+  "cap.boys": ["পাড়ার ছেলেরা", "The para boys", "पाड़ा के लड़के"],
+  "cap.maa2021": ["মা আসছেন, ৪ নভেম্বর ২০২১", "Maa is coming, 4 November 2021", "माँ आ रही हैं, ४ नवंबर २०२१"],
+  "cap.kidsDraw": ["ছোটদের আঁকা প্রতিযোগিতা", "Kids' drawing competition", "बच्चों की चित्रकला प्रतियोगिता"],
+  "cap.diyas": ["পুজোর প্রদীপ", "Puja diyas", "पूजा के दीये"],
+  "cap.pandalDay": ["দিনের আলোয় প্যান্ডেল", "The pandal in daylight", "दिन की रोशनी में पंडाल"],
+  "cap.bhogPrep": ["ভোগ রান্না", "Cooking the bhog", "भोग की तैयारी"],
+  "map.btn": ["Google Maps-এ দেখুন", "View on Google Maps", "Google Maps पर देखें"],
+  "con.lead": ["নির্ঘণ্টের খবর আর পুজোর ছবি, সব পাবেন গ্রুপে।", "Schedule updates and puja photos, all in the group.", "कार्यक्रम की खबरें और पूजा की तस्वीरें, सब ग्रुप में मिलेंगी।"],
+  "name.rabi": ["রবি ব্যানার্জী", "Rabi Banerjee", "रबि बैनर्जी"],
+  "name.somdeep": ["সোমদীপ কুণ্ডু", "Somdeep Kundu", "सोमदीप कुंडू"],
+  "name.suraj": ["সুরজিৎ চেল", "Surajeet Chell", "सुरजीत चेल"],
+  "f.addr": ["ঠিকানা", "Address", "पता"],
+  "f.place": ["আপার মিশন পাড়া", "Upper Mission Para", "अपर मिशन पाड़ा"],
+  "f.town": ["আদ্রা, পুরুলিয়া", "Adra, Purulia", "आद्रा, पुरुलिया"],
+  "f.page": ["এই পাতায়", "On this page", "इस पेज पर"],
+  "f.panjika": ["পঞ্জিকা", "Panjika", "पंचांग"],
+  "f.ym": ["১৪৩৩ বঙ্গাব্দ, কার্তিক", "1433 Bengali year, Kartik", "बंगाब्द १४३३, कार्तिक"],
+  "f.jai": ["জয় মা কালী", "Jai Maa Kali", "जय माँ काली"],
+  "f.legal": ["মিশন পাড়া কালীপুজো কমিটি", "Mission Para Kali Puja Committee", "मिशन पाड़ा काली पूजा समिति"],
+  "pj.month": ["কার্তিক", "Kartik", "कार्तिक"],
+  "pj.day": ["৮", "8", "८"],
+  "pj.wd": ["রবিবার", "Sunday", "रविवार"],
+  "pj.date": ["নভেম্বর ২০২৬", "November 2026", "नवंबर २०२६"],
+  "pj.start": ["অমাবস্যা শুরু", "Amavasya begins", "अमावस्या शुरू"],
+  "pj.startV": ["রবিবার সকাল ১১টা ২৭ মিনিট", "Sunday, 11:27 am", "रविवार सुबह ११ बजकर २७ मिनट"],
+  "pj.end": ["অমাবস্যা শেষ", "Amavasya ends", "अमावस्या समाप्त"],
+  "pj.endV": ["সোমবার দুপুর ১২টা ৩১ মিনিট", "Monday, 12:31 pm", "सोमवार दोपहर १२ बजकर ३१ मिनट"],
+  "pj.bhoot": ["ভূত চতুর্দশী", "Bhoot Chaturdashi", "भूत चतुर्दशी"],
+  "pj.bhootV": ["শনিবার, ৭ নভেম্বর", "Saturday, 7 November", "शनिवार, ७ नवंबर"],
+  "pj.close": ["বন্ধ করুন", "Close", "बंद करें"],
 };
 /* ===================================================================== */
 
-const bn = n => String(n).replace(/\d/g, d => "০১২৩৪৫৬৭৮৯"[d]);
-const months = ["জানুয়ারি","ফেব্রুয়ারি","মার্চ","এপ্রিল","মে","জুন","জুলাই","আগস্ট","সেপ্টেম্বর","অক্টোবর","নভেম্বর","ডিসেম্বর"];
+const LI = { bn: 0, en: 1, hi: 2 };
+const DIG = { bn: "০১২৩৪৫৬৭৮৯", en: "0123456789", hi: "०१२३४५६७८९" };
+const MON = {
+  bn: ["জানুয়ারি","ফেব্রুয়ারি","মার্চ","এপ্রিল","মে","জুন","জুলাই","আগস্ট","সেপ্টেম্বর","অক্টোবর","নভেম্বর","ডিসেম্বর"],
+  en: ["January","February","March","April","May","June","July","August","September","October","November","December"],
+  hi: ["जनवरी","फ़रवरी","मार्च","अप्रैल","मई","जून","जुलाई","अगस्त","सितंबर","अक्टूबर","नवंबर","दिसंबर"],
+};
+let LANG = (() => {
+  let l = null;
+  try { l = new URLSearchParams(location.search).get("lang") || localStorage.getItem("lang"); } catch (e) {}
+  return ["bn", "en", "hi"].includes(l) ? l : "bn";
+})();
+const t = (k, v = {}) => {
+  let s = D[k] ? D[k][LI[LANG]] : k;
+  for (const [a, b] of Object.entries(v)) s = s.split("{" + a + "}").join(b);
+  return s;
+};
+const num = n => String(n).replace(/\d/g, d => DIG[LANG][d]);
 const $ = id => document.getElementById(id);
-const el = (t, p = {}, ...k) => { const e = Object.assign(document.createElement(t), p); e.append(...k); return e; };
+const el = (tag, p = {}, ...k) => { const e = Object.assign(document.createElement(tag), p); e.append(...k); return e; };
 const ist = s => new Date(s + ":00+05:30");
 /* ?demo=2026-11-08T21:10 shows the page as it will look at that moment (India time) */
 const nowIST = () => { const q = new URLSearchParams(location.search).get("demo"); return q ? ist(q) : new Date(); };
-
-document.querySelectorAll(".wa").forEach(a => a.href = SITE.whatsapp);
-document.querySelectorAll(".map").forEach(a => a.href = SITE.mapUrl);
+const capOf = p => t(p.cap);
 
 /* day / night */
-(function(){
-  const btn = $("theme"), root = document.documentElement;
-  const sun = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></g></svg>';
-  const moon = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.6A8.6 8.6 0 0 1 9.4 3.5a8.6 8.6 0 1 0 11.1 11.1Z"/></svg>';
-  function show(){
-    const day = root.dataset.theme === "day";
-    btn.innerHTML = (day ? moon + "রাত" : sun + "দিন");
-    btn.setAttribute("aria-pressed", day);
-    $("theme-color").content = day ? "#EDEDEA" : "#000000";
-  }
-  btn.onclick = () => {
-    root.dataset.theme = root.dataset.theme === "day" ? "night" : "day";
-    try { localStorage.setItem("theme", root.dataset.theme); } catch (e) {}
-    show();
-  };
-  show();
-})();
+const SUN = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></g></svg>';
+const MOON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.6A8.6 8.6 0 0 1 9.4 3.5a8.6 8.6 0 1 0 11.1 11.1Z"/></svg>';
+function drawTheme(){
+  const btn = $("theme"), day = document.documentElement.dataset.theme === "day";
+  btn.innerHTML = day ? MOON + t("theme.toNight") : SUN + t("theme.toDay");
+  btn.setAttribute("aria-label", t("theme.aria"));
+  btn.setAttribute("aria-pressed", day);
+  $("theme-color").content = day ? "#EDEDEA" : "#000000";
+}
+$("theme").onclick = () => {
+  const root = document.documentElement;
+  root.dataset.theme = root.dataset.theme === "day" ? "night" : "day";
+  try { localStorage.setItem("theme", root.dataset.theme); } catch (e) {}
+  drawTheme();
+};
 
 /* countdown, by the calendar day in India */
-(function(){
+function drawCount(){
   const dayIST = d => Math.floor((d.getTime() + 5.5 * 3600e3) / 864e5);
   const diff = dayIST(ist(SITE.pujaDate + "T00:00")) - dayIST(nowIST());
-  $("count").textContent = diff > 1 ? `আর ${bn(diff)} দিন বাকি` : diff === 1 ? "কাল পুজো" : diff === 0 ? "আজ পুজো" : "আসছে বছর আবার হবে";
-})();
+  $("count").textContent = diff > 1 ? t("count.days", { n: num(diff) }) : diff === 1 ? t("count.tomorrow") : diff === 0 ? t("count.today") : t("count.over");
+}
 
 /* schedule, with now / next lit up */
 function drawSchedule(){
@@ -566,65 +727,75 @@ function drawSchedule(){
   const nxt = all.find(r => ist(r.start) > now);
   const box = $("table"), seen = box.dataset.drawn; box.replaceChildren();
   SITE.schedule.forEach((d, di) => {
-    const day = el("div", {className: "day"});
+    const day = el("div", { className: "day" });
     if (!seen) { day.dataset.rise = ""; day.style.setProperty("--i", di + 1); }
-    day.append(el("h3", {textContent: d.day}));
+    day.append(el("h3", { textContent: t(d.day) }));
     d.rows.forEach(r => {
       let tag = "";
-      if (r === cur) tag = "এখন চলছে";
-      else if (r === nxt) { const m = Math.round((ist(r.start) - now) / 6e4); tag = m <= 120 ? `${bn(m)} মিনিট পরে` : "এর পরে"; }
-      day.append(el("div", {className: "row" + (r === cur ? " now" : r === nxt ? " next" : "")},
-        el("span", {className: "t", textContent: r.t}), el("span", {textContent: r.ev}), el("span", {className: "tag", textContent: tag})));
+      if (r === cur) tag = t("s.now");
+      else if (r === nxt) { const m = Math.round((ist(r.start) - now) / 6e4); tag = m <= 120 ? t("s.in", { n: num(m) }) : t("s.next"); }
+      day.append(el("div", { className: "row" + (r === cur ? " now" : r === nxt ? " next" : "") },
+        el("span", { className: "t", textContent: t(r.t) }), el("span", { textContent: t(r.ev) }), el("span", { className: "tag", textContent: tag })));
     });
-    if (d.note) day.append(el("details", {}, el("summary", {textContent: "বিস্তারিত"}), el("p", {textContent: d.note})));
+    if (d.note) day.append(el("details", {}, el("summary", { textContent: t("s.details") }), el("p", { textContent: t(d.note) })));
     box.append(day);
   });
   box.dataset.drawn = 1;
 }
-drawSchedule(); setInterval(drawSchedule, 60e3);
 
 /* chanda figures */
-(function(){
-  const u = new Date(SITE.updated + "T00:00");
-  [["₹" + bn(SITE.chanda.total.toLocaleString("en-IN")), `${bn(u.getDate())} ${months[u.getMonth()]} পর্যন্ত মোট চাঁদা`],
-   [bn(SITE.chanda.receipts), "টি রসিদ কাটা হয়েছে"],
-   [bn(2), "দিনের পুজো, অমাবস্যার রাত থেকে বিসর্জন"]].forEach(([f, s], i) => {
-    const d = el("div", {}, el("dt", {textContent: f}), el("dd", {textContent: s}));
-    d.dataset.rise = ""; d.style.setProperty("--i", i + 1); $("ch-dl").append(d);
+function drawChanda(){
+  const dl = $("ch-dl"), u = new Date(SITE.updated + "T00:00"), m = MON[LANG][u.getMonth()], d = num(u.getDate());
+  dl.replaceChildren();
+  [["₹" + num(SITE.chanda.total.toLocaleString("en-IN")), t("ch.total", { d, m })],
+   [num(SITE.chanda.receipts), t("ch.receipts")],
+   [num(2), t("ch.days")]].forEach(([f, s], i) => {
+    const row = el("div", {}, el("dt", { textContent: f }), el("dd", { textContent: s }));
+    row.dataset.rise = ""; row.style.setProperty("--i", i + 1); dl.append(row);
   });
-  $("updated").textContent = `শেষ আপডেট ${bn(u.getDate())} ${months[u.getMonth()]} ${bn(u.getFullYear())}`;
-})();
+  $("updated").textContent = t("upd", { d, m, y: num(u.getFullYear()) });
+}
 
 /* committee */
-SITE.committee.forEach(p => $("people").append(el("li", {}, p.name + "  ",
-  el("a", {href: "tel:+91" + p.phone.replace(/\s/g, ""), textContent: p.phone}))));
+function drawPeople(){
+  const ul = $("people"); ul.replaceChildren();
+  SITE.committee.forEach(p => ul.append(el("li", {}, t(p.name) + "  ",
+    el("a", { href: "tel:+91" + p.phone.replace(/\s/g, ""), textContent: p.phone }))));
+}
 
 /* panjika */
 $("pj-open").onclick = () => $("pj").showModal();
 $("pj").addEventListener("click", e => { if (e.target === $("pj")) $("pj").close(); });
 
 /* ================= photo book ================= */
+let bookRerender = () => {};
 (function(){
   const P = SITE.photos;
+  const moreCap = () => {
+    const parts = [t("book.end1") + " ", el("a", { href: SITE.whatsapp, target: "_blank", rel: "noopener", textContent: t("book.end2") })];
+    const post = t("book.end3"); if (post) parts.push(" " + post);
+    return parts;
+  };
   const pages = [
-    { left: () => textPage("ছবির খাতা", "মিশন পাড়ার কালীপুজো, ২০১৬ থেকে", true), right: artPage },
-    ...P.map((p, i) => ({ left: () => textPage(p.year ? bn(p.year) : "সাল জানা নেই", p.cap, !p.year, i), right: () => photoPage(p) })),
-    { left: () => textPage("আরও ছবি?", "আপনার কাছে পুরোনো ছবি থাকলে WhatsApp গ্রুপে পাঠান।", true),
-      right: () => photoPage({ src: "img/hero-tall.jpg", cap: "পুজোর প্রদীপ", pos: "50% 60%" }) },
+    { left: () => textPage(t("book.h"), t("book.sub"), true), right: artPage },
+    ...P.map((p, i) => ({ left: () => textPage(p.year ? num(p.year) : t("book.unknown"), capOf(p), !p.year, i), right: () => photoPage(p) })),
+    { left: () => textPage(t("book.more"), moreCap(), true),
+      right: () => photoPage({ src: "img/hero-tall.jpg", cap: "cap.diyas", pos: "50% 60%" }) },
   ];
   const total = pages.length;
   function textPage(big, cap, small, i){
-    return el("div", {className: "pg text"},
-      el("div", {className: "yr" + (small ? " small" : ""), textContent: big}),
-      el("div", {}, el("p", {className: "cap", textContent: cap}),
-        el("p", {className: "pn"}, el("span", {textContent: "মিশন পাড়া"}), el("span", {textContent: i == null ? "" : `${bn(i + 1)} / ${bn(P.length)}`}))));
+    return el("div", { className: "pg text" },
+      el("div", { className: "yr" + (small ? " small" : ""), textContent: big }),
+      el("div", {}, el("p", { className: "cap" }, ...[].concat(cap)),
+        el("p", { className: "pn" }, el("span", { textContent: t("book.label") }),
+          el("span", { textContent: i == null ? "" : t("book.pn", { n: num(i + 1), total: num(P.length) }) }))));
   }
   function photoPage(p){
-    const img = el("img", {src: p.src, alt: p.cap || "পুজোর ছবি", decoding: "async"});
+    const img = el("img", { src: p.src, alt: capOf(p), decoding: "async" });
     img.style.objectPosition = p.pos || "50% 50%";
-    return el("div", {className: "pg photo"}, img);
+    return el("div", { className: "pg photo" }, img);
   }
-  function artPage(){ return el("div", {className: "pg art-pg"}, el("img", {src: "img/kali-art.png", alt: "চাঁদার রসিদে আঁকা মা কালীর মুখ"})); }
+  function artPage(){ return el("div", { className: "pg art-pg" }, el("img", { src: "img/kali-art.png", alt: t("art.alt") })); }
 
   const book = $("book"), spread = $("spread");
   const mobile = () => matchMedia("(max-width:760px)").matches;
@@ -632,7 +803,7 @@ $("pj").addEventListener("click", e => { if (e.target === $("pj")) $("pj").close
   let cur = 0, busy = false;
   const render = i => { spread.replaceChildren(pages[i].left(), pages[i].right()); update(i); };
   function update(i){
-    $("pageno").textContent = `পাতা ${bn(i + 1)} / ${bn(total)}`;
+    $("pageno").textContent = t("book.page", { n: num(i + 1), total: num(total) });
     $("prev").disabled = i === 0; $("next").disabled = i === total - 1;
   }
   const warm = i => [i, i + 1].forEach(j => { const p = P[j]; if (p) new Image().src = p.src; });
@@ -643,9 +814,9 @@ $("pj").addEventListener("click", e => { if (e.target === $("pj")) $("pj").close
     if (still() || mobile()) return swapSingle(to, dir);
     busy = true;
     const [L, R] = spread.children;
-    const front = el("div", {className: "face front"}), back = el("div", {className: "face back"});
-    const shade = el("div", {className: "shade"});
-    const leaf = el("div", {className: "leaf"}, front, back);
+    const front = el("div", { className: "face front" }), back = el("div", { className: "face back" });
+    const shade = el("div", { className: "shade" });
+    const leaf = el("div", { className: "leaf" }, front, back);
     if (dir > 0) {                       // right page lifts and turns over to the left
       leaf.style.left = "50%"; leaf.style.transformOrigin = "left center";
       front.append(R, shade); back.append(pages[to].left());
@@ -656,14 +827,14 @@ $("pj").addEventListener("click", e => { if (e.target === $("pj")) $("pj").close
       spread.prepend(pages[to].left());
     }
     book.append(leaf);
-    const anim = leaf.animate([{transform: "rotateY(0)"}, {transform: `rotateY(${dir > 0 ? -180 : 180}deg)`}],
-      {duration: 950, easing: "cubic-bezier(.45,.05,.25,1)", fill: "forwards"});
-    shade.animate([{opacity: 0}, {opacity: .45}], {duration: 475, easing: "cubic-bezier(.3,0,.2,1)", fill: "forwards"});
+    const anim = leaf.animate([{ transform: "rotateY(0)" }, { transform: `rotateY(${dir > 0 ? -180 : 180}deg)` }],
+      { duration: 950, easing: "cubic-bezier(.45,.05,.25,1)", fill: "forwards" });
+    shade.animate([{ opacity: 0 }, { opacity: .45 }], { duration: 475, easing: "cubic-bezier(.3,0,.2,1)", fill: "forwards" });
     anim.onfinish = () => {
       const page = back.firstChild;
       if (dir > 0) spread.prepend(page); else spread.append(page);
       // keep exactly two pages in the spread
-      while (spread.children.length > 2) spread.removeChild(dir > 0 ? spread.children[1] : spread.children[1]);
+      while (spread.children.length > 2) spread.removeChild(spread.children[1]);
       leaf.remove(); cur = to; update(cur); warm(cur); busy = false;
     };
   }
@@ -671,11 +842,11 @@ $("pj").addEventListener("click", e => { if (e.target === $("pj")) $("pj").close
     busy = true;
     const done = () => { render(to); cur = to; warm(cur); busy = false; };
     if (still()) return done();
-    spread.animate([{transform: "none", opacity: 1}, {transform: `translateX(${-dir * 28}px) rotateY(${dir * 14}deg)`, opacity: 0}],
-      {duration: 240, easing: "cubic-bezier(.3,0,.2,1)"}).onfinish = () => {
+    spread.animate([{ transform: "none", opacity: 1 }, { transform: `translateX(${-dir * 28}px) rotateY(${dir * 14}deg)`, opacity: 0 }],
+      { duration: 240, easing: "cubic-bezier(.3,0,.2,1)" }).onfinish = () => {
         done();
-        spread.animate([{transform: `translateX(${dir * 28}px) rotateY(${-dir * 14}deg)`, opacity: 0}, {transform: "none", opacity: 1}],
-          {duration: 380, easing: "cubic-bezier(.2,.7,.2,1)"});
+        spread.animate([{ transform: `translateX(${dir * 28}px) rotateY(${-dir * 14}deg)`, opacity: 0 }, { transform: "none", opacity: 1 }],
+          { duration: 380, easing: "cubic-bezier(.2,.7,.2,1)" });
       };
   }
   $("next").onclick = () => turn(1);
@@ -689,35 +860,55 @@ $("pj").addEventListener("click", e => { if (e.target === $("pj")) $("pj").close
     if (Math.abs(dx) > 40) return turn(dx < 0 ? 1 : -1);
     if (!mobile()) { const r = book.getBoundingClientRect(); turn(e.clientX > r.left + r.width / 2 ? 1 : -1); }
   });
+  bookRerender = () => { render(cur); };
   render(0); warm(0);
 })();
 
-/* fit the big lines to the width they have: the name, and the group link */
-(function(){
-  function fitAll(){
-    const phone = matchMedia("(max-width:860px)").matches;
-    const h1 = document.querySelector(".band h1");
-    const targets = phone ? [...h1.querySelectorAll(":scope > .fit")] : [h1];
-    h1.querySelectorAll(":scope > .fit").forEach(f => f.style.fontSize = "");
-    h1.style.fontSize = "";
-    const W = h1.parentElement.clientWidth - 2;
-    targets.forEach(t => { t.style.fontSize = "100px"; const w = t === h1 ? [...h1.children].reduce((a, c) => a + c.offsetWidth, 0) + 30 : t.offsetWidth; t.style.fontSize = (100 * W / w * 0.98) + "px"; });
-    // SVG lines: size the viewBox to the text's real ink box, so it runs margin to margin
-    document.querySelectorAll(".fitsvg").forEach(svg => {
-      const t = svg.querySelector("text"), b = t.getBBox();
-      if (b.width) svg.setAttribute("viewBox", `${b.x} ${b.y} ${b.width} ${b.height}`);
-    });
-  }
-  document.fonts.ready.then(fitAll); addEventListener("resize", fitAll); fitAll();
-})();
+/* fit the big lines to the width they have: the name, and the SVG lines */
+function fitAll(){
+  const phone = matchMedia("(max-width:860px)").matches;
+  const h1 = document.querySelector(".band h1");
+  const targets = phone ? [...h1.querySelectorAll(":scope > .fit")] : [h1];
+  h1.querySelectorAll(":scope > .fit").forEach(f => f.style.fontSize = "");
+  h1.style.fontSize = "";
+  const W = h1.parentElement.clientWidth - 2;
+  targets.forEach(tg => { tg.style.fontSize = "100px"; const w = tg === h1 ? [...h1.children].reduce((a, c) => a + c.offsetWidth, 0) + 30 : tg.offsetWidth; tg.style.fontSize = (100 * W / w * 0.98) + "px"; });
+  // SVG lines: size the viewBox to the text's real ink box, so it runs margin to margin
+  document.querySelectorAll(".fitsvg").forEach(svg => {
+    const tx = svg.querySelector("text"), b = tx.getBBox();
+    if (b.width) svg.setAttribute("viewBox", `${b.x} ${b.y} ${b.width} ${b.height}`);
+  });
+}
+document.fonts.ready.then(() => fitAll()); addEventListener("resize", fitAll);
+
+/* language: applies to every visible line */
+function applyStatic(){
+  document.documentElement.lang = LANG;
+  document.title = t("site.title");
+  document.querySelectorAll("[data-i]").forEach(e => e.textContent = t(e.dataset.i));
+  document.querySelectorAll("[data-ia]").forEach(e => e.setAttribute("aria-label", t(e.dataset.ia)));
+  document.querySelectorAll("[data-ialt]").forEach(e => e.alt = t(e.dataset.ialt));
+  document.querySelectorAll(".lang button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.lang === LANG)));
+}
+function setLang(l){
+  LANG = l;
+  try { localStorage.setItem("lang", l); } catch (e) {}
+  applyStatic(); drawTheme(); drawCount(); drawSchedule(); drawChanda(); drawPeople(); bookRerender(); fitAll();
+}
+document.querySelectorAll(".lang button").forEach(b => b.onclick = () => setLang(b.dataset.lang));
+document.querySelectorAll(".wa").forEach(a => a.href = SITE.whatsapp);
+document.querySelectorAll(".map").forEach(a => a.href = SITE.mapUrl);
 
 /* entrances */
 (function(){
   if (!("IntersectionObserver" in window)) { document.querySelectorAll("[data-rise]").forEach(e => e.classList.add("in")); return; }
   const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }),
-    {rootMargin: "0px 0px -8% 0px"});
+    { rootMargin: "0px 0px -8% 0px" });
   document.querySelectorAll("[data-rise]").forEach(e => io.observe(e));
 })();
+
+setLang(LANG);
+setInterval(() => { drawCount(); drawSchedule(); }, 60e3);
 </script>
 </body>
 </html>

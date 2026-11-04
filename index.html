@@ -319,6 +319,11 @@ html[lang="hi"] body,html[lang="hi"] .fitsvg text{font-family:"Anek Devanagari",
 /* plain text keeps the normal arrow; only things you can press get the hand */
 body{cursor:default}
 a,button,summary,label,.r5,.wa,[role="button"]{cursor:pointer}
+/* a slow, gentle drift on the book's photos only (not the artwork); still for reduced motion */
+.pg.photo{overflow:hidden}
+.pg.photo img{transform-origin:50% 50%;animation:drift 16s ease-in-out infinite;will-change:transform}
+@keyframes drift{0%,100%{transform:scale(1.03) translate3d(0,0,0)}50%{transform:scale(1.08) translate3d(-.5%,-.4%,0)}}
+@media (prefers-reduced-motion:reduce){.pg.photo img{animation:none}}
 </style>
 </head>
 <body>

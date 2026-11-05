@@ -839,7 +839,7 @@ const D = {
   "cap.bhogPrep": ["ভোগ রান্না", "Cooking the bhog", "भोग की तैयारी"],
   "map.btn": ["Google Maps-এ দেখুন", "View on Google Maps", "Google Maps पर देखें"],
   "con.lead": ["নির্ঘণ্টের খবর আর পুজোর ছবি, সব পাবেন গ্রুপে।", "Schedule updates and puja photos, all in the group.", "कार्यक्रम की खबरें और पूजा की तस्वीरें, सब ग्रुप में मिलेंगी।"],
-  "name.rabi": ["রবি ব্যানার্জী", "Rabi Banerjee", "रबि बैनर्जी"],
+  "name.rabi": ["রবীন্দ্রনাথ (রবি) ব্যানার্জী", "Rabindronath (Robi) Banerjee", "रवीन्द्रनाथ (रबि) बैनर्जी"],
   "name.somdeep": ["সোমদীপ কুণ্ডু", "Somdeep Kundu", "सोमदीप कुंडू"],
   "name.suraj": ["সুরজিৎ চেল", "Surajeet Chell", "सुरजीत चेल"],
   "m.play": ["গান চালান", "Play music", "संगीत चलाएँ"],
@@ -862,11 +862,11 @@ const D = {
   "ex.sponsor": ["কিছু স্পনসর করতে চাইলে {a}-কে ফোন করুন, {c}, বা {w} লিখুন।", "Want to sponsor something? Call {a}, see {c}, or write in our {w}.", "कुछ स्पॉन्सर करना चाहें तो {a} को फ़ोन करें, {c} देखें, या {w} में लिखें।"],
   "ex.contact": ["যোগাযোগ দেখুন", "Contact", "संपर्क"],
   "ex.group": ["কমিউনিটি WhatsApp গ্রুপে", "community WhatsApp group", "कम्युनिटी WhatsApp ग्रुप"],
-  "name.rabi.s": ["রবি ব্যানার্জী", "Rabi Banerjee", "रबि बैनर्जी"],
+  "name.rabi.s": ["রবীন্দ্রনাথ (রবি) ব্যানার্জী", "Rabindronath (Robi) Banerjee", "रवीन्द्रनाथ (रबि) बैनर्जी"],
   "name.somdeep.s": ["সোমদীপ", "Somdeep", "सोमदीप"],
   "name.suraj.s": ["সুরজিৎ", "Surajit", "सुरजीत"],
-  "ex.this": ["এটা স্পনসর করুন → রবি দা-কে WhatsApp", "Sponsor this → WhatsApp Rabi da", "इसे स्पॉन्सर करें → रबि दा को WhatsApp"],
-  "ex.msg": ["নমস্কার রবি দা, মিশন পাড়া কালী পুজো ২০২৬-এ আমি {x} (₹{v}) স্পনসর করতে চাই।", "Namaskar Rabi da, I would like to sponsor {x} (₹{v}) for Mission Para Kali Puja 2026.", "नमस्कार रबि दा, मैं मिशन पाड़ा काली पूजा 2026 में {x} (₹{v}) स्पॉन्सर करना चाहता/चाहती हूँ।"],
+  "ex.this": ["এটা স্পনসর করুন → রবি দা-কে WhatsApp", "Sponsor this → WhatsApp Robi da", "इसे स्पॉन्सर करें → रबि दा को WhatsApp"],
+  "ex.msg": ["নমস্কার রবি দা, মিশন পাড়া কালী পুজো ২০২৬-এ আমি {x} (₹{v}) স্পনসর করতে চাই।", "Namaskar Robi da, I would like to sponsor {x} (₹{v}) for Mission Para Kali Puja 2026.", "नमस्कार रबि दा, मैं मिशन पाड़ा काली पूजा 2026 में {x} (₹{v}) स्पॉन्सर करना चाहता/चाहती हूँ।"],
   "ex.kfull": ["পুরো উঠেছে", "covered", "पूरा"],
   "ex.kpart": ["কিছুটা", "part", "आंशिक"],
   "ex.knone": ["এখনও বাকি", "still needed", "अभी बाकी"],
@@ -1071,7 +1071,7 @@ function drawGoal(){
   tick(); clearInterval(window.goalTimer); window.goalTimer = setInterval(tick, 1000);
   const left = el("p", { className: "gleft", textContent: have >= need ? t("ex.done") : t("ex.left", { n: rs(need - have) }) });
   // every item on its own row (grouped under a small label). The dot shows if the chanda so far covers it.
-  // Tap a row: its slice lights up in the bhar, and a WhatsApp link to Rabi da offers to sponsor it.
+  // Tap a row: its slice lights up in the bhar, and a WhatsApp link to Robi da offers to sponsor it.
   const ul = el("ul", { className: "items" }); acc = 0; let n = 0;
   const rabi = SITE.committee[0], wa = "https://wa.me/91" + rabi.phone.replace(/\s/g, "") + "?text=";
   cats.forEach(c => {
@@ -1103,7 +1103,7 @@ function drawGoal(){
   };
   svg.onclick = () => { more.open = !more.open; };
 
-  // "Want to sponsor something?": Rabi da's phone, the Contact section, and the WhatsApp group
+  // "Want to sponsor something?": Robi da's phone, the Contact section, and the WhatsApp group
 
   const spon = el("p", { className: "gspon" }, ...t("ex.sponsor").split(/\{(\w)\}/).map((part, i) => {
     if (i % 2 === 0) return part;

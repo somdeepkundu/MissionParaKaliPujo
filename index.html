@@ -308,7 +308,7 @@ dialog[open]{animation:pop .35s var(--ease)}
   .main img,.marquee .track,dialog[open]{animation:none}
 }
 /* language switch (বাংলা / English / हिन्दी) */
-.lang{display:flex;background:var(--bg2)}
+.lang{display:none;background:var(--bg2)}
 .lang button{flex:1;font:inherit;font-size:var(--s-small);background:none;border:0;color:var(--fg-soft);padding:14px 10px;cursor:pointer;transition:color .2s}
 .lang button:hover{color:var(--fg)}
 .lang button[aria-pressed="true"]{color:var(--fg);text-decoration:underline;text-underline-offset:.3em}
@@ -339,7 +339,7 @@ a,button,summary,label,.r5,.wa,[role="button"]{cursor:pointer}
 .bar:hover .fill{opacity:.75}
 .specials{list-style:none;margin:0;padding:0}
 .specials li{padding:.55rem 0;border-bottom:1px solid rgba(127,127,127,.22);font-size:var(--s-body)}
-.dhint{grid-column:1/-1;font-size:var(--s-small);opacity:.6}
+.dhint{grid-column:1/-1;font-size:.6rem;opacity:.5;letter-spacing:.02em}
 @keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 @media (prefers-reduced-motion:reduce){.bar .fill{animation:none}}
 </style>
@@ -699,7 +699,7 @@ const D = {
   "dist.h2": ["বিশেষ দান", "Special donations", "विशेष दान"],
   "sp.murti": ["মূর্তি দান ২০২৬ — খোকা দা", "Murti donation 2026 — Khoka Da", "मूर्ति दान २०२६ — खोका दा"],
   "sp.bhog": ["রাতের ভোগ দান ২০২৬ — বিলে দা", "Night bhog donation 2026 — Bile da", "रात के भोग का दान २०२६ — बिले दा"],
-  "dist.hint": ["বারে ক্লিক করুন।", "Tap a bar to see the count and total.", "बार पर क्लिक करें।"],
+  "dist.hint": ["Donor names are deliberately hidden.", "Donor names are deliberately hidden.", "Donor names are deliberately hidden."],
   "dist.count": ["{n} টি রসিদ · ₹{s}", "{n} receipts · ₹{s}", "{n} रसीदें · ₹{s}"],
   "dist.b1": ["₹১–১৯৯", "₹1–199", "₹1–199"],
   "dist.b2": ["₹২০০–৪৯৯", "₹200–499", "₹200–499"],
@@ -726,11 +726,7 @@ const MON = {
   en: ["January","February","March","April","May","June","July","August","September","October","November","December"],
   hi: ["जनवरी","फ़रवरी","मार्च","अप्रैल","मई","जून","जुलाई","अगस्त","सितंबर","अक्टूबर","नवंबर","दिसंबर"],
 };
-let LANG = (() => {
-  let l = null;
-  try { l = new URLSearchParams(location.search).get("lang") || localStorage.getItem("lang"); } catch (e) {}
-  return ["bn", "en", "hi"].includes(l) ? l : "bn";
-})();
+let LANG = "en";   // English only. Bengali and Hindi text is kept below, unused.
 const t = (k, v = {}) => {
   let s = D[k] ? D[k][LI[LANG]] : k;
   for (const [a, b] of Object.entries(v)) s = s.split("{" + a + "}").join(b);

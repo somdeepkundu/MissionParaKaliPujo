@@ -902,21 +902,24 @@ function applyStatic(){
 function setLang(l){
   LANG = l;
   try { localStorage.setItem("lang", l); } catch (e) {}
-  applyStatic(); drawTheme(); drawCount(); drawSchedule(); drawChanda(); drawPeople(); bookRerender(); fitAll();
+  applyStatic(); drawTheme(); drawCount(); drawSchedule(); drawChanda(); drawPeople(); bookRerender(); fitAll(); observeRise();
 }
 document.querySelectorAll(".lang button").forEach(b => b.onclick = () => setLang(b.dataset.lang));
 document.querySelectorAll(".wa").forEach(a => a.href = SITE.whatsapp);
 document.querySelectorAll(".map").forEach(a => a.href = SITE.mapUrl);
 
-/* entrances */
-(function(){
-  if (!("IntersectionObserver" in window)) { document.querySelectorAll("[data-rise]").forEach(e => e.classList.add("in")); return; }
-  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }),
-    { rootMargin: "0px 0px -8% 0px" });
-  document.querySelectorAll("[data-rise]").forEach(e => io.observe(e));
-})();
+/* entrances: fade items in as they scroll into view. Re-run after rows are redrawn,
+   so the schedule and chanda lines (built by script) also appear. */
+const RISE = "IntersectionObserver" in window
+  ? new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); RISE.unobserve(e.target); } }),
+      { rootMargin: "0px 0px -8% 0px" })
+  : null;
+function observeRise(){
+  document.querySelectorAll("[data-rise]:not(.in)").forEach(e => { if (RISE) RISE.observe(e); else e.classList.add("in"); });
+}
 
 setLang(LANG);
+observeRise();
 setInterval(() => { drawCount(); drawSchedule(); }, 60e3);
 </script>
 </body>

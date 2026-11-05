@@ -7,7 +7,8 @@ To bring back an older version of the page: `git checkout <id> -- index.html`, t
 
 ## 2026-11-06
 
-- Photo book: wide group photos glide right to left with short rests, so every face is seen; nearly-fitting photos drift right to left
+- Photo book: photos shown whole (no crop) with a soft blurred fill instead of black; quicker page changes; turns by itself while on screen; singer credited (কণ্ঠ: অনুরাধা পড়োয়াল)
+- `94c2052` Photo book: group photos glided right to left (replaced next by whole photos)
 - `77d453a` Music label each time the music starts (বাংলা → हिन्दी → English); switch in the same order
 - `3336cca` Changelog: restore points by commit id
 - `f86631c` Beat glow back on the title, red strip and music button; flowers' glow breathes again; features checklist, changelog and smoke test added

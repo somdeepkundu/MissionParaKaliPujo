@@ -169,8 +169,8 @@ h2{font-size:var(--s-head);font-weight:300;font-stretch:80%;line-height:.98;lett
 .shot{position:relative;overflow:hidden;margin:0}
 .shot img{display:block;width:100%;height:100%;object-fit:cover}
 /* a long photo is laid out at full length and its window slides over it (see PAN in the script) */
-.shot img.pan-y,.pg.photo img.pan-y{position:absolute;left:0;top:0;right:auto;bottom:auto;width:100%;height:auto;max-width:none;object-fit:fill}
-.shot img.pan-x,.pg.photo img.pan-x{position:absolute;left:0;top:0;right:auto;bottom:auto;height:100%;width:auto;max-width:none;object-fit:fill}
+.shot img.pan-y{position:absolute;left:0;top:0;right:auto;bottom:auto;width:100%;height:auto;max-width:none;object-fit:fill}
+.shot img.pan-x{position:absolute;left:0;top:0;right:auto;bottom:auto;height:100%;width:auto;max-width:none;object-fit:fill}
 img[data-pan]{will-change:transform;backface-visibility:hidden}
 .shot figcaption{position:absolute;left:0;right:0;bottom:0;padding:var(--sp-xl) var(--sp-m) var(--sp-s);color:#fff;font-size:var(--s-small);line-height:1.35;
   background:linear-gradient(to top,rgba(12,8,6,.72),rgba(12,8,6,.28) 60%,transparent);text-shadow:0 1px 2px rgba(0,0,0,.35)}
@@ -214,10 +214,13 @@ details summary:hover{text-decoration-thickness:2px}
 .spread{position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr}
 .pg{position:relative;overflow:hidden;background:var(--sheet);color:var(--ink)}
 .pg.photo{background:var(--bg2)}
-.pg.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.pg.photo img{position:absolute;inset:0;z-index:1;width:100%;height:100%;object-fit:contain}
+/* the whole photo is shown, never cropped; the space around it is the same photo, softly blurred and dimmed */
+.pg.photo .bd{position:absolute;inset:-10%;background:center/cover no-repeat;filter:blur(26px) brightness(.85) saturate(1.35);opacity:0;transition:opacity .4s}
+.pg.photo .bd.in{opacity:1}
 /* year and caption sit on the photo: marigold year, white words, over a dark wash that fades upward */
-.pg .ov{position:absolute;left:0;right:0;bottom:0;display:grid;gap:var(--sp-xs);padding:var(--sp-2xl) clamp(16px,2.2vw,28px) clamp(14px,2vw,24px);color:#fff;
-  background:linear-gradient(to top,rgba(12,8,6,.8),rgba(12,8,6,.36) 55%,transparent);text-shadow:0 1px 3px rgba(0,0,0,.35)}
+.pg .ov{position:absolute;z-index:2;left:0;right:0;bottom:0;display:grid;gap:var(--sp-xs);padding:var(--sp-2xl) clamp(16px,2.2vw,28px) clamp(14px,2vw,24px);color:#fff;
+  background:linear-gradient(to top,rgba(12,8,6,.62),rgba(12,8,6,.22) 60%,transparent);text-shadow:0 1px 3px rgba(0,0,0,.45)}
 .pg .ov .yr{font-size:clamp(2.6rem,1.4rem + 3.4vw,4.8rem);font-weight:200;font-stretch:75%;line-height:.85;letter-spacing:-.03em;color:var(--gaanda)}
 .pg .ov .yr.word{font-size:var(--s-xl);font-weight:300;letter-spacing:0}
 .pg .ov .cap{font-size:var(--s-body);line-height:1.3;max-width:28ch}
@@ -357,7 +360,6 @@ html[lang="hi"] body,html[lang="hi"] .fitsvg text{font-family:"Anek Devanagari",
 /* plain text keeps the normal arrow; only things you can press get the hand */
 body{cursor:default}
 a,button,summary,label,.r5,.wa,[role="button"]{cursor:pointer}
-/* the book's photos move through PAN in the script (slide or breathe); the artwork stays still */
 /* chanda distribution bars */
 .dist{display:grid;grid-template-columns:1fr 1fr;gap:3rem;margin-top:3.5rem;align-items:start}
 @media (max-width:760px){.dist{grid-template-columns:1fr;gap:2rem}}
@@ -708,7 +710,7 @@ body.still .jaba{display:none}
       <text x="0" y="0" data-i="hero.name">মিশন পাড়া</text>
     </svg>
     <div class="legal"><span data-i="f.legal">মিশন পাড়া কালীপুজো কমিটি</span></div>
-    <div class="credit"><span data-i="m.credit">গান: আমার মায়ের চরণ বুকে ধরেছি (শ্যামাসংগীত)</span> · <a href="https://youtu.be/Z31VRi9Ud0U" target="_blank" rel="noopener">YouTube</a></div>
+    <div class="credit"><span data-i="m.credit">গান: আমার মায়ের চরণ বুকে ধরেছি (শ্যামাসংগীত) · কণ্ঠ: অনুরাধা পড়োয়াল</span> · <a href="https://youtu.be/Z31VRi9Ud0U" target="_blank" rel="noopener">YouTube</a></div>
   </div>
 </footer>
 
@@ -952,7 +954,7 @@ const D = {
   "m.mute": ["গান বন্ধ করুন", "Mute music", "संगीत बंद करें"],
   "m.on": ["শ্যামাসংগীত চলছে · থামাতে এখানে চাপুন", "Shyama Sangeet is playing · tap here to stop", "श्यामा संगीत चल रहा है · रोकने के लिए यहाँ दबाएँ"],
   "m.tip": ["শ্যামাসংগীত চালু / বন্ধ", "Shyama Sangeet on / off", "श्यामा संगीत चालू / बंद"],
-  "m.credit": ["গান: আমার মায়ের চরণ বুকে ধরেছি (শ্যামাসংগীত)", "Music: Amar Mayer Charan Buke Dhorechi (Shyama Sangeet)", "संगीत: आमार मायेर चरण बुके धोरेछि (श्यामा संगीत)"],
+  "m.credit": ["গান: আমার মায়ের চরণ বুকে ধরেছি (শ্যামাসংগীত) · কণ্ঠ: অনুরাধা পড়োয়াল", "Music: Amar Mayer Charan Buke Dhorechi (Shyama Sangeet) · Voice: Anuradha Paudwal", "संगीत: आमार मायेर चरण बुके धोरेछि (श्यामा संगीत) · स्वर: अनुराधा पौडवाल"],
   "f.addr": ["ঠিকানা", "Address", "पता"],
   "f.place": ["আপার মিশন পাড়া", "Upper Mission Para", "अपर मिशन पाड़ा"],
   "f.town": ["আদ্রা, পুরুলিয়া", "Adra, Purulia", "आद्रा, पुरुलिया"],
@@ -1395,8 +1397,8 @@ const PAN = (() => {
 document.querySelectorAll(".shot img").forEach(PAN.add);
 
 /* ================= photo book =================
-   Every photo carries its year and caption on itself (marigold year, white words, dark wash), so no page sits empty.
-   Wide screens open as two-page spreads; phones show one page at a time. */
+   Every photo is shown whole, with its year and caption on it; around it, a blurred copy of the photo instead of black.
+   Wide screens open as two-page spreads; phones show one page at a time. It turns by itself while on screen. */
 let bookRerender = () => {};
 (function(){
   const P = SITE.photos, book = $("book"), spread = $("spread");
@@ -1408,13 +1410,14 @@ let bookRerender = () => {};
     return parts;
   };
   function photoPage(p, big, cap, word){
+    // the whole photo, never cropped; around it a soft blurred copy of itself instead of black
     const img = el("img", { src: p.src, alt: typeof cap === "string" ? cap : "", decoding: "async", loading: "lazy" });
-    img.style.objectPosition = p.pos || "50% 50%";
-    PAN.add(img);
+    const bd = el("span", { className: "bd", "aria-hidden": "true" });
+    img.addEventListener("load", () => { bd.style.backgroundImage = `url("${p.src}")`; bd.classList.add("in"); }, { once: true });
     const ov = el("div", { className: "ov" });
     if (big) ov.append(el("div", { className: "yr" + (word ? " word" : ""), textContent: big }));
     ov.append(el("p", { className: "cap" }, ...[].concat(cap)));
-    return el("div", { className: "pg photo" }, img, ov);
+    return el("div", { className: "pg photo" }, bd, img, ov);
   }
   const artPage = () => el("div", { className: "pg art-pg" }, el("img", { src: "img/kali-art.png", alt: t("art.alt") }),
     el("span", { className: "go" }, t("book.go"), el("i", { textContent: "→" })));
@@ -1438,12 +1441,12 @@ let bookRerender = () => {};
     $("pageno").textContent = t("book.page", { n: num(i + 1), total: num(total) });
     $("prev").disabled = i === 0; $("next").disabled = i === total - 1;
   }
-  const warm = i => (pages[i + 1] || []).forEach(l => { if (l.src) new Image().src = l.src; });
+  const warm = i => [i + 1, i + 2].forEach(j => (pages[j] || []).forEach(l => { if (l.src) new Image().src = l.src; }));
 
-  function turn(dir){
+  function turn(dir, auto){
     const to = cur + dir;
     if (busy || to < 0 || to >= total) return;
-    if (still() || mobile()) return swapSingle(to, dir);
+    if (still() || mobile()) return swapSingle(to, dir, auto);
     busy = true;
     const [L, R] = spread.children;
     const front = el("div", { className: "face front" }), back = el("div", { className: "face back" });
@@ -1460,24 +1463,25 @@ let bookRerender = () => {};
     }
     book.append(leaf);
     const anim = leaf.animate([{ transform: "rotateY(0)" }, { transform: `rotateY(${dir > 0 ? -180 : 180}deg)` }],
-      { duration: 950, easing: "cubic-bezier(.45,.05,.25,1)", fill: "forwards" });
-    shade.animate([{ opacity: 0 }, { opacity: .45 }], { duration: 475, easing: "cubic-bezier(.3,0,.2,1)", fill: "forwards" });
+      { duration: 760, easing: "cubic-bezier(.45,.05,.25,1)", fill: "forwards" });
+    shade.animate([{ opacity: 0 }, { opacity: .45 }], { duration: 380, easing: "cubic-bezier(.3,0,.2,1)", fill: "forwards" });
     anim.onfinish = () => {
       const page = back.firstChild;
       if (dir > 0) spread.prepend(page); else spread.append(page);
       while (spread.children.length > 2) spread.removeChild(spread.children[1]);   // keep exactly two pages
-      leaf.remove(); cur = to; update(cur); warm(cur); busy = false; turned();
+      leaf.remove(); cur = to; update(cur); warm(cur); busy = false; if (!auto) turned();
     };
   }
-  function swapSingle(to, dir){
+  function swapSingle(to, dir, auto){
     busy = true;
-    const done = () => { render(to); cur = to; warm(cur); busy = false; turned(); };
+    const done = () => { render(to); cur = to; warm(cur); busy = false; if (!auto) turned(); };
     if (still()) return done();
-    spread.animate([{ transform: "none", opacity: 1 }, { transform: `translateX(${-dir * 28}px) rotateY(${dir * 14}deg)`, opacity: 0 }],
-      { duration: 240, easing: "cubic-bezier(.3,0,.2,1)" }).onfinish = () => {
+    // the page slides out and the next one slides in: right to left going forward
+    spread.animate([{ transform: "translate3d(0,0,0)", opacity: 1 }, { transform: `translate3d(${-dir * 14}%,0,0)`, opacity: 0 }],
+      { duration: 200, easing: "cubic-bezier(.4,0,1,1)" }).onfinish = () => {
         done();
-        spread.animate([{ transform: `translateX(${dir * 28}px) rotateY(${-dir * 14}deg)`, opacity: 0 }, { transform: "none", opacity: 1 }],
-          { duration: 380, easing: "cubic-bezier(.2,.7,.2,1)" });
+        spread.animate([{ transform: `translate3d(${dir * 14}%,0,0)`, opacity: 0 }, { transform: "translate3d(0,0,0)", opacity: 1 }],
+          { duration: 300, easing: "cubic-bezier(0,0,.2,1)" });
       };
   }
   $("next").onclick = () => turn(1);
@@ -1492,7 +1496,11 @@ let bookRerender = () => {};
     if (!mobile()) { const r = book.getBoundingClientRect(); turn(e.clientX > r.left + r.width / 2 ? 1 : -1); }
   });
   // crossing the phone/laptop width keeps you on the same photo
-  MQ.addEventListener("change", () => { const was = cur; build(); cur = Math.min(total - 1, mobile() ? was * 2 : Math.floor(was / 2)); render(cur); });
+  let phoneNow = mobile();
+  MQ.addEventListener("change", () => {
+    const ph = mobile(); if (ph === phoneNow) return;                    // only a real switch between phone and laptop width
+    phoneNow = ph; const was = cur; build(); cur = Math.min(total - 1, ph ? was * 2 : Math.floor(was / 2)); render(cur);
+  });
   bookRerender = () => { build(); render(cur); };
   // a first-time hint for anyone who hasn't turned a page yet: the page lifts a little and a fingertip glides across, twice
   const tried = () => { try { return localStorage.getItem("bookTurned") === "1"; } catch (e) { return false; } };
@@ -1524,6 +1532,30 @@ let bookRerender = () => {};
     const hio = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { hio.disconnect(); setTimeout(hint, 700); } }, { threshold: .6 });
     hio.observe(book);
   }
+  // the book turns by itself every few seconds while it is on screen (right to left, so new faces keep coming).
+  // Any touch, click or key leaves it alone for 12 s. Back to the first page after the last. Never with reduced motion.
+  let onScreen = false, quietUntil = 0, autoT = 0;
+  function tick(){
+    clearTimeout(autoT);
+    autoT = setTimeout(() => {
+      if (onScreen && !document.hidden && !still() && performance.now() > quietUntil && !busy) {
+        if (cur < total - 1) turn(1, true);
+        else if (mobile()) swapSingle(0, 1, true);
+        else {
+          busy = true;
+          spread.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 260 }).onfinish = () => {
+            render(0); cur = 0; warm(0); busy = false; spread.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 360 });
+          };
+        }
+      }
+      if (onScreen) tick();
+    }, 4200);
+  }
+  const hush = () => { quietUntil = performance.now() + 12000; };
+  ["pointerdown", "keydown"].forEach(k => book.addEventListener(k, hush));
+  $("next").addEventListener("click", hush); $("prev").addEventListener("click", hush);
+  if ("IntersectionObserver" in window)
+    new IntersectionObserver(es => { const was = onScreen; onScreen = es.some(e => e.isIntersecting); if (onScreen && !was) tick(); }, { threshold: .5 }).observe(book);
   build(); render(0); warm(0);
 })();
 

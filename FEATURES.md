@@ -31,9 +31,10 @@ and stops with `FAIL` if anything has gone missing. Items without ✓ need a qui
 - ✓ Akash prodip hanging by its string, swaying, soft glow
 
 ## Photo book
-- ✓ Every page is a photo with year (marigold) and caption on it; Maa's artwork first, never moves
-- ✓ Laptop: two photos per spread, 3D page turn (8 spreads). Phone: one photo per page (15 pages)
-- ✓ Wide group photos rest on the left, then glide right to left so every face passes by, rest, glide back (~34 px/s); tall photos glide top to bottom; photos that nearly fit come a little closer and drift right to left; paused off screen
+- ✓ Every photo is shown whole (never cropped), with year (marigold) and caption on it; around it a soft blurred copy of the same photo instead of black; Maa's artwork first, never moves
+- ✓ Laptop: two photos per spread, 3D page turn ~0.75 s (8 spreads). Phone: one photo per page (15 pages), quick slide right to left
+- ✓ Turns by itself every ~4 s while on screen (back to the start after the last page); ✓ any touch, click or key leaves it alone for 12 s
+- The next two pages are loaded ahead, so a turn never shows an empty page
 - ✓ First time only: fingertip hint + page lift; "Slide to begin →" on the art page
 - ✓ Music button tucks aside while the book is on screen
 - Last page: "More photos?" with the WhatsApp link, then a red "জয় মা কালী" page on laptops
@@ -50,7 +51,7 @@ and stops with `FAIL` if anything has gone missing. Items without ✓ need a qui
 ## Contact and footer
 - ✓ Contacts in order: Rabindranath (Robi) Banerjee, Surajeet Chell, Somdeep Kundu
 - ✓ "Join the WhatsApp group (2026)" big link; Google Maps link
-- ✓ Music credit with YouTube link; committee line; big wordmark
+- ✓ Music credit: song, ✓ singer (কণ্ঠ: অনুরাধা পড়োয়াল), YouTube link; committee line; big wordmark
 
 ## Speed
 - Photos at most 1600 px; Maa's artwork 77 KB; book photos load only near the book

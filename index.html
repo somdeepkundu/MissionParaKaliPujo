@@ -407,7 +407,7 @@ li:has(> .it[aria-expanded="true"]) .spon{display:block}
 /* falling jaba (hibiscus): a handful of flowers, transform-only animation, no JS per frame */
 .jaba{position:fixed;inset:0;pointer-events:none;z-index:40;overflow:hidden;contain:strict}
 .jaba{--k:1}
-.jaba i{position:absolute;top:-70px;left:var(--x);width:calc(var(--s) * var(--k));height:calc(var(--s) * var(--k));will-change:transform;
+.jaba i{z-index:1;position:absolute;top:-70px;left:var(--x);width:calc(var(--s) * var(--k));height:calc(var(--s) * var(--k));will-change:transform;
   animation:jfall var(--d) linear var(--w) infinite}
 .jaba i.wide{display:none}
 @media (min-width:760px){.jaba{--k:1.35}.jaba i.wide{display:block}}
@@ -420,6 +420,18 @@ li:has(> .it[aria-expanded="true"]) .spon{display:block}
 .jaba.gone.rest i,.jaba.gone.rest i::before{animation-play-state:paused}
 @keyframes jfall{to{transform:translate3d(var(--dx,0px),calc(100vh + 140px),0)}}
 @keyframes jsway{from{transform:translateX(-22px) rotate(-30deg)}to{transform:translateX(22px) rotate(40deg)}}
+/* depth: far flowers are small, soft and slow; near ones bigger and a touch quicker */
+.jaba i.far{--s2:.68;filter:blur(1.1px);opacity:.55;animation-duration:calc(var(--d) * 1.45)}
+.jaba i.near{--s2:1.3;filter:drop-shadow(0 4px 5px rgba(120,10,30,.18));animation-duration:calc(var(--d) * .85)}
+.jaba i{width:calc(var(--s) * var(--k) * var(--s2,1));height:calc(var(--s) * var(--k) * var(--s2,1))}
+/* a faint warm glow behind the flowers: breathes slowly, and swells softly with the beat when music plays */
+.jaba::before,.jaba::after{content:"";position:absolute;inset:-20%;pointer-events:none}
+.jaba::before{background:radial-gradient(40% 35% at 22% 30%,rgba(210,18,46,.07),transparent 70%),
+  radial-gradient(38% 32% at 78% 62%,rgba(242,179,61,.09),transparent 70%);animation:jglow 3.7s ease-in-out infinite alternate}
+.jaba::after{background:radial-gradient(55% 45% at 50% 45%,rgba(210,18,46,.07),rgba(242,179,61,.04) 50%,transparent 75%);
+  opacity:calc(var(--beat,0) * .8)}
+@keyframes jglow{from{opacity:.35;transform:scale(1)}to{opacity:.9;transform:scale(1.06)}}
+.jaba.gone.rest::before{animation-play-state:paused}
 body.still .jaba{display:none}
 @media (prefers-reduced-motion:reduce){.jaba{display:none}}
 
@@ -597,13 +609,13 @@ body.still .jaba{display:none}
 </footer>
 
 <div class="jaba" aria-hidden="true">
-  <i style="--x:5%;--s:26px;--d:14s;--w:-2s;--dx:40px"></i><i style="--x:19%;--s:20px;--d:18s;--w:-11s;--dx:-30px"></i>
-  <i style="--x:33%;--s:30px;--d:16s;--w:-6s;--dx:25px"></i><i style="--x:50%;--s:22px;--d:19s;--w:-15s;--dx:-45px"></i>
-  <i style="--x:66%;--s:28px;--d:15s;--w:-9s;--dx:35px"></i><i style="--x:81%;--s:20px;--d:17s;--w:-3s;--dx:-20px"></i>
-  <i style="--x:93%;--s:24px;--d:13s;--w:-12s;--dx:-35px"></i>
-  <i class="wide" style="--x:12%;--s:22px;--d:17s;--w:-8s;--dx:30px"></i><i class="wide" style="--x:27%;--s:26px;--d:13s;--w:-1s;--dx:-25px"></i>
-  <i class="wide" style="--x:43%;--s:20px;--d:15s;--w:-13s;--dx:40px"></i><i class="wide" style="--x:59%;--s:24px;--d:18s;--w:-5s;--dx:-30px"></i>
-  <i class="wide" style="--x:74%;--s:30px;--d:14s;--w:-10s;--dx:20px"></i><i class="wide" style="--x:88%;--s:22px;--d:16s;--w:-7s;--dx:-40px"></i>
+  <i class="far" style="--x:5%;--s:26px;--d:14s;--w:-2s;--dx:40px"></i><i class="near" style="--x:19%;--s:20px;--d:18s;--w:-11s;--dx:-30px"></i>
+  <i style="--x:33%;--s:30px;--d:16s;--w:-6s;--dx:25px"></i><i class="far" style="--x:50%;--s:22px;--d:19s;--w:-15s;--dx:-45px"></i>
+  <i class="near" style="--x:66%;--s:28px;--d:15s;--w:-9s;--dx:35px"></i><i style="--x:81%;--s:20px;--d:17s;--w:-3s;--dx:-20px"></i>
+  <i class="far" style="--x:93%;--s:24px;--d:13s;--w:-12s;--dx:-35px"></i>
+  <i class="wide far" style="--x:12%;--s:22px;--d:17s;--w:-8s;--dx:30px"></i><i class="wide" style="--x:27%;--s:26px;--d:13s;--w:-1s;--dx:-25px"></i>
+  <i class="wide near" style="--x:43%;--s:20px;--d:15s;--w:-13s;--dx:40px"></i><i class="wide far" style="--x:59%;--s:24px;--d:18s;--w:-5s;--dx:-30px"></i>
+  <i class="wide" style="--x:74%;--s:30px;--d:14s;--w:-10s;--dx:20px"></i><i class="wide near" style="--x:88%;--s:22px;--d:16s;--w:-7s;--dx:-40px"></i>
 </div>
 <audio id="song" src="music/kalipujo-dhak.mp3" loop preload="none"></audio>
 <button class="music" id="music" type="button" aria-pressed="false" data-ia="m.play" aria-label="Play music">
@@ -1117,7 +1129,7 @@ function buildGoal(){
   // bass meter: one small analyser, read once a frame only while playing; drives --beat on three elements
   let ctx, an, buf, raf = 0, lvl = 0, floor = .2, gustAt = -1e9;
   const jaba = document.querySelector(".jaba");
-  const glow = [document.querySelector(".band"), document.querySelector(".marquee"), b];
+  const glow = [document.querySelector(".band"), document.querySelector(".marquee"), b, document.querySelector(".jaba")];
   const still = matchMedia("(prefers-reduced-motion:reduce)");
   const meter = () => {
     if (ctx || still.matches) return;

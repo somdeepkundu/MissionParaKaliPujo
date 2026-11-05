@@ -370,6 +370,20 @@ a,button,summary,label,.r5,.wa,[role="button"]{cursor:pointer}
 .gmore{margin-top:.9rem;font-size:var(--s-small)}
 .gmore summary{color:var(--soft)}
 .gmore .of{color:var(--soft);margin:.7rem 0 .2rem;font-variant-numeric:tabular-nums}
+.items{list-style:none;margin:0;padding:0}
+.items .grp{color:var(--soft);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;margin:.9rem 0 .15rem}
+.items .grp:first-child{margin-top:.2rem}
+.it{display:flex;align-items:center;gap:.55rem;width:100%;background:none;border:0;border-bottom:1px solid rgba(127,127,127,.18);padding:.42rem 0;color:inherit;font:inherit;font-size:var(--s-small);text-align:left;cursor:pointer}
+.it .nm{flex:1}
+.it .v{color:var(--soft);font-variant-numeric:tabular-nums}
+.it[aria-expanded="true"] .nm{text-decoration:underline;text-underline-offset:3px}
+.dot{display:inline-block;flex:none;width:9px;height:9px;border-radius:50%;border:1.5px solid var(--gaanda);vertical-align:-1px}
+.dot.full,.full .dot{background:var(--gaanda)}
+.dot.part,.part .dot{background:linear-gradient(90deg,var(--gaanda) 50%,transparent 50%)}
+.dot.none,.none .dot{border-color:rgba(127,127,127,.55)}
+.spon{display:none;font-size:.78rem;padding:.35rem 0 .5rem 1.15rem;color:var(--jaba-d);text-underline-offset:3px}
+li:has(> .it[aria-expanded="true"]) .spon{display:block}
+.key{font-size:.72rem;color:var(--soft);margin:.7rem 0 0;display:flex;gap:.35rem;align-items:center;flex-wrap:wrap;white-space:pre}
 .cats{list-style:none;margin:0;padding:0}
 .cat{display:block;width:100%;background:none;border:0;padding:.35rem 0;color:inherit;font:inherit;font-size:var(--s-small);text-align:left;cursor:pointer}
 .cat .lbl{display:flex;justify-content:space-between;gap:1rem}
@@ -761,6 +775,11 @@ const D = {
   "name.rabi.s": ["রবি ব্যানার্জী", "Rabi Banerjee", "रबि बैनर्जी"],
   "name.somdeep.s": ["সোমদীপ", "Somdeep", "सोमदीप"],
   "name.suraj.s": ["সুরজিৎ", "Surajit", "सुरजीत"],
+  "ex.this": ["এটা স্পনসর করুন → রবি দা-কে WhatsApp", "Sponsor this → WhatsApp Rabi da", "इसे स्पॉन्सर करें → रबि दा को WhatsApp"],
+  "ex.msg": ["নমস্কার রবি দা, মিশন পাড়া কালী পুজো ২০২৬-এ আমি {x} (₹{v}) স্পনসর করতে চাই।", "Namaskar Rabi da, I would like to sponsor {x} (₹{v}) for Mission Para Kali Puja 2026.", "नमस्कार रबि दा, मैं मिशन पाड़ा काली पूजा 2026 में {x} (₹{v}) स्पॉन्सर करना चाहता/चाहती हूँ।"],
+  "ex.kfull": ["পুরো উঠেছে", "covered", "पूरा"],
+  "ex.kpart": ["কিছুটা", "part", "आंशिक"],
+  "ex.knone": ["এখনও বাকি", "still needed", "अभी बाकी"],
   "ex.pandal": ["প্যান্ডেল ও আলো", "Pandal & light", "पंडाल और रोशनी"],
   "ex.bhog": ["দিনের ভোগ ও রান্না", "Day bhog & kitchen", "दिन का भोग और रसोई"],
   "ex.puja": ["পুজো", "Puja", "पूजा"],
@@ -922,9 +941,12 @@ function drawGoal(){
   inside.append(sv("path", { class: "pot", d: body }), liq);
   let acc = 0; const lits = [];
   cats.forEach((c, i) => {
-    const y0 = B - (acc + c.sum) / need * H, y1 = B - acc / need * H; acc += c.sum;
-    const r = sv("rect", { class: "lit", x: 0, y: y0, width: 120, height: y1 - y0 }); lits.push(r); inside.append(r);
-    if (i < cats.length - 1) inside.append(sv("line", { class: "tick", x1: 0, x2: 120, y1: y0, y2: y0 }));
+    c.items.forEach(([, v]) => {
+      const y0 = B - (acc + v) / need * H, y1 = B - acc / need * H; acc += v;
+      const r = sv("rect", { class: "lit", x: 0, y: y0, width: 120, height: Math.max(1.5, y1 - y0) }); lits.push(r); inside.append(r);
+    });
+    const y = B - acc / need * H;
+    if (i < cats.length - 1) inside.append(sv("line", { class: "tick", x1: 0, x2: 120, y1: y, y2: y }));
   });
   ["M10 84Q60 93 110 84", "M6 124Q60 134 114 124"].forEach(d => inside.append(sv("path", { class: "turn", d })));   // wheel marks
   const coin = sv("ellipse", { class: "coin", cx: 60, cy: 50, rx: 7, ry: 2.6 });
@@ -934,28 +956,35 @@ function drawGoal(){
   // shown: the percentage and what is left. Behind "Details": the totals and the groups.
   const fig = el("div", { className: "gfig", textContent: num(0) + "%" });
   const left = el("p", { className: "gleft", textContent: have >= need ? t("ex.done") : t("ex.left", { n: rs(need - have) }) });
-  const ul = el("ul", { className: "cats" }); acc = 0; const fills = [];
-  cats.forEach((c, i) => {
-    const cover = Math.max(0, Math.min(1, (have - acc) / c.sum)); acc += c.sum;
-    const f = el("span", { className: "fill" }); f.dataset.w = Math.round(cover * 100) + "%"; fills.push(f);
-    const b = el("button", { type: "button", className: "cat" },
-      el("span", { className: "lbl" }, el("span", { textContent: t(c.k) }), el("span", { textContent: "₹" + rs(c.sum) })),
-      el("span", { className: "track" }, f),
-      el("span", { className: "its", textContent: c.items.length > 1 ? c.items.map(([n, v]) => `${n} ${rs(v)}`).join(" · ") : "" }));
-    b.setAttribute("aria-expanded", "false");
-    b.onclick = () => {
-      const on = b.getAttribute("aria-expanded") !== "true";
-      ul.querySelectorAll(".cat").forEach(x => x.setAttribute("aria-expanded", "false")); lits.forEach(l => l.classList.remove("on"));
-      if (on) { b.setAttribute("aria-expanded", "true"); lits[i].classList.add("on"); }
-    };
-    ul.append(el("li", {}, b));
+  // every item on its own row (grouped under a small label). The dot shows if the chanda so far covers it.
+  // Tap a row: its slice lights up in the bhar, and a WhatsApp link to Rabi da offers to sponsor it.
+  const ul = el("ul", { className: "items" }); acc = 0; let n = 0;
+  const rabi = SITE.committee[0], wa = "https://wa.me/91" + rabi.phone.replace(/\s/g, "") + "?text=";
+  cats.forEach(c => {
+    ul.append(el("li", { className: "grp", textContent: t(c.k) }));
+    c.items.forEach(([name, v]) => {
+      const cover = Math.max(0, Math.min(1, (have - acc) / v)); acc += v; const k = n++;
+      const state = cover >= 1 ? "full" : cover > 0 ? "part" : "none";
+      const link = el("a", { className: "spon", target: "_blank", rel: "noopener", textContent: t("ex.this"),
+        href: wa + encodeURIComponent(t("ex.msg", { x: name, v: rs(v) })) });
+      const b = el("button", { type: "button", className: "it " + state },
+        el("span", { className: "dot", "aria-hidden": "true" }), el("span", { className: "nm", textContent: name }),
+        el("span", { className: "v", textContent: "₹" + rs(v) }));
+      b.setAttribute("aria-expanded", "false");
+      b.onclick = () => {
+        const on = b.getAttribute("aria-expanded") !== "true";
+        ul.querySelectorAll(".it").forEach(x => x.setAttribute("aria-expanded", "false")); lits.forEach(l => l.classList.remove("on"));
+        if (on) { b.setAttribute("aria-expanded", "true"); lits[k].classList.add("on"); }
+      };
+      ul.append(el("li", {}, b, link));
+    });
   });
   const more = el("details", { className: "gmore" }, el("summary", { textContent: t("s.details") }),
-    el("p", { className: "of", textContent: t("ex.of", { a: rs(have), b: rs(need) }) }), ul);
+    el("p", { className: "of", textContent: t("ex.of", { a: rs(have), b: rs(need) }) }), ul,
+    el("p", { className: "key" }, el("span", { className: "dot full" }), t("ex.kfull") + "  ", el("span", { className: "dot part" }), t("ex.kpart") + "  ", el("span", { className: "dot none" }), t("ex.knone")));
   more.ontoggle = () => {
     box.classList.toggle("open", more.open);
-    fills.forEach(f => f.style.width = more.open ? f.dataset.w : "0");
-    if (!more.open) { lits.forEach(l => l.classList.remove("on")); ul.querySelectorAll(".cat").forEach(x => x.setAttribute("aria-expanded", "false")); }
+    if (!more.open) { lits.forEach(l => l.classList.remove("on")); ul.querySelectorAll(".it").forEach(x => x.setAttribute("aria-expanded", "false")); }
   };
   svg.onclick = () => { more.open = !more.open; };
 

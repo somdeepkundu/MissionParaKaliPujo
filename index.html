@@ -283,6 +283,8 @@ footer{background:var(--fg);color:var(--bg);display:grid;gap:clamp(96px,18vh,200
 .fcols a:hover{text-decoration:underline;text-underline-offset:.25em}
 .wordmark{display:block;width:100%;margin-top:2rem}
 .wordmark text{font-weight:700;font-stretch:75%;letter-spacing:-.03em}
+/* Safari draws Bengali and Hindi letters apart (dotted circles) when SVG text has letter-spacing, so keep it at 0 there */
+html:not([lang="en"]) .fitsvg text,html:not([lang="en"]) .band h1,html:not([lang="en"]) .marquee span{letter-spacing:0}
 .legal{font-size:var(--s-small);opacity:.7;margin-top:20px;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
 @media (max-width:760px){.fcols{grid-template-columns:1fr 1fr;row-gap:32px}}
 

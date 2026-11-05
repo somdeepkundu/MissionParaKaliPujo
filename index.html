@@ -443,6 +443,9 @@ body.still .jaba{display:none}
   width:58px;height:58px;border-radius:50%;border:0;background:var(--jaba);color:#fff;cursor:pointer;display:grid;place-items:center;
   box-shadow:0 6px 20px rgba(0,0,0,.25);transition:transform .15s var(--ease),background .2s}
 .music:hover{background:var(--jaba-d)}
+.music{transition:transform .35s var(--ease),opacity .35s,background .2s}
+.music.tuck{transform:translateX(62%) scale(.8);opacity:.75}
+.music.tuck:hover,.music.tuck:focus-visible{transform:none;opacity:1}
 .music:active{transform:scale(.94)}
 .music svg{width:28px;height:28px}
 .music .on,.music.playing .off{display:none}
@@ -822,6 +825,7 @@ const D = {
   "book.prev": ["আগের পাতা", "Previous page", "पिछला पन्ना"],
   "book.next": ["পরের পাতা", "Next page", "अगला पन्ना"],
   "book.page": ["পাতা {n} / {total}", "Page {n} / {total}", "पन्ना {n} / {total}"],
+  "book.start": ["স্লাইড করে শুরু করুন…", "Slide to begin…", "शुरू करने के लिए स्लाइड करें…"],
   "book.pn": ["{n} / {total}", "{n} / {total}", "{n} / {total}"],
   "book.label": ["মিশন পাড়া", "Mission Para", "मिशन पाड़ा"],
   "book.more": ["আরও ছবি?", "More photos?", "और तस्वीरें?"],
@@ -1135,6 +1139,12 @@ function drawGoal(){
   });
   top.forEach(x => x && io.observe(x));
 })();
+/* while the photo book is on screen the music button tucks half into the edge, so nothing covers the pages */
+(() => {
+  const st = document.querySelector("#photos .stage"), mb = $("music");
+  if (!st || !("IntersectionObserver" in window)) return;
+  new IntersectionObserver(es => es.forEach(e => mb.classList.toggle("tuck", e.isIntersecting)), { threshold: .15 }).observe(st);
+})();
 /* music: browsers allow sound only after a tap, so it starts on the first tap anywhere
    (unless the visitor muted it before). The big button mutes or plays at any time; the choice is remembered. */
 (() => {
@@ -1226,7 +1236,7 @@ let bookRerender = () => {};
   let cur = 0, busy = false;
   const render = i => { spread.replaceChildren(pages[i].left(), pages[i].right()); update(i); };
   function update(i){
-    $("pageno").textContent = t("book.page", { n: num(i + 1), total: num(total) });
+    $("pageno").textContent = i === 0 ? t("book.start") : t("book.page", { n: num(i + 1), total: num(total) });
     $("prev").disabled = i === 0; $("next").disabled = i === total - 1;
   }
   const warm = i => [i, i + 1].forEach(j => { const p = P[j]; if (p) new Image().src = p.src; });

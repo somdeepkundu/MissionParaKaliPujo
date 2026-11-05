@@ -1,13 +1,13 @@
 # Changelog
 
-Every published version, newest first (from the git history). Tags mark versions you can go back to:
-`v1-launch` (first site), `v2-before-golden-layout` (5 Nov night, before the big layout change), `v3-golden-layout` (this release).
+Every published version, newest first (from the git history). Good points to go back to:
+`3294d46` (first site), `926caaa` (5 Nov night, before the big layout change), `f86631c` (golden layout, beat glow restored, checks added).
 
-To look at an older version: `git checkout <tag or id> -- index.html` (then commit to bring it back).
+To bring back an older version of the page: `git checkout <id> -- index.html`, then commit.
 
 ## 2026-11-06
 
-- (this version) Beat glow back on the title, red strip and music button; flowers' glow breathes again; features checklist, changelog and smoke test added
+- `f86631c` Beat glow back on the title, red strip and music button; flowers' glow breathes again; features checklist, changelog and smoke test added
 - `e9ebd4f` Softer, smaller music label
 - `b123651` First visit: a quiet 'Shyama Sangeet on / off' label beside the music button
 - `3ea274c` Quiet Bengali touches on the white pages: alpona, akash prodip, clay diyas; pause loops off screen

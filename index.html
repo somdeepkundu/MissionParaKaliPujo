@@ -404,11 +404,14 @@ li:has(> .it[aria-expanded="true"]) .spon{display:block}
 @media (prefers-reduced-motion:reduce){.bhar .wave,.bhar .coin.drop{animation:none}.bhar .liq,.cat .fill{transition:none}}
 /* falling jaba (hibiscus): a handful of flowers, transform-only animation, no JS per frame */
 .jaba{position:fixed;inset:0;pointer-events:none;z-index:40;overflow:hidden;contain:strict}
-.jaba i{position:absolute;top:-60px;left:var(--x);width:var(--s);height:var(--s);will-change:transform;
+.jaba{--k:1}
+.jaba i{position:absolute;top:-70px;left:var(--x);width:calc(var(--s) * var(--k));height:calc(var(--s) * var(--k));will-change:transform;
   animation:jfall var(--d) linear var(--w) infinite}
+.jaba i.wide{display:none}
+@media (min-width:760px){.jaba{--k:1.35}.jaba i.wide{display:block}}
 .jaba i::before{content:"";position:absolute;inset:0;background:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-50 -50 100 100'><g fill='%23D2122E'><path transform='rotate(0)' d='M0 0C-24-8-32-36-14-46C-5-51 5-51 14-46C32-36 24-8 0 0Z'/><path transform='rotate(72)' d='M0 0C-24-8-32-36-14-46C-5-51 5-51 14-46C32-36 24-8 0 0Z'/><path transform='rotate(144)' d='M0 0C-24-8-32-36-14-46C-5-51 5-51 14-46C32-36 24-8 0 0Z'/><path transform='rotate(216)' d='M0 0C-24-8-32-36-14-46C-5-51 5-51 14-46C32-36 24-8 0 0Z'/><path transform='rotate(288)' d='M0 0C-24-8-32-36-14-46C-5-51 5-51 14-46C32-36 24-8 0 0Z'/></g><g fill='none' stroke='%23930A1F' stroke-width='1.4' opacity='.55'><path transform='rotate(0)' d='M0-6V-34'/><path transform='rotate(72)' d='M0-6V-34'/><path transform='rotate(144)' d='M0-6V-34'/><path transform='rotate(216)' d='M0-6V-34'/><path transform='rotate(288)' d='M0-6V-34'/></g><circle r='7' fill='%23930A1F'/><path d='M0 0L13-31' stroke='%23F2B33D' stroke-width='2.6' stroke-linecap='round'/><g fill='%23F2B33D'><circle cx='13' cy='-32' r='2.6'/><circle cx='9' cy='-33' r='2'/><circle cx='16' cy='-29' r='2'/></g></svg>") center/contain no-repeat;
   animation:jsway calc(var(--d) / 3) ease-in-out var(--w) infinite alternate}
-@keyframes jfall{to{transform:translate3d(0,calc(100vh + 120px),0)}}
+@keyframes jfall{to{transform:translate3d(var(--dx,0px),calc(100vh + 140px),0)}}
 @keyframes jsway{from{transform:translateX(-22px) rotate(-30deg)}to{transform:translateX(22px) rotate(40deg)}}
 body.still .jaba{display:none}
 @media (prefers-reduced-motion:reduce){.jaba{display:none}}
@@ -587,10 +590,13 @@ body.still .jaba{display:none}
 </footer>
 
 <div class="jaba" aria-hidden="true">
-  <i style="--x:6%;--s:26px;--d:15s;--w:-2s"></i><i style="--x:21%;--s:20px;--d:19s;--w:-11s"></i>
-  <i style="--x:37%;--s:30px;--d:17s;--w:-6s"></i><i style="--x:54%;--s:22px;--d:21s;--w:-15s"></i>
-  <i style="--x:69%;--s:28px;--d:16s;--w:-9s"></i><i style="--x:84%;--s:20px;--d:20s;--w:-3s"></i>
-  <i style="--x:94%;--s:24px;--d:18s;--w:-13s"></i>
+  <i style="--x:5%;--s:26px;--d:14s;--w:-2s;--dx:40px"></i><i style="--x:19%;--s:20px;--d:18s;--w:-11s;--dx:-30px"></i>
+  <i style="--x:33%;--s:30px;--d:16s;--w:-6s;--dx:25px"></i><i style="--x:50%;--s:22px;--d:19s;--w:-15s;--dx:-45px"></i>
+  <i style="--x:66%;--s:28px;--d:15s;--w:-9s;--dx:35px"></i><i style="--x:81%;--s:20px;--d:17s;--w:-3s;--dx:-20px"></i>
+  <i style="--x:93%;--s:24px;--d:13s;--w:-12s;--dx:-35px"></i>
+  <i class="wide" style="--x:12%;--s:22px;--d:17s;--w:-8s;--dx:30px"></i><i class="wide" style="--x:27%;--s:26px;--d:13s;--w:-1s;--dx:-25px"></i>
+  <i class="wide" style="--x:43%;--s:20px;--d:15s;--w:-13s;--dx:40px"></i><i class="wide" style="--x:59%;--s:24px;--d:18s;--w:-5s;--dx:-30px"></i>
+  <i class="wide" style="--x:74%;--s:30px;--d:14s;--w:-10s;--dx:20px"></i><i class="wide" style="--x:88%;--s:22px;--d:16s;--w:-7s;--dx:-40px"></i>
 </div>
 <audio id="song" src="music/kalipujo-dhak.mp3" loop preload="none"></audio>
 <button class="music" id="music" type="button" aria-pressed="false" data-ia="m.play" aria-label="Play music">

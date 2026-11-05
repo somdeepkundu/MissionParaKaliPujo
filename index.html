@@ -685,12 +685,19 @@ const SITE = {
 
   // Projected expenses (committee sheet, 3 Nov 2026). Murti and night bhog are donated, so not in here.
   // Bottom to top in the jar. items: [name, rupees].
+  // name: [Bengali, English, Hindi]
   expenses: [
-    { k: "ex.pandal", items: [["Pandal, light & van", 18500]] },
-    { k: "ex.bhog",   items: [["Day bhog", 6500], ["Day sabji", 3500], ["Cook + helpers", 3200], ["Gas", 1000], ["Fruits", 700], ["Laddu", 200]] },
-    { k: "ex.puja",   items: [["Dhaki", 2000], ["Dashakarma", 1500], ["Purohit", 1000], ["Thakurer jinis", 500]] },
-    { k: "ex.power",  items: [["Sound system", 2300], ["Electric permission", 3000], ["Diesel", 800]] },
-    { k: "ex.other",  items: [["Labour", 600], ["Night guard", 600], ["Gift prizes", 600], ["Chanda slips", 400], ["Extra", 500]] },
+    { k: "ex.pandal", items: [[["প্যান্ডেল, আলো ও ভ্যান", "Pandal, light & van", "पंडाल, लाइट और वैन"], 18500]] },
+    { k: "ex.bhog",   items: [[["দিনের ভোগ", "Day bhog", "दिन का भोग"], 6500], [["দিনের সবজি", "Day sabji", "दिन की सब्ज़ी"], 3500],
+                              [["রাঁধুনি ও জোগাড়ে", "Cook + helpers", "रसोइया और सहायक"], 3200], [["গ্যাস", "Gas", "गैस"], 1000],
+                              [["ফল", "Fruits", "फल"], 700], [["লাড্ডু", "Laddu", "लड्डू"], 200]] },
+    { k: "ex.puja",   items: [[["ঢাকি", "Dhaki", "ढाकी"], 2000], [["দশকর্মা", "Dashakarma", "दशकर्मा सामग्री"], 1500],
+                              [["পুরোহিত", "Purohit", "पुरोहित"], 1000], [["ঠাকুরের জিনিস", "Thakurer jinis", "ठाकुर का सामान"], 500]] },
+    { k: "ex.power",  items: [[["সাউন্ড সিস্টেম", "Sound system", "साउंड सिस्टम"], 2300], [["ইলেকট্রিক পারমিশন", "Electric permission", "बिजली की अनुमति"], 3000],
+                              [["ডিজেল", "Diesel", "डीज़ल"], 800]] },
+    { k: "ex.other",  items: [[["লেবার", "Labour", "मज़दूरी"], 600], [["রাত পাহারা", "Night guard", "रात का पहरा"], 600],
+                              [["পুরস্কার", "Gift prizes", "पुरस्कार"], 600], [["চাঁদার রসিদ", "Chanda slips", "चंदे की पर्ची"], 400],
+                              [["অতিরিক্ত", "Extra", "अतिरिक्त"], 500]] },
   ],
 
   committee: [
@@ -863,6 +870,9 @@ const D = {
   "ex.kfull": ["পুরো উঠেছে", "covered", "पूरा"],
   "ex.kpart": ["কিছুটা", "part", "आंशिक"],
   "ex.knone": ["এখনও বাকি", "still needed", "अभी बाकी"],
+  "ex.till": ["কালীপুজো শুরু হতে বাকি", "until Kali Puja begins", "काली पूजा शुरू होने में बाकी"],
+  "ex.on": ["পুজো চলছে", "Puja is on", "पूजा चल रही है"],
+  "u.d": ["দিন", "d", "दिन"], "u.h": ["ঘ", "h", "घं"], "u.m": ["মি", "m", "मि"], "u.s": ["সে", "s", "से"],
   "ex.pandal": ["প্যান্ডেল ও আলো", "Pandal & light", "पंडाल और रोशनी"],
   "ex.bhog": ["দিনের ভোগ ও রান্না", "Day bhog & kitchen", "दिन का भोग और रसोई"],
   "ex.puja": ["পুজো", "Puja", "पूजा"],
@@ -1014,10 +1024,6 @@ function drawDist(){
 /* projected expenses: the bhar fills to what has been collected; each dashed band inside is one group of costs.
    Tap the bhar or "Details" for the breakdown; tap a group to light its band and list what is in it. */
 function drawGoal(){
-  const L0 = LANG; LANG = "en";   // this one stays in English in every language
-  try { buildGoal(); } finally { LANG = L0; }
-}
-function buildGoal(){
   const box = $("goal"), NS = "http://www.w3.org/2000/svg", B = 166, H = 136;   // bhar floor and fill height (svg units)
   const cats = SITE.expenses.map(c => ({ ...c, sum: c.items.reduce((a, i) => a + i[1], 0) }));
   const need = cats.reduce((a, c) => a + c.sum, 0), have = SITE.chanda.total;
@@ -1056,11 +1062,11 @@ function buildGoal(){
   const pad = n => String(n).padStart(2, "0");
   const tick = () => {
     const now = nowIST(), ms = start - now;
-    if (ms <= 0) { fig.replaceChildren(now < end ? "Puja is on" : "Jai Maa Kali"); till.textContent = ""; return; }
+    if (ms <= 0) { fig.replaceChildren(now < end ? t("ex.on") : t("f.jai")); till.textContent = ""; return; }
     const sec = Math.floor(ms / 1000), d = Math.floor(sec / 86400), h = Math.floor(sec / 3600) % 24, m = Math.floor(sec / 60) % 60, s2 = sec % 60;
-    const u = (n, l) => [String(n), el("small", { textContent: l })];
-    fig.replaceChildren(...(d ? u(d, "d") : []), ...u(d ? h : pad(h), "h"), ...u(pad(m), "m"), el("span", { className: "sec" }, pad(s2), el("small", { textContent: "s" })));
-    till.textContent = "until Kali Puja begins";
+    const u = (n, l) => [num(String(n)), el("small", { textContent: t(l) })];
+    fig.replaceChildren(...(d ? u(d, "u.d") : []), ...u(d ? h : pad(h), "u.h"), ...u(pad(m), "u.m"), el("span", { className: "sec" }, ...u(pad(s2), "u.s")));
+    till.textContent = t("ex.till");
   };
   tick(); clearInterval(window.goalTimer); window.goalTimer = setInterval(tick, 1000);
   const left = el("p", { className: "gleft", textContent: have >= need ? t("ex.done") : t("ex.left", { n: rs(need - have) }) });
@@ -1070,7 +1076,8 @@ function buildGoal(){
   const rabi = SITE.committee[0], wa = "https://wa.me/91" + rabi.phone.replace(/\s/g, "") + "?text=";
   cats.forEach(c => {
     ul.append(el("li", { className: "grp", textContent: t(c.k) }));
-    c.items.forEach(([name, v]) => {
+    c.items.forEach(([names, v]) => {
+      const name = names[LI[LANG]];
       const cover = Math.max(0, Math.min(1, (have - acc) / v)); acc += v; const k = n++;
       const state = cover >= 1 ? "full" : cover > 0 ? "part" : "none";
       const link = el("a", { className: "spon", target: "_blank", rel: "noopener", textContent: t("ex.this"),
@@ -1104,7 +1111,7 @@ function buildGoal(){
     if (part === "c") return el("a", { href: "#contact", textContent: t("ex.contact") });
     const c = SITE.committee[0]; return el("a", { href: "tel:+91" + c.phone.replace(/\s/g, ""), textContent: t(c.name + ".s") });
   }));
-  box.classList.remove("open"); box.lang = "en";
+  box.classList.remove("open");
   box.replaceChildren(el("h3", { textContent: t("ex.h") }), svg, el("div", { className: "gbox" }, fig, till, left, more), spon,
     el("p", { className: "dhint", textContent: t("ex.note") }));
 

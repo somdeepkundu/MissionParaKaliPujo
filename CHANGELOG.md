@@ -7,7 +7,8 @@ To bring back an older version of the page: `git checkout <id> -- index.html`, t
 
 ## 2026-11-06
 
-- Music label each time the music starts (বাংলা → हिन्दी → English, with moving marigold bars); language switch in the same order
+- Photo book: wide group photos glide right to left with short rests, so every face is seen; nearly-fitting photos drift right to left
+- `77d453a` Music label each time the music starts (বাংলা → हिन्दी → English); switch in the same order
 - `3336cca` Changelog: restore points by commit id
 - `f86631c` Beat glow back on the title, red strip and music button; flowers' glow breathes again; features checklist, changelog and smoke test added
 - `e9ebd4f` Softer, smaller music label

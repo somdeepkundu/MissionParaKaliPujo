@@ -33,7 +33,7 @@ and stops with `FAIL` if anything has gone missing. Items without ✓ need a qui
 ## Photo book
 - ✓ Every page is a photo with year (marigold) and caption on it; Maa's artwork first, never moves
 - ✓ Laptop: two photos per spread, 3D page turn (8 spreads). Phone: one photo per page (15 pages)
-- ✓ Long photos slide end to end; others breathe in slowly; paused off screen
+- ✓ Wide group photos rest on the left, then glide right to left so every face passes by, rest, glide back (~34 px/s); tall photos glide top to bottom; photos that nearly fit come a little closer and drift right to left; paused off screen
 - ✓ First time only: fingertip hint + page lift; "Slide to begin →" on the art page
 - ✓ Music button tucks aside while the book is on screen
 - Last page: "More photos?" with the WhatsApp link, then a red "জয় মা কালী" page on laptops

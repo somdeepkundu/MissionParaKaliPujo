@@ -1344,8 +1344,8 @@ if ("IntersectionObserver" in window) {
 $("pj-open").onclick = () => $("pj").showModal();
 $("pj").addEventListener("click", e => { if (e.target === $("pj")) $("pj").close(); });
 
-/* photos breathe: a long photo (more than a tenth of it cut off) slides its window from end to end so every part is seen;
-   a photo that nearly fits drifts in slowly. Transforms only, paused off screen, none with reduced motion, never on Maa's artwork. */
+/* photos move: a long photo (more than a tenth of it cut off) glides from one end to the other so every part is seen
+   (a wide group photo moves right to left, face by face); a photo that nearly fits comes a little closer and drifts right to left. Transforms only, paused off screen, none with reduced motion, never on Maa's artwork. */
 const PAN = (() => {
   const still = matchMedia("(prefers-reduced-motion:reduce)"), anims = new WeakMap();
   const io = "IntersectionObserver" in window ? new IntersectionObserver(es => es.forEach(e => {
@@ -1360,21 +1360,26 @@ const PAN = (() => {
     const f = img.parentElement, W = f.clientWidth, H = f.clientHeight; if (!W || !H) return;
     const a = img.naturalWidth / img.naturalHeight, r = W / H;
     const [fx = .5, fy = .5] = (img.style.objectPosition || "").split(" ").filter(Boolean).map(v => parseFloat(v) / 100);
-    let kf, dur, at = 0;
+    let kf, opts;
     if (a < r * .9 || a > r * 1.1) {
+      // long photo: rest on one end, glide across to the other end (a wide photo moves right to left, so every face passes by), rest, glide back
       const tall = a < r, hid = tall ? 1 - a / r : 1 - r / a;            // share of the photo out of view
       img.classList.add(tall ? "pan-y" : "pan-x");
       const travel = hid * (tall ? W / a : H * a);                        // px the window travels
-      kf = [{ transform: "translate3d(0,0,0)" }, { transform: tall ? `translate3d(0,${-hid * 100}%,0)` : `translate3d(${-hid * 100}%,0,0)` }];
-      dur = Math.min(30000, Math.max(9000, travel * 55));                 // about 18 px a second
-      at = tall ? fy : fx;                                                // start where the photo was framed before
+      const sweep = Math.min(14000, Math.max(4500, travel / 34 * 1000)); // about 34 px a second
+      const hold = 1400, dur = 2 * (sweep + hold);
+      const A = "translate3d(0,0,0)", B = tall ? `translate3d(0,${-hid * 100}%,0)` : `translate3d(${-hid * 100}%,0,0)`;
+      const e = "cubic-bezier(.45,.05,.35,1)";
+      kf = [{ transform: A, offset: 0 }, { transform: A, offset: hold / dur, easing: e }, { transform: B, offset: (hold + sweep) / dur },
+            { transform: B, offset: (2 * hold + sweep) / dur, easing: e }, { transform: A, offset: 1 }];
+      opts = { duration: dur, iterations: Infinity };
     } else {
-      img.style.transformOrigin = `${fx * 100}% ${fy * 100}%`;
-      kf = [{ transform: "scale(1)" }, { transform: "scale(1.07)" }];
-      dur = 16000;
+      // nearly fits: come a little closer and drift right to left, so faces at both sides get their moment
+      img.style.transformOrigin = `50% ${fy * 100}%`;
+      kf = [{ transform: "scale(1.1) translate3d(4%,0,0)" }, { transform: "scale(1.1) translate3d(-4%,0,0)" }];
+      opts = { duration: 9000, iterations: Infinity, direction: "alternate", easing: "ease-in-out" };
     }
-    const an = img.animate(kf, { duration: dur, iterations: Infinity, direction: "alternate", easing: "ease-in-out" });
-    an.currentTime = at * dur;
+    const an = img.animate(kf, opts);
     anims.set(img, an);
     if (io) io.observe(img);
   }

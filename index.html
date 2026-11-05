@@ -482,14 +482,13 @@ body.still .jaba{display:none}
 @keyframes mping{to{transform:scale(1.35);opacity:0}}
 @media (prefers-reduced-motion:reduce){.music::after{animation:none!important}}
 /* first visit only: a quiet label beside the music button for a few seconds */
-.mtip{position:fixed;z-index:61;pointer-events:none;right:calc(max(14px,env(safe-area-inset-right)) + 70px);bottom:calc(max(14px,env(safe-area-inset-bottom)) + 29px);
-  transform:translate3d(10px,50%,0);opacity:0;transition:opacity .5s var(--ease),transform .5s var(--ease);
-  background:rgba(20,17,16,.86);color:#fff;font-size:var(--s-small);line-height:1.2;padding:.5rem .8rem;border-radius:999px;white-space:nowrap;
-  box-shadow:0 8px 24px rgba(0,0,0,.25);display:flex;align-items:center;gap:.45rem}
-.mtip::after{content:"";position:absolute;right:-5px;top:50%;width:10px;height:10px;margin-top:-5px;background:inherit;transform:rotate(45deg);border-radius:2px}
-.mtip.on{opacity:1;transform:translate3d(0,50%,0)}
-.mtip svg{width:14px;height:14px;flex:none;fill:var(--gaanda)}
-@media (prefers-reduced-motion:reduce){.mtip{transition:opacity .2s}}
+.mtip{position:fixed;z-index:61;pointer-events:none;right:calc(max(14px,env(safe-area-inset-right)) + 66px);bottom:calc(max(14px,env(safe-area-inset-bottom)) + 29px);
+  transform:translate3d(6px,50%,0);opacity:0;transition:opacity .8s var(--ease),transform .8s var(--ease);
+  background:rgba(20,17,16,.64);color:rgba(255,255,255,.9);font-size:.72rem;line-height:1.2;padding:.3rem .62rem;border-radius:999px;white-space:nowrap;
+  display:flex;align-items:center;gap:.35rem}
+.mtip.on{opacity:.85;transform:translate3d(0,50%,0)}
+.mtip svg{width:11px;height:11px;flex:none;fill:var(--gaanda)}
+@media (prefers-reduced-motion:reduce){.mtip{transition:opacity .3s}}
 .credit{font-size:.72rem;opacity:.65;margin-top:.6rem}
 .credit a{color:inherit;text-underline-offset:3px}
 /* when the music plays, the title and the red strip glow with the bass (--beat 0..1, set from the audio) */
@@ -1300,7 +1299,7 @@ if ("IntersectionObserver" in window) {
   if (!seen) setTimeout(() => {
     tip.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18.5A2.5 2.5 0 1 1 7 16V5l12-2v12.5A2.5 2.5 0 1 1 17 13V7.2L9 8.5Z"/></svg>';
     tip.append(t("m.tip"));
-    tip.classList.add("on"); tipT = setTimeout(hideTip, 4500);
+    tip.classList.add("on"); tipT = setTimeout(hideTip, 3800);
   }, 1200);
   a.onplay = a.onpause = show;
   const first = e => {

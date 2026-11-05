@@ -7,6 +7,8 @@ To bring back an older version of the page: `git checkout <id> -- index.html`, t
 
 ## 2026-11-06
 
+- Music label each time the music starts (বাংলা → हिन्दी → English, with moving marigold bars); language switch in the same order
+- `3336cca` Changelog: restore points by commit id
 - `f86631c` Beat glow back on the title, red strip and music button; flowers' glow breathes again; features checklist, changelog and smoke test added
 - `e9ebd4f` Softer, smaller music label
 - `b123651` First visit: a quiet 'Shyama Sangeet on / off' label beside the music button

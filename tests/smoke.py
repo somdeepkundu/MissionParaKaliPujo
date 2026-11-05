@@ -53,6 +53,7 @@ with sync_playwright() as p:
         pg.mouse.click(w // 2, h - 150); pg.wait_for_timeout(4000)
         beats = []
         for _ in range(25): beats.append(float(J("document.querySelector('.band').style.getPropertyValue('--beat')||0"))); pg.wait_for_timeout(80)
+        check("label speaks when the music starts", J("document.getElementById('mtip').classList.contains('live')"))
         check("music plays and the beat drives the glow", max(beats) > .2, f"max {max(beats)}")
         check("red strip brightens on the beat", "brightness" in J("getComputedStyle(document.querySelector('.marquee')).filter"))
         pg.click("#music"); pg.wait_for_timeout(200)

@@ -7,12 +7,14 @@ and stops with `FAIL` if anything has gone missing. Items without ✓ need a qui
 - ✓ Big title "মিশন পাড়া / কালীপুজো ২০২৬" fitted to the screen width
 - ✓ Countdown tiles, panjika button, arati and night-bhog times, WhatsApp group tile
 - ✓ Theme button: অটো (by India time: day 6 am–5:30 pm) → দিন → রাত
-- ✓ Language switch: বাংলা / English / हिन्दी (everything switches, including projected expenses)
+- ✓ Language switch: বাংলা · हिन्दी · English (everything switches, including projected expenses)
 - Bengali and Hindi big text has no letter-spacing (Safari draws broken letters otherwise)
 
 ## Music and motion
 - ✓ Shyama Sangeet "আমার মায়ের চরণ বুকে ধরেছি" starts on the first tap; big red button mutes / plays; choice remembered
-- ✓ First visit only: small "শ্যামাসংগীত চালু / বন্ধ" label beside the button for ~4 s
+- ✓ First visit only: small "শ্যামাসংগীত চালু / বন্ধ" label beside the button
+- ✓ Every time the music starts: "শ্যামাসংগীত চলছে · থামাতে এখানে চাপুন" with three moving marigold bars, ~4.5 s; not when it quietly resumes after a tab switch
+- The label speaks in turn: বাংলা → हिन्दी → English (Hindi uses the phone's own font unless the page is in Hindi)
 - ✓ Beat glow while music plays: gold glow behind "কালীপুজো ২০২৬", red strip brightens, red halo on the button, glow behind the flowers
 - Beat drop: flowers lean gently for a moment (at most once every 7 s)
 - ✓ Falling jaba flowers in three depths (7 on a phone, 13 on a laptop), only over the first two panels, faint breathing glow behind them

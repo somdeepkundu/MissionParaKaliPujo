@@ -1143,7 +1143,7 @@ let bookRerender = () => {};
   };
   const pages = [
     { left: () => textPage(t("book.h"), t("book.sub"), true), right: artPage },
-    ...P.map((p, i) => ({ left: () => textPage(p.year ? num(p.year) : t("book.unknown"), capOf(p), !p.year, i), right: () => photoPage(p) })),
+    ...P.map((p, i) => ({ left: () => textPage(p.year ? num(p.year) : "", capOf(p), !p.year, i), right: () => photoPage(p) })),
     { left: () => textPage(t("book.more"), moreCap(), true),
       right: () => photoPage({ src: "img/hero-tall.jpg", cap: "cap.diyas", pos: "50% 60%" }) },
   ];

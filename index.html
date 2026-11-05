@@ -733,12 +733,12 @@ const D = {
   "nav.chanda": ["চাঁদা", "Donation", "चंदा"],
   "nav.contact": ["যোগাযোগ", "Contact", "संपर्क"],
   "lang.aria": ["ভাষা", "Language", "भाषा"],
-  "theme.auto": ["সময় মতো", "By the clock", "समय के साथ"],
+  "theme.auto": ["অটো", "Auto", "ऑटो"],
   "theme.nowDay": ["এখন দিন", "day now", "अभी दिन"],
   "theme.nowNight": ["এখন রাত", "night now", "अभी रात"],
-  "theme.day": ["দিনের আলো", "Daylight", "दिन का उजाला"],
-  "theme.night": ["অমাবস্যার রাত", "Amavasya night", "अमावस की रात"],
-  "theme.aria": ["রং বদলান: সময় মতো, দিনের আলো, অমাবস্যার রাত", "Change colours: by the clock, daylight, Amavasya night", "रंग बदलें: समय के साथ, दिन का उजाला, अमावस की रात"],
+  "theme.day": ["দিন", "Day", "दिन"],
+  "theme.night": ["রাত", "Night", "रात"],
+  "theme.aria": ["রং বদলান: অটো, দিন, রাত", "Change colours: auto, day, night", "रंग बदलें: ऑटो, दिन, रात"],
   "art.alt": ["চাঁদার রসিদে আঁকা মা কালীর মুখ", "Maa Kali's face, from the artwork on our chanda receipt", "चंदे की रसीद पर बना माँ काली का चेहरा"],
   "facts.when": ["কবে", "When", "कब"],
   "facts.whenV": ["রবিবার, ৮ নভেম্বর", "Sunday, 8 November", "रविवार, ८ नवंबर"],
@@ -926,7 +926,7 @@ function drawTheme(){
   const root = document.documentElement, btn = $("theme"), mode = root.dataset.mode || "auto";
   if (mode === "auto") root.dataset.theme = autoTheme();
   const day = root.dataset.theme === "day";
-  btn.innerHTML = mode === "auto" ? AUTO + t("theme.auto") + ` <small>${t(day ? "theme.nowDay" : "theme.nowNight")}</small>`
+  btn.innerHTML = mode === "auto" ? AUTO + t("theme.auto")
     : day ? SUN + t("theme.day") : MOON + t("theme.night");
   btn.setAttribute("aria-label", t("theme.aria"));
   $("theme-color").content = day ? "#EDEDEA" : "#000000";

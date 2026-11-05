@@ -755,7 +755,8 @@ const D = {
   "ex.done": ["লক্ষ্য পূরণ!", "Goal reached!", "लक्ष्य पूरा!"],
   "ex.note": ["মূর্তি ও রাতের ভোগ দান হিসেবে আসছে, তাই এখানে ধরা নেই।", "Murti and night bhog are donated, so they are not counted here.", "मूर्ति और रात का भोग दान में मिले हैं, इसलिए यहाँ नहीं जोड़े गए।"],
   "ex.aria": ["চাঁদার ভাঁড়: {p}% ভরা", "Chanda bhar: {p}% full", "चंदे की गुल्लक: {p}% भरी"],
-  "ex.sponsor": ["কিছু স্পনসর করতে চাইলে {a}, {b} বা {c}-কে ফোন করুন, অথবা {w} লিখুন।", "Want to sponsor something? Call {a}, {b} or {c}, or write in our {w}.", "कुछ स्पॉन्सर करना चाहें तो {a}, {b} या {c} को फ़ोन करें, या {w} में लिखें।"],
+  "ex.sponsor": ["কিছু স্পনসর করতে চাইলে {a}-কে ফোন করুন, {c}, বা {w} লিখুন।", "Want to sponsor something? Call {a}, see {c}, or write in our {w}.", "कुछ स्पॉन्सर करना चाहें तो {a} को फ़ोन करें, {c} देखें, या {w} में लिखें।"],
+  "ex.contact": ["যোগাযোগ দেখুন", "Contact", "संपर्क"],
   "ex.group": ["WhatsApp গ্রুপে", "WhatsApp group", "WhatsApp ग्रुप"],
   "name.rabi.s": ["রবি ব্যানার্জী", "Rabi Banerjee", "रबि बैनर्जी"],
   "name.somdeep.s": ["সোমদীপ", "Somdeep", "सोमदीप"],
@@ -958,12 +959,13 @@ function drawGoal(){
   };
   svg.onclick = () => { more.open = !more.open; };
 
-  // "Want to sponsor something?" with each name a phone link and the group a WhatsApp link
-  const who = { a: SITE.committee[0], b: SITE.committee[1], c: SITE.committee[2] };
+  // "Want to sponsor something?": Rabi da's phone, the Contact section, and the WhatsApp group
+
   const spon = el("p", { className: "gspon" }, ...t("ex.sponsor").split(/\{(\w)\}/).map((part, i) => {
     if (i % 2 === 0) return part;
     if (part === "w") return el("a", { href: SITE.whatsapp, target: "_blank", rel: "noopener", textContent: t("ex.group") });
-    const c = who[part]; return el("a", { href: "tel:+91" + c.phone.replace(/\s/g, ""), textContent: t(c.name + ".s") });
+    if (part === "c") return el("a", { href: "#contact", textContent: t("ex.contact") });
+    const c = SITE.committee[0]; return el("a", { href: "tel:+91" + c.phone.replace(/\s/g, ""), textContent: t(c.name + ".s") });
   }));
   box.classList.remove("open");
   box.replaceChildren(el("h3", { textContent: t("ex.h") }), svg, el("div", { className: "gbox" }, fig, left, more), spon,

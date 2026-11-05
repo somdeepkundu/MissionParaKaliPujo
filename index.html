@@ -308,7 +308,7 @@ dialog[open]{animation:pop .35s var(--ease)}
   .main img,.marquee .track,dialog[open]{animation:none}
 }
 /* language switch (বাংলা / English / हिन्दी) */
-.lang{display:none;background:var(--bg2)}
+.lang{display:flex;background:var(--bg2)}
 .lang button{flex:1;font:inherit;font-size:var(--s-small);background:none;border:0;color:var(--fg-soft);padding:14px 10px;cursor:pointer;transition:color .2s}
 .lang button:hover{color:var(--fg)}
 .lang button[aria-pressed="true"]{color:var(--fg);text-decoration:underline;text-underline-offset:.3em}
@@ -816,7 +816,11 @@ const MON = {
   en: ["January","February","March","April","May","June","July","August","September","October","November","December"],
   hi: ["जनवरी","फ़रवरी","मार्च","अप्रैल","मई","जून","जुलाई","अगस्त","सितंबर","अक्टूबर","नवंबर","दिसंबर"],
 };
-let LANG = "en";   // English only. Bengali and Hindi text is kept below, unused.
+let LANG = (() => {
+  let l = null;
+  try { l = new URLSearchParams(location.search).get("lang") || localStorage.getItem("lang"); } catch (e) {}
+  return ["bn", "en", "hi"].includes(l) ? l : "bn";
+})();
 const t = (k, v = {}) => {
   let s = D[k] ? D[k][LI[LANG]] : k;
   for (const [a, b] of Object.entries(v)) s = s.split("{" + a + "}").join(b);
@@ -922,6 +926,10 @@ function drawDist(){
 /* projected expenses: the bhar fills to what has been collected; each dashed band inside is one group of costs.
    Tap the bhar or "Details" for the breakdown; tap a group to light its band and list what is in it. */
 function drawGoal(){
+  const L0 = LANG; LANG = "en";   // this one stays in English in every language
+  try { buildGoal(); } finally { LANG = L0; }
+}
+function buildGoal(){
   const box = $("goal"), NS = "http://www.w3.org/2000/svg", B = 166, H = 136;   // bhar floor and fill height (svg units)
   const cats = SITE.expenses.map(c => ({ ...c, sum: c.items.reduce((a, i) => a + i[1], 0) }));
   const need = cats.reduce((a, c) => a + c.sum, 0), have = SITE.chanda.total;
@@ -996,7 +1004,7 @@ function drawGoal(){
     if (part === "c") return el("a", { href: "#contact", textContent: t("ex.contact") });
     const c = SITE.committee[0]; return el("a", { href: "tel:+91" + c.phone.replace(/\s/g, ""), textContent: t(c.name + ".s") });
   }));
-  box.classList.remove("open");
+  box.classList.remove("open"); box.lang = "en";
   box.replaceChildren(el("h3", { textContent: t("ex.h") }), svg, el("div", { className: "gbox" }, fig, left, more), spon,
     el("p", { className: "dhint", textContent: t("ex.note") }));
 
@@ -1005,7 +1013,7 @@ function drawGoal(){
     liq.style.transform = `translateY(${(1 - p) * H}px)`; coin.classList.add("drop");
     const still = matchMedia("(prefers-reduced-motion:reduce)").matches, t0 = performance.now();
     const step = now => { const k = still ? 1 : Math.min(1, (now - t0) / 1600), e = 1 - Math.pow(1 - k, 3);
-      fig.textContent = num(Math.round(pct * e)) + "%"; if (k < 1) requestAnimationFrame(step); };
+      fig.textContent = Math.round(pct * e) + "%"; if (k < 1) requestAnimationFrame(step); };
     requestAnimationFrame(step);
   };
   if (box.dataset.seen || !("IntersectionObserver" in window)) { requestAnimationFrame(() => requestAnimationFrame(go)); return; }

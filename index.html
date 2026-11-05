@@ -324,6 +324,22 @@ a,button,summary,label,.r5,.wa,[role="button"]{cursor:pointer}
 .pg.photo img{transform-origin:50% 50%;animation:drift 16s ease-in-out infinite;will-change:transform}
 @keyframes drift{0%,100%{transform:scale(1.03) translate3d(0,0,0)}50%{transform:scale(1.08) translate3d(-.5%,-.4%,0)}}
 @media (prefers-reduced-motion:reduce){.pg.photo img{animation:none}}
+/* chanda distribution bars */
+.dist{display:grid;grid-template-columns:1fr 1fr;gap:3rem;margin-top:3.5rem;align-items:start}
+@media (max-width:760px){.dist{grid-template-columns:1fr;gap:2rem}}
+.dgroup h3{font-weight:400;font-size:var(--s-small);opacity:.7;margin-bottom:.4rem}
+.bar{display:block;width:100%;background:none;border:0;padding:.55rem 0;color:inherit;font:inherit;text-align:left;cursor:pointer}
+.bar .lbl{display:flex;justify-content:space-between;gap:1rem;font-size:var(--s-small);margin-bottom:.35rem}
+.bar .n{opacity:.7}
+.bar .track{display:block;height:10px;background:rgba(127,127,127,.22)}
+.bar .fill{display:block;height:100%;background:currentColor;transform-origin:left;animation:grow .9s cubic-bezier(.2,.7,.2,1)}
+.bar[aria-expanded="true"] .fill{background:var(--gaanda)}
+.bar .det{display:none;font-size:var(--s-small);opacity:.75;margin-top:.4rem}
+.bar[aria-expanded="true"] .det{display:block}
+.bar:hover .fill{opacity:.75}
+.dhint{grid-column:1/-1;font-size:var(--s-small);opacity:.6}
+@keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@media (prefers-reduced-motion:reduce){.bar .fill{animation:none}}
 </style>
 </head>
 <body>
@@ -441,6 +457,7 @@ a,button,summary,label,.r5,.wa,[role="button"]{cursor:pointer}
       </div>
       <figure class="ch-photo" data-rise style="--i:2"><img src="img/aanka-sq.jpg" alt="" data-ialt="ch.alt" width="1000" height="1000" loading="lazy"></figure>
     </div>
+    <div class="dist" id="dist"></div>
   </section>
 
   <section class="contact" id="contact" aria-labelledby="ct-h">
@@ -517,6 +534,23 @@ const SITE = {
     ], note: "s.note" },
   ],
 
+  // Aggregates only: how many receipts and how much money per size and per day. No names.
+  distribution: {
+    bands: [
+    {k:"dist.b0", n:3, sum:0},
+    {k:"dist.b1", n:7, sum:861},
+    {k:"dist.b2", n:17, sum:4607},
+    {k:"dist.b3", n:10, sum:5901},
+    {k:"dist.b4", n:16, sum:19402},
+    ],
+    days: [
+    {k:"dist.d1", n:16, sum:11714},
+    {k:"dist.d3", n:13, sum:3901},
+    {k:"dist.d4", n:15, sum:10356},
+    {k:"dist.d5", n:8, sum:3800},
+    {k:"dist.nodate", n:1, sum:1000},
+    ],
+  },
   committee: [
     { name: "name.rabi",    phone: "97321 24973" },
     { name: "name.somdeep", phone: "96794 43301" },
@@ -665,6 +699,20 @@ const D = {
   "f.ym": ["১৪৩৩ বঙ্গাব্দ, কার্তিক", "1433 Bengali year, Kartik", "बंगाब्द १४३३, कार्तिक"],
   "f.jai": ["জয় মা কালী", "Jai Maa Kali", "जय माँ काली"],
   "f.legal": ["মিশন পাড়া কালীপুজো কমিটি", "Mission Para Kali Puja Committee", "मिशन पाड़ा काली पूजा समिति"],
+  "dist.h1": ["দানের আকার", "Size of gifts", "दान की रकम"],
+  "dist.h2": ["কোন দিন কত", "By day", "किस दिन कितना"],
+  "dist.hint": ["বারে ক্লিক করুন। নাম দেখানো হবে না।", "Tap a bar to see the count and total. Names are not shown.", "बार पर क्लिक करें। नाम नहीं दिखाए जाएँगे।"],
+  "dist.count": ["{n} টি রসিদ · ₹{s}", "{n} receipts · ₹{s}", "{n} रसीदें · ₹{s}"],
+  "dist.b0": ["বাকি (এখনও আসেনি)", "Still due", "बकाया (अभी नहीं आया)"],
+  "dist.b1": ["₹১–১৯৯", "₹1–199", "₹1–199"],
+  "dist.b2": ["₹২০০–৪৯৯", "₹200–499", "₹200–499"],
+  "dist.b3": ["₹৫০০–৯৯৯", "₹500–999", "₹500–999"],
+  "dist.b4": ["₹১,০০০ ও বেশি", "₹1,000 and above", "₹1,000 और उससे अधिक"],
+  "dist.d1": ["১ নভেম্বর", "1 Nov", "१ नवंबर"],
+  "dist.d3": ["৩ নভেম্বর", "3 Nov", "३ नवंबर"],
+  "dist.d4": ["৪ নভেম্বর", "4 Nov", "४ नवंबर"],
+  "dist.d5": ["৫ নভেম্বর", "5 Nov", "५ नवंबर"],
+  "dist.nodate": ["তারিখ লেখা নেই", "No date written", "तारीख नहीं लिखी"],
   "pj.month": ["কার্তিক", "Kartik", "कार्तिक"],
   "pj.day": ["৮", "8", "८"],
   "pj.wd": ["রবিবার", "Sunday", "रविवार"],
@@ -770,6 +818,29 @@ function drawPeople(){
   const ul = $("people"); ul.replaceChildren();
   SITE.committee.forEach(p => ul.append(el("li", {}, t(p.name) + "  ",
     el("a", { href: "tel:+91" + p.phone.replace(/\s/g, ""), textContent: p.phone }))));
+}
+
+/* distribution bars: totals only, never names. Tap a bar to see its count and total. */
+function drawDist(){
+  const box = $("dist"); box.replaceChildren();
+  const group = (title, items) => {
+    const max = Math.max(...items.map(i => i.sum), 1);
+    const g = el("div", { className: "dgroup" }, el("h3", { textContent: t(title) }));
+    items.forEach(it => {
+      const fill = el("span", { className: "fill" });
+      fill.style.width = Math.max(2, Math.round(it.sum / max * 100)) + "%";
+      const b = el("button", { type: "button", className: "bar" },
+        el("span", { className: "lbl" }, el("span", { textContent: t(it.k) }), el("span", { className: "n", textContent: num(it.n) })),
+        el("span", { className: "track" }, fill),
+        el("span", { className: "det", textContent: t("dist.count", { n: num(it.n), s: num(it.sum.toLocaleString("en-IN")) }) }));
+      b.setAttribute("aria-expanded", "false");
+      b.onclick = () => b.setAttribute("aria-expanded", String(b.getAttribute("aria-expanded") !== "true"));
+      g.append(b);
+    });
+    return g;
+  };
+  box.append(group("dist.h1", SITE.distribution.bands), group("dist.h2", SITE.distribution.days),
+    el("p", { className: "dhint", textContent: t("dist.hint") }));
 }
 
 /* panjika */
@@ -902,7 +973,7 @@ function applyStatic(){
 function setLang(l){
   LANG = l;
   try { localStorage.setItem("lang", l); } catch (e) {}
-  applyStatic(); drawTheme(); drawCount(); drawSchedule(); drawChanda(); drawPeople(); bookRerender(); fitAll(); observeRise();
+  applyStatic(); drawTheme(); drawCount(); drawSchedule(); drawChanda(); drawPeople(); drawDist(); bookRerender(); fitAll(); observeRise();
 }
 document.querySelectorAll(".lang button").forEach(b => b.onclick = () => setLang(b.dataset.lang));
 document.querySelectorAll(".wa").forEach(a => a.href = SITE.whatsapp);

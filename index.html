@@ -337,6 +337,8 @@ a,button,summary,label,.r5,.wa,[role="button"]{cursor:pointer}
 .bar .det{display:none;font-size:var(--s-small);opacity:.75;margin-top:.4rem}
 .bar[aria-expanded="true"] .det{display:block}
 .bar:hover .fill{opacity:.75}
+.specials{list-style:none;margin:0;padding:0}
+.specials li{padding:.55rem 0;border-bottom:1px solid rgba(127,127,127,.22);font-size:var(--s-body)}
 .dhint{grid-column:1/-1;font-size:var(--s-small);opacity:.6}
 @keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 @media (prefers-reduced-motion:reduce){.bar .fill{animation:none}}
@@ -534,23 +536,17 @@ const SITE = {
     ], note: "s.note" },
   ],
 
-  // Aggregates only: how many receipts and how much money per size and per day. No names.
+  // Donation statistics: counts and totals by gift size (no names). Special donations are listed by name.
   distribution: {
     bands: [
-    {k:"dist.b0", n:3, sum:0},
     {k:"dist.b1", n:7, sum:861},
     {k:"dist.b2", n:17, sum:4607},
     {k:"dist.b3", n:10, sum:5901},
     {k:"dist.b4", n:16, sum:19402},
     ],
-    days: [
-    {k:"dist.d1", n:16, sum:11714},
-    {k:"dist.d3", n:13, sum:3901},
-    {k:"dist.d4", n:15, sum:10356},
-    {k:"dist.d5", n:8, sum:3800},
-    {k:"dist.nodate", n:1, sum:1000},
-    ],
+    specials: ["sp.murti", "sp.bhog"],
   },
+
   committee: [
     { name: "name.rabi",    phone: "97321 24973" },
     { name: "name.somdeep", phone: "96794 43301" },
@@ -699,20 +695,16 @@ const D = {
   "f.ym": ["১৪৩৩ বঙ্গাব্দ, কার্তিক", "1433 Bengali year, Kartik", "बंगाब्द १४३३, कार्तिक"],
   "f.jai": ["জয় মা কালী", "Jai Maa Kali", "जय माँ काली"],
   "f.legal": ["মিশন পাড়া কালীপুজো কমিটি", "Mission Para Kali Puja Committee", "मिशन पाड़ा काली पूजा समिति"],
-  "dist.h1": ["দানের আকার", "Size of gifts", "दान की रकम"],
-  "dist.h2": ["কোন দিন কত", "By day", "किस दिन कितना"],
-  "dist.hint": ["বারে ক্লিক করুন। নাম দেখানো হবে না।", "Tap a bar to see the count and total. Names are not shown.", "बार पर क्लिक करें। नाम नहीं दिखाए जाएँगे।"],
+  "dist.h1": ["দানের পরিসংখ্যান", "Donation statistics", "दान के आँकड़े"],
+  "dist.h2": ["বিশেষ দান", "Special donations", "विशेष दान"],
+  "sp.murti": ["মূর্তি দান ২০২৬ — খোকা দা", "Murti donation 2026 — Khoka Da", "मूर्ति दान २०२६ — खोका दा"],
+  "sp.bhog": ["রাতের ভোগ দান ২০২৬ — বিলে দা", "Night bhog donation 2026 — Bile da", "रात के भोग का दान २०२६ — बिले दा"],
+  "dist.hint": ["বারে ক্লিক করুন।", "Tap a bar to see the count and total.", "बार पर क्लिक करें।"],
   "dist.count": ["{n} টি রসিদ · ₹{s}", "{n} receipts · ₹{s}", "{n} रसीदें · ₹{s}"],
-  "dist.b0": ["বাকি (এখনও আসেনি)", "Still due", "बकाया (अभी नहीं आया)"],
   "dist.b1": ["₹১–১৯৯", "₹1–199", "₹1–199"],
   "dist.b2": ["₹২০০–৪৯৯", "₹200–499", "₹200–499"],
   "dist.b3": ["₹৫০০–৯৯৯", "₹500–999", "₹500–999"],
   "dist.b4": ["₹১,০০০ ও বেশি", "₹1,000 and above", "₹1,000 और उससे अधिक"],
-  "dist.d1": ["১ নভেম্বর", "1 Nov", "१ नवंबर"],
-  "dist.d3": ["৩ নভেম্বর", "3 Nov", "३ नवंबर"],
-  "dist.d4": ["৪ নভেম্বর", "4 Nov", "४ नवंबर"],
-  "dist.d5": ["৫ নভেম্বর", "5 Nov", "५ नवंबर"],
-  "dist.nodate": ["তারিখ লেখা নেই", "No date written", "तारीख नहीं लिखी"],
   "pj.month": ["কার্তিক", "Kartik", "कार्तिक"],
   "pj.day": ["৮", "8", "८"],
   "pj.wd": ["রবিবার", "Sunday", "रविवार"],
@@ -823,24 +815,22 @@ function drawPeople(){
 /* distribution bars: totals only, never names. Tap a bar to see its count and total. */
 function drawDist(){
   const box = $("dist"); box.replaceChildren();
-  const group = (title, items) => {
-    const max = Math.max(...items.map(i => i.sum), 1);
-    const g = el("div", { className: "dgroup" }, el("h3", { textContent: t(title) }));
-    items.forEach(it => {
-      const fill = el("span", { className: "fill" });
-      fill.style.width = Math.max(2, Math.round(it.sum / max * 100)) + "%";
-      const b = el("button", { type: "button", className: "bar" },
-        el("span", { className: "lbl" }, el("span", { textContent: t(it.k) }), el("span", { className: "n", textContent: num(it.n) })),
-        el("span", { className: "track" }, fill),
-        el("span", { className: "det", textContent: t("dist.count", { n: num(it.n), s: num(it.sum.toLocaleString("en-IN")) }) }));
-      b.setAttribute("aria-expanded", "false");
-      b.onclick = () => b.setAttribute("aria-expanded", String(b.getAttribute("aria-expanded") !== "true"));
-      g.append(b);
-    });
-    return g;
-  };
-  box.append(group("dist.h1", SITE.distribution.bands), group("dist.h2", SITE.distribution.days),
-    el("p", { className: "dhint", textContent: t("dist.hint") }));
+  const bars = el("div", { className: "dgroup" }, el("h3", { textContent: t("dist.h1") }));
+  const max = Math.max(...SITE.distribution.bands.map(i => i.sum), 1);
+  SITE.distribution.bands.forEach(it => {
+    const fill = el("span", { className: "fill" });
+    fill.style.width = Math.max(2, Math.round(it.sum / max * 100)) + "%";
+    const btn = el("button", { type: "button", className: "bar" },
+      el("span", { className: "lbl" }, el("span", { textContent: t(it.k) }), el("span", { className: "n", textContent: num(it.n) })),
+      el("span", { className: "track" }, fill),
+      el("span", { className: "det", textContent: t("dist.count", { n: num(it.n), s: num(it.sum.toLocaleString("en-IN")) }) }));
+    btn.setAttribute("aria-expanded", "false");
+    btn.onclick = () => btn.setAttribute("aria-expanded", String(btn.getAttribute("aria-expanded") !== "true"));
+    bars.append(btn);
+  });
+  const specials = el("div", { className: "dgroup" }, el("h3", { textContent: t("dist.h2") }),
+    el("ul", { className: "specials" }, ...SITE.distribution.specials.map(k => el("li", { textContent: t(k) }))));
+  box.append(bars, specials, el("p", { className: "dhint", textContent: t("dist.hint") }));
 }
 
 /* panjika */

@@ -427,6 +427,14 @@ body.still .jaba{display:none}
 @media (prefers-reduced-motion:reduce){.music::after{animation:none!important}}
 .credit{font-size:.72rem;opacity:.65;margin-top:.6rem}
 .credit a{color:inherit;text-underline-offset:3px}
+/* when the music plays, the title and the red strip glow with the bass (--beat 0..1, set from the audio) */
+.band{position:relative}
+.band::after{content:"";position:absolute;inset:-10% -5%;pointer-events:none;opacity:calc(var(--beat,0) * .9);
+  background:radial-gradient(50% 60% at 50% 70%,rgba(210,18,46,.45),rgba(242,179,61,.18) 55%,transparent 75%);mix-blend-mode:multiply;transition:opacity .08s linear}
+.band h1 .fit span{text-shadow:0 0 calc(var(--beat,0) * 28px) rgba(242,179,61,calc(var(--beat,0) * .9))}
+.marquee{filter:brightness(calc(1 + var(--beat,0) * .35)) saturate(calc(1 + var(--beat,0) * .4))}
+.music.playing{box-shadow:0 6px 20px rgba(0,0,0,.25),0 0 0 calc(var(--beat,0) * 12px) rgba(210,18,46,.25)}
+@media (prefers-reduced-motion:reduce){.band::after{display:none}.band h1 .fit span{text-shadow:none}.marquee{filter:none}}
 </style>
 </head>
 <body>
@@ -1081,7 +1089,31 @@ function buildGoal(){
   const show = () => { const on = !a.paused; b.classList.toggle("playing", on); b.setAttribute("aria-pressed", on);
     b.dataset.ia = on ? "m.mute" : "m.play"; b.setAttribute("aria-label", t(b.dataset.ia)); };
   const save = v => { want = v; try { localStorage.setItem("music", v ? "on" : "off"); } catch (e) {} };
-  const play = () => a.play().catch(() => {}).finally(show);
+  // bass meter: one small analyser, read once a frame only while playing; drives --beat on three elements
+  let ctx, an, buf, raf = 0, lvl = 0, floor = .2;
+  const glow = [document.querySelector(".band"), document.querySelector(".marquee"), b];
+  const still = matchMedia("(prefers-reduced-motion:reduce)");
+  const meter = () => {
+    if (ctx || still.matches) return;
+    try {
+      ctx = new (window.AudioContext || window.webkitAudioContext)();
+      an = ctx.createAnalyser(); an.fftSize = 256; an.smoothingTimeConstant = .55; buf = new Uint8Array(an.frequencyBinCount);
+      ctx.createMediaElementSource(a).connect(an); an.connect(ctx.destination);
+    } catch (e) { ctx = null; }
+  };
+  const loop = () => {
+    an.getByteFrequencyData(buf);
+    let bass = 0; for (let i = 1; i < 7; i++) bass += buf[i]; bass /= 6 * 255;   // ~80-500 Hz: dhak and kick
+    floor += (bass - floor) * .02;                                              // follows the song's average
+    const hit = Math.max(0, Math.min(1, (bass - floor) * 5));
+    lvl = hit > lvl ? hit : lvl * .86;                                         // fast attack, slow fade
+    glow.forEach(g => g && g.style.setProperty("--beat", lvl.toFixed(3)));
+    raf = requestAnimationFrame(loop);
+  };
+  const stopGlow = () => { cancelAnimationFrame(raf); raf = 0; lvl = 0; glow.forEach(g => g && g.style.removeProperty("--beat")); };
+  a.addEventListener("playing", () => { if (an && !raf) { ctx.resume(); loop(); } });
+  a.addEventListener("pause", stopGlow);
+  const play = () => { meter(); return a.play().catch(() => {}).finally(show); };
   b.onclick = () => { if (a.paused) { save(true); play(); } else { save(false); a.pause(); show(); } };
   a.onplay = a.onpause = show;
   const first = e => {

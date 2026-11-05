@@ -18,6 +18,11 @@ marked `EDIT HERE`:
 
 To preview a moment on puja night, open the page with `?demo=2026-11-08T21:10`.
 
+## Before every push
+
+1. `python3 tests/smoke.py` must end with `ALL GOOD` (it checks every feature in `FEATURES.md` on a phone and a laptop).
+2. Add a line to `CHANGELOG.md` if you changed what people see.
+
 ## Files
 
 - `index.html`: the whole page
@@ -25,5 +30,7 @@ To preview a moment on puja night, open the page with `?demo=2026-11-08T21:10`.
 - `img/`: hero pictures, the hibiscus logo, Ma's face from the receipt
 - `photos/`: the photo book
 - `fonts/`: Anek Bangla (SIL Open Font License)
+- `music/`: the Shyama Sangeet clip (credit in the footer)
+- `FEATURES.md`, `CHANGELOG.md`, `tests/smoke.py`: what the site does, what changed, and the check that nothing went missing
 
 Made by Somdeep Kundu.

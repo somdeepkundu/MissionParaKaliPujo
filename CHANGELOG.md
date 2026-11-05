@@ -1,0 +1,62 @@
+# Changelog
+
+Every published version, newest first (from the git history). Tags mark versions you can go back to:
+`v1-launch` (first site), `v2-before-golden-layout` (5 Nov night, before the big layout change), `v3-golden-layout` (this release).
+
+To look at an older version: `git checkout <tag or id> -- index.html` (then commit to bring it back).
+
+## 2026-11-06
+
+- (this version) Beat glow back on the title, red strip and music button; flowers' glow breathes again; features checklist, changelog and smoke test added
+- `e9ebd4f` Softer, smaller music label
+- `b123651` First visit: a quiet 'Shyama Sangeet on / off' label beside the music button
+- `3ea274c` Quiet Bengali touches on the white pages: alpona, akash prodip, clay diyas; pause loops off screen
+- `bd021d6` Golden-ratio spacing; captions inside photos; two-photo spreads; sliding photos; swipe hint; lighter images and effects
+
+## 2026-11-05
+
+- `926caaa` Photo book: 'Slide to begin…' on the first page; music button tucks aside over the book
+- `6fe9550` Contacts: Surajit above Somdeep
+- `a28752b` Spelling: Rabindranath
+- `25b6e87` Rabindronath (Robi) Banerjee
+- `1fc9669` Projected expenses in Bengali, English and Hindi
+- `432f7f6` Theme names: Auto, Day, Night
+- `5aaa526` Theme: auto by India time, Daylight, Amavasya night
+- `f5ef430` Flowers in three depths, with a faint glow behind that breathes and swells on the beat
+- `7a169bb` Fix broken Bengali/Hindi big text on Safari: no letter-spacing there
+- `9a46581` Flowers: gentle gust on the beat drop; fall only over the first two panels
+- `19c5a44` Jaba flowers: more on wide screens, larger, drifting sideways
+- `e38b4db` Remove the unused 'year not known' text
+- `17d881c` Trigger Pages rebuild
+- `5bfb33a` Photo book: no 'year not known' label
+- `f02a90c` Title, red strip and music button glow with the bass while music plays
+- `5720007` Music with a big mute button, and falling jaba flowers
+- `ccc5f6d` Special donations: Rudrani De (Sasa), Udayan Sengupta (Bile da)
+- `7eda90f` Big group link back to its old wording
+- `23d00ee` Call it the community WhatsApp group
+- `ace8d50` Live countdown to the puja in place of the percentage
+- `4a00246` Boxes are the sound system: move to Power & sound
+- `bf99a1b` Bring back the Bengali / English / Hindi switch; expenses stay in English
+- `cf11a21` Itemised expenses with covered/still-needed dots and a sponsor link per item
+- `237dee5` Sponsor line: Rabi Banerjee, Contact, WhatsApp group
+- `8d73fb8` Projected expenses as a clay bhar; breakdown on tap; sponsor contacts
+- `74d68c2` Projected expenses: a jar that fills with chanda collected
+- `462a2f6` English only; hide tap hint; small hidden-names note
+- `d6744d4` Donation statistics: drop the due row and the by-day list; add special donations
+- `678f206` Chanda: bar charts by gift size and by day; tap a bar for count and total, no names
+- `a928b8b` Show schedule and chanda lines: fade-in now runs after they are drawn
+- `598c2ed` Fix share-preview URLs to the live site path so the WhatsApp image loads
+- `9609007` Chanda: receipts 46-53 (5 Nov), total 30,771
+- `57dcea9` Gentle drift on the book's photos; artwork stays still
+- `87df16b` Show the normal arrow over plain text; hand only on links and buttons
+- `9352c08` Use Anek Devanagari for the Hindi text
+- `ab761e0` Add English, Bengali and Hindi language switch; WhatsApp group link with year
+- `d32756a` Add a subtle earthy grain texture across the page
+- `5e9838d` Footer: keep committee name only
+
+## 2026-11-04
+
+- `40a9f25` Update WhatsApp group link
+- `fcaef62` Add 2022 photos to photo book
+- `e31c2a3` Add 2020 photos to photo book
+- `3294d46` Mission Para Kali Puja 2026 website

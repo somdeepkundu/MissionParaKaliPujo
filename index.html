@@ -44,6 +44,9 @@ document.documentElement.dataset.theme=(t==="day"||t==="night")?t:autoTheme();})
 
   --m:clamp(16px,2.2vw,32px);
   --gap:8px;
+  /* spacing on the golden ratio: each step is the last one × 1.618 */
+  --sp-xs:.382rem; --sp-s:.618rem; --sp-m:1rem; --sp-l:1.618rem; --sp-xl:2.618rem; --sp-2xl:4.236rem; --sp-3xl:6.854rem;
+  --sec:clamp(2.618rem,1.2rem + 3.6vw,4.236rem);   /* section padding: 42px on a phone, 68px on a laptop */
   --s-small:clamp(0.875rem,0.85rem + 0.1vw,0.9375rem);
   --s-body:clamp(1.0625rem,1rem + 0.25vw,1.1875rem);
   --s-lead:clamp(1.25rem,1.1rem + 0.7vw,1.625rem);
@@ -63,9 +66,9 @@ body{margin:0;background:var(--bg);color:var(--fg);font-family:"Anek Bangla",sys
   font-size:var(--s-body);line-height:1.5;font-stretch:100%;font-weight:400;transition:background .4s,color .4s}
 img{display:block;max-width:100%}
 /* a faint paper-and-earth grain over the whole page, day and night */
-body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.11;mix-blend-mode:multiply;
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.11;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .25 0 0 0 0 .12 0 0 0 1.4 -.2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
-[data-theme="night"] body::before{mix-blend-mode:screen;opacity:.09}
+[data-theme="night"] body::before{opacity:.09}
 body>*{position:relative;z-index:1}
 a{color:inherit}
 h1,h2,h3,p,figure{margin:0}
@@ -140,36 +143,45 @@ h2{font-size:var(--s-head);font-weight:300;font-stretch:80%;line-height:.98;lett
 }
 
 /* ============ paper sections ============ */
-.sec{padding:clamp(96px,12vw,180px) var(--m)}
+.sec{padding:var(--sec) var(--m)}
 .white{background:var(--sheet);color:var(--ink)}
 .grid12{display:grid;grid-template-columns:repeat(12,1fr);column-gap:clamp(12px,1.6vw,24px)}
 
 /* invitation: title, note, facts row */
-.intro-top{align-items:end}
-.intro h2{grid-column:1/7}
-.intro .note{grid-column:9/13;max-width:30ch}
 .intro .note .btn{margin-top:1.2rem}
-.factrow{display:flex;justify-content:space-between;flex-wrap:wrap;gap:2rem 1.5rem;margin-top:clamp(64px,8vw,120px)}
+/* under the title: the four facts and the pandal photo side by side, split on the golden ratio (1 : 1.618) */
+.intro-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.618fr);gap:var(--sp-xl);align-items:stretch}
+.intro-text{display:flex;flex-direction:column;gap:var(--sp-l)}
+.intro .note{max-width:34ch}
+.intro .factrow{margin-top:auto}
+.factrow{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-l) var(--sp-m)}
 .factrow b{display:block;font-weight:300;font-stretch:85%;font-size:var(--s-xl);line-height:1;letter-spacing:-.015em}
-.factrow span{display:block;margin-top:.5rem;color:var(--soft);font-size:var(--s-small)}
-.intro-photo{grid-column:7/13;margin-top:clamp(48px,6vw,88px);aspect-ratio:4/3;overflow:hidden}
-.intro-photo img{width:100%;height:100%;object-fit:cover}
-.intro-cap{grid-column:7/13;margin-top:.7rem;color:var(--soft);font-size:var(--s-small)}
+.factrow span{display:block;margin-top:var(--sp-xs);color:var(--soft);font-size:var(--s-small)}
+.intro-photo{aspect-ratio:1.618/1}
 @media (max-width:760px){
-  .intro h2,.intro .note,.intro-photo,.intro-cap{grid-column:1/-1}
-  .intro .note{margin-top:1.4rem;max-width:none}
-  .factrow{display:grid;grid-template-columns:1fr 1fr;gap:2rem 1rem}
+  .intro .note{max-width:none}
+  .intro-text{gap:var(--sp-m)}
+  .intro .factrow{margin-top:var(--sp-s)}
+  .intro-body{grid-template-columns:1fr;gap:var(--sp-l)}
 }
+/* photos carry their caption inside them: white words on a soft dark wash */
+.shot{position:relative;overflow:hidden;margin:0}
+.shot img{display:block;width:100%;height:100%;object-fit:cover}
+/* a long photo is laid out at full length and its window slides over it (see PAN in the script) */
+.shot img.pan-y,.pg.photo img.pan-y{position:absolute;left:0;top:0;right:auto;bottom:auto;width:100%;height:auto;max-width:none;object-fit:fill}
+.shot img.pan-x,.pg.photo img.pan-x{position:absolute;left:0;top:0;right:auto;bottom:auto;height:100%;width:auto;max-width:none;object-fit:fill}
+img[data-pan]{will-change:transform;backface-visibility:hidden}
+.shot figcaption{position:absolute;left:0;right:0;bottom:0;padding:var(--sp-xl) var(--sp-m) var(--sp-s);color:#fff;font-size:var(--s-small);line-height:1.35;
+  background:linear-gradient(to top,rgba(12,8,6,.72),rgba(12,8,6,.28) 60%,transparent);text-shadow:0 1px 2px rgba(0,0,0,.35)}
 
 /* schedule: statement, table pushed right */
-.sched-body{margin-top:clamp(56px,7vw,96px)}
-.sched-photo{grid-column:1/5;aspect-ratio:4/5;overflow:hidden;align-self:end}
-.sched-photo img{width:100%;height:100%;object-fit:cover}
-.sched-word{grid-column:7/8;color:var(--soft);font-size:var(--s-small);padding-top:.35rem}
-.table{grid-column:8/13}
-.day{margin:0 0 2.6rem}
+.sched-body{margin-top:var(--sp-xl)}
+.sched-photo{grid-column:1/6;aspect-ratio:1;align-self:start}
+.sched-word{grid-column:6/7;color:var(--soft);font-size:var(--s-small);padding-top:.35rem}
+.table{grid-column:7/13}
+.day{margin:0 0 var(--sp-xl)}
 .day:last-child{margin-bottom:0}
-.day h3{font-size:var(--s-lead);font-weight:500;margin-bottom:.9rem;line-height:1.2}
+.day h3{font-size:var(--s-lead);font-weight:500;margin-bottom:var(--sp-s);line-height:1.2}
 .row{display:grid;grid-template-columns:8.6rem 1fr auto;gap:1rem;align-items:baseline;padding:.55rem .6rem;margin:0 -.6rem;transition:background .3s}
 .row .t{color:var(--soft)}
 .row .tag{font-size:var(--s-small);color:var(--soft);white-space:nowrap}
@@ -184,28 +196,41 @@ details summary:hover{text-decoration-thickness:2px}
 @media (max-width:760px){
   .table{grid-column:1/-1}
   .sched-word{display:none}
-  .sched-photo{grid-column:5/13;margin-top:3rem;order:2}
+  .sched-photo{grid-column:1/-1;margin-top:var(--sp-l);order:2;aspect-ratio:1.618/1}
+  .sched-photo img{object-position:50% 58%}
+  .day{margin-bottom:var(--sp-l)}
   .row{grid-template-columns:6.8rem 1fr}
   .row .tag{grid-column:2}
 }
 
 /* ============ photo book ============ */
-.bookwrap{padding:clamp(96px,10vw,160px) var(--m)}
-.bookhead{display:flex;justify-content:space-between;align-items:end;gap:1rem 2rem;flex-wrap:wrap;margin:0 0 clamp(32px,4vw,56px)}
-.stage{display:grid;grid-template-columns:auto 1fr;gap:clamp(16px,2vw,32px);align-items:end}
+.bookwrap{padding:var(--sec) var(--m)}
+.bookhead{display:flex;justify-content:space-between;align-items:end;gap:var(--sp-s) var(--sp-xl);flex-wrap:wrap;margin:0 0 var(--sp-l)}
+.stage{display:grid;grid-template-columns:auto 1fr;gap:var(--sp-l);align-items:end}
 .bookhead p{color:var(--fg-soft)}
-.book{position:relative;width:min(calc(100vw - 2 * var(--m) - 220px),calc((100svh - 140px) * 1.5625));aspect-ratio:2/1.28;perspective:2400px;outline-offset:6px}
+.book{position:relative;width:min(calc(100vw - 2 * var(--m) - 220px),calc((100svh - 140px) * 1.5625));aspect-ratio:2/1.28;perspective:2400px;outline-offset:6px;
+  touch-action:pan-y;box-shadow:0 28px 56px -26px rgba(0,0,0,.6)}
 .spread{position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr}
 .pg{position:relative;overflow:hidden;background:var(--sheet);color:var(--ink)}
-.pg.text{padding:clamp(24px,3.4vw,52px);display:flex;flex-direction:column;justify-content:space-between}
-.pg.text .yr{font-size:var(--s-head);font-size:clamp(3.6rem,8vw,8.3rem);font-weight:200;font-stretch:75%;line-height:.82;letter-spacing:-.04em}
-.pg.text .yr.small{font-size:var(--s-xl);font-weight:300;line-height:.95}
-.pg.text .cap{font-size:var(--s-lead);line-height:1.25;max-width:20ch}
-.pg.text .pn{font-size:var(--s-small);color:var(--soft);display:flex;justify-content:space-between;margin-top:1.2rem}
 .pg.photo{background:var(--bg2)}
 .pg.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+/* year and caption sit on the photo: marigold year, white words, over a dark wash that fades upward */
+.pg .ov{position:absolute;left:0;right:0;bottom:0;display:grid;gap:var(--sp-xs);padding:var(--sp-2xl) clamp(16px,2.2vw,28px) clamp(14px,2vw,24px);color:#fff;
+  background:linear-gradient(to top,rgba(12,8,6,.8),rgba(12,8,6,.36) 55%,transparent);text-shadow:0 1px 3px rgba(0,0,0,.35)}
+.pg .ov .yr{font-size:clamp(2.6rem,1.4rem + 3.4vw,4.8rem);font-weight:200;font-stretch:75%;line-height:.85;letter-spacing:-.03em;color:var(--gaanda)}
+.pg .ov .yr.word{font-size:var(--s-xl);font-weight:300;letter-spacing:0}
+.pg .ov .cap{font-size:var(--s-body);line-height:1.3;max-width:28ch}
+.pg .ov a{color:var(--gaanda);text-underline-offset:3px}
 .pg.art-pg{background:var(--sheet);display:flex;align-items:center;justify-content:center}
-.pg.art-pg img{position:static;height:86%;width:auto;object-fit:contain}
+.pg.art-pg img{position:static;height:88%;width:auto;max-width:92%;object-fit:contain}
+.pg.art-pg .go{position:absolute;right:clamp(14px,2vw,24px);bottom:clamp(12px,1.8vw,22px);font-size:var(--s-small);color:var(--soft);display:flex;align-items:center;gap:.4rem}
+.pg.art-pg .go i{font-style:normal;display:inline-block;animation:nudge 1.6s ease-in-out infinite}
+@keyframes nudge{50%{transform:translateX(6px)}}
+/* first-time hint: a fingertip glides across the page while the page lifts a little */
+.hint{position:absolute;top:56%;width:34px;height:34px;margin:-17px 0 0 -17px;border-radius:50%;pointer-events:none;z-index:6;opacity:0;
+  background:radial-gradient(circle,rgba(255,255,255,.95) 0 36%,rgba(255,255,255,.32) 38% 100%);box-shadow:0 6px 18px rgba(0,0,0,.35)}
+.pg.end-pg{background:var(--jaba);color:#fff;display:flex;align-items:flex-end;padding:clamp(20px,3vw,40px)}
+.pg.end-pg p{font-size:clamp(2.4rem,1.2rem + 3.6vw,4.6rem);font-weight:600;font-stretch:75%;line-height:.95}
 .spine{position:absolute;top:0;bottom:0;left:50%;width:6px;margin-left:-3px;z-index:3;pointer-events:none;
   background:rgba(0,0,0,.14)}
 .leaf{position:absolute;top:0;bottom:0;width:50%;transform-style:preserve-3d;z-index:4;will-change:transform}
@@ -213,52 +238,58 @@ details summary:hover{text-decoration-thickness:2px}
 .leaf .face > *{position:absolute;inset:0}
 .leaf .face.back{transform:rotateY(180deg)}
 .leaf .shade{position:absolute;inset:0;background:#000;opacity:0;pointer-events:none}
-.bookctl{display:grid;gap:1rem;color:var(--fg-soft);font-size:var(--s-small);justify-items:start}
+.bookctl{display:grid;gap:var(--sp-m);color:var(--fg-soft);font-size:var(--s-small);justify-items:start}
 .bookctl .arrows{display:grid;gap:var(--gap);width:100%}
 .bookctl button{font:inherit;font-size:var(--s-body);background:var(--bg2);color:var(--fg);border:0;padding:.75rem 1.2rem;cursor:pointer;transition:background .2s,transform .15s}
 .bookctl button:hover{background:var(--bg3)}
 .bookctl button:active{transform:scale(.97)}
 .bookctl button:disabled{opacity:.35;cursor:default}
 @media (max-width:760px){
-  .stage{grid-template-columns:1fr}
+  .stage{grid-template-columns:1fr;gap:var(--sp-m)}
   .bookctl .arrows{grid-template-columns:1fr 1fr}
-  .book{width:100%;aspect-ratio:auto}
-  .spread{position:relative;grid-template-columns:1fr}
-  .spread .pg.photo{order:-1;aspect-ratio:4/5}
-  .spread .pg.text{min-height:15rem}
+  .book{width:100%;aspect-ratio:4/5}
+  .spread{grid-template-columns:1fr}
   .spine{display:none}
 }
+@media (prefers-reduced-motion:reduce){.pg.art-pg .go i{animation:none}}
 
 /* marquee: the one loud moment */
 .marquee{background:var(--jaba);color:#fff;overflow:hidden;padding:clamp(18px,2.4vw,34px) 0}
 .marquee .track{display:flex;width:max-content;animation:slide 40s linear infinite}
+.marquee.off .track,.goal.off .bhar .wave{animation-play-state:paused}
 .marquee:hover .track{animation-play-state:paused}
 .marquee span{font-size:clamp(3rem,8vw,7.2rem);font-weight:600;font-stretch:75%;letter-spacing:-.03em;line-height:1.05;padding-right:.7em;white-space:nowrap}
 @keyframes slide{to{transform:translateX(-50%)}}
 
 /* chanda: quiet figure lines */
-.chanda{padding-block:clamp(120px,16vw,220px)}
-.ch-list{grid-column:2/8;--fig:clamp(150px,16vw,240px)}
-.ch-list h2{font-size:var(--s-lead);font-weight:500;font-stretch:100%;letter-spacing:0;margin:0 0 3rem calc(var(--fig) + 24px)}
-.ch-list dl{margin:0;display:grid;gap:28px}
+.chanda{padding-block:var(--sec)}
+.chanda .grid12{align-items:center}
+.ch-list{grid-column:1/8;--fig:clamp(150px,16vw,240px)}
+.ch-list h2{font-size:var(--s-lead);font-weight:500;font-stretch:100%;letter-spacing:0;margin:0 0 var(--sp-l) calc(var(--fig) + 24px)}
+.ch-list dl{margin:0;display:grid;gap:var(--sp-l)}
 .ch-list dl div{display:grid;grid-template-columns:var(--fig) 1fr;gap:24px;align-items:baseline}
 .ch-list dt{text-align:right;font-size:var(--s-xl);font-weight:500;font-stretch:85%;font-variant-numeric:tabular-nums;line-height:1}
 .ch-list dd{margin:0;max-width:40ch}
-.ch-list details{margin:2.6rem 0 0 calc(var(--fig) + 24px);max-width:44ch}
-.ch-list details p{margin-top:.8rem;color:var(--soft)}
-.ch-photo{grid-column:9/12;align-self:start;margin-top:80px;aspect-ratio:1;overflow:hidden}
-.ch-photo img{width:100%;height:100%;object-fit:cover}
+.ch-list details{margin:var(--sp-l) 0 0 calc(var(--fig) + 24px);max-width:44ch}
+.ch-list details p{margin-top:var(--sp-s);color:var(--soft)}
+.ch-photo{grid-column:9/13;aspect-ratio:1}
+/* the jar and the donation numbers sit side by side on wide screens (1 : 1.618) */
+.ch-more{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.618fr);gap:var(--sp-2xl);margin-top:var(--sp-2xl);align-items:start}
+.ch-more > .goal,.ch-more > .dist{margin-top:0}
+@media (max-width:1100px){.ch-more{grid-template-columns:1fr;gap:var(--sp-xl);margin-top:var(--sp-xl)}}
 @media (max-width:760px){
-  .ch-list{grid-column:1/-1}
+  .chanda .grid12{grid-template-columns:minmax(0,1.618fr) minmax(0,1fr);column-gap:var(--sp-m);align-items:start}
+  .ch-list{grid-column:1/2}
   .ch-list h2{margin-left:0}
   .ch-list dl div{grid-template-columns:1fr;gap:.3rem}
   .ch-list dt{text-align:left}
   .ch-list details{margin-left:0}
-  .ch-photo{grid-column:6/13;margin-top:3rem}
+  .ch-photo{grid-column:2/3}
+  .ch-photo figcaption{font-size:.7rem;padding:var(--sp-l) var(--sp-s) var(--sp-xs)}
 }
 
 /* contact: the group link as display type */
-.contact{display:grid;grid-template-columns:minmax(0,1fr);overflow:hidden;gap:clamp(64px,12vh,140px);padding:clamp(96px,10vw,160px) var(--m) var(--m)}
+.contact{display:grid;grid-template-columns:minmax(0,1fr);overflow:hidden;gap:clamp(2.618rem,7vh,4.236rem);padding:var(--sec) var(--m) var(--m)}
 .contact h2{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 .contact .lead{font-size:var(--s-lead);max-width:28ch}
 .display{text-decoration:none;display:block;transition:color .25s;min-width:0}
@@ -277,14 +308,14 @@ details summary:hover{text-decoration-thickness:2px}
 }
 
 /* footer: columns above, wordmark below (inverse of the ground) */
-footer{background:var(--fg);color:var(--bg);display:grid;gap:clamp(96px,18vh,200px);padding:40px var(--m) 20px;transition:background .4s,color .4s}
+footer{background:var(--fg);color:var(--bg);display:grid;gap:clamp(2.618rem,8vh,6.854rem);padding:var(--sp-xl) var(--m) var(--sp-m);transition:background .4s,color .4s}
 .fcols{display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;font-size:var(--s-small)}
 .fcols ul{list-style:none;margin:0;padding:0;display:grid;gap:.35rem;align-content:start}
 .fcols li{opacity:.7}
 .fcols li:first-child{opacity:1}
 .fcols a{text-decoration:none}
 .fcols a:hover{text-decoration:underline;text-underline-offset:.25em}
-.wordmark{display:block;width:100%;margin-top:2rem}
+.wordmark{display:block;width:100%;margin-top:var(--sp-m)}
 .wordmark text{font-weight:700;font-stretch:75%;letter-spacing:-.03em}
 /* Safari draws Bengali and Hindi letters apart (dotted circles) when SVG text has letter-spacing, so keep it at 0 there */
 html:not([lang="en"]) .fitsvg text,html:not([lang="en"]) .band h1,html:not([lang="en"]) .marquee span{letter-spacing:0}
@@ -324,11 +355,7 @@ html[lang="hi"] body,html[lang="hi"] .fitsvg text{font-family:"Anek Devanagari",
 /* plain text keeps the normal arrow; only things you can press get the hand */
 body{cursor:default}
 a,button,summary,label,.r5,.wa,[role="button"]{cursor:pointer}
-/* a slow, gentle drift on the book's photos only (not the artwork); still for reduced motion */
-.pg.photo{overflow:hidden}
-.pg.photo img{transform-origin:50% 50%;animation:drift 16s ease-in-out infinite;will-change:transform}
-@keyframes drift{0%,100%{transform:scale(1.03) translate3d(0,0,0)}50%{transform:scale(1.08) translate3d(-.5%,-.4%,0)}}
-@media (prefers-reduced-motion:reduce){.pg.photo img{animation:none}}
+/* the book's photos move through PAN in the script (slide or breathe); the artwork stays still */
 /* chanda distribution bars */
 .dist{display:grid;grid-template-columns:1fr 1fr;gap:3rem;margin-top:3.5rem;align-items:start}
 @media (max-width:760px){.dist{grid-template-columns:1fr;gap:2rem}}
@@ -428,12 +455,12 @@ li:has(> .it[aria-expanded="true"]) .spon{display:block}
 .jaba i.near{--s2:1.3;filter:drop-shadow(0 4px 5px rgba(120,10,30,.18));animation-duration:calc(var(--d) * .85)}
 .jaba i{width:calc(var(--s) * var(--k) * var(--s2,1));height:calc(var(--s) * var(--k) * var(--s2,1))}
 /* a faint warm glow behind the flowers: breathes slowly, and swells softly with the beat when music plays */
-.jaba::before,.jaba::after{content:"";position:absolute;inset:-20%;pointer-events:none}
+.jaba::before,.jaba::after{content:"";position:absolute;inset:0;pointer-events:none;will-change:opacity}
 .jaba::before{background:radial-gradient(40% 35% at 22% 30%,rgba(210,18,46,.07),transparent 70%),
   radial-gradient(38% 32% at 78% 62%,rgba(242,179,61,.09),transparent 70%);animation:jglow 3.7s ease-in-out infinite alternate}
 .jaba::after{background:radial-gradient(55% 45% at 50% 45%,rgba(210,18,46,.07),rgba(242,179,61,.04) 50%,transparent 75%);
   opacity:calc(var(--beat,0) * .8)}
-@keyframes jglow{from{opacity:.35;transform:scale(1)}to{opacity:.9;transform:scale(1.06)}}
+@keyframes jglow{from{opacity:.35}to{opacity:.9}}
 .jaba.gone.rest::before{animation-play-state:paused}
 body.still .jaba{display:none}
 @media (prefers-reduced-motion:reduce){.jaba{display:none}}
@@ -457,12 +484,13 @@ body.still .jaba{display:none}
 .credit a{color:inherit;text-underline-offset:3px}
 /* when the music plays, the title and the red strip glow with the bass (--beat 0..1, set from the audio) */
 .band{position:relative}
-.band::after{content:"";position:absolute;inset:-10% -5%;pointer-events:none;opacity:calc(var(--beat,0) * .9);
+.band::after{content:"";position:absolute;inset:-10% -5%;pointer-events:none;will-change:opacity;opacity:calc(var(--beat,0) * .9);
   background:radial-gradient(50% 60% at 50% 70%,rgba(210,18,46,.45),rgba(242,179,61,.18) 55%,transparent 75%);mix-blend-mode:multiply;transition:opacity .08s linear}
-.band h1 .fit span{text-shadow:0 0 calc(var(--beat,0) * 28px) rgba(242,179,61,calc(var(--beat,0) * .9))}
-.marquee{filter:brightness(calc(1 + var(--beat,0) * .35)) saturate(calc(1 + var(--beat,0) * .4))}
-.music.playing{box-shadow:0 6px 20px rgba(0,0,0,.25),0 0 0 calc(var(--beat,0) * 12px) rgba(210,18,46,.25)}
-@media (prefers-reduced-motion:reduce){.band::after{display:none}.band h1 .fit span{text-shadow:none}.marquee{filter:none}}
+.marquee{position:relative}
+.marquee::after{content:"";position:absolute;inset:0;pointer-events:none;background:rgba(255,214,140,.22);opacity:var(--beat,0);will-change:opacity}
+.music.playing::after{content:"";position:absolute;inset:-5px;border-radius:50%;border:2px solid var(--jaba);pointer-events:none;
+  opacity:calc(var(--beat,0) * .8);transform:scale(calc(1 + var(--beat,0) * .22));will-change:transform,opacity}
+@media (prefers-reduced-motion:reduce){.band::after,.marquee::after{display:none}}
 </style>
 </head>
 <body>
@@ -519,28 +547,27 @@ body.still .jaba{display:none}
 
 <main id="content">
   <section class="sec white intro" aria-labelledby="invite-h">
-    <div class="grid12 intro-top">
+    <div class="intro-body">
+      <div class="intro-text">
       <h2 id="invite-h" data-rise data-i="inv.title">সবারে করি আহ্বান</h2>
       <div class="note" data-rise style="--i:1">
         <p data-i="inv.text">অমাবস্যার রাতে, রবিবার ৮ নভেম্বর, আপার মিশন পাড়ায় মায়ের পুজোয় আপনাদের সবার সাদর আমন্ত্রণ।</p>
       </div>
-    </div>
-    <div class="factrow">
-      <div data-rise style="--i:2"><b data-i="f.d1">৮ নভেম্বর</b><span data-i="f.d1s">রবিবার, অমাবস্যা</span></div>
-      <div data-rise style="--i:3"><b data-i="f.t1">সন্ধ্যা ৬টা ৩০</b><span data-i="f.t1s">কালীপুজো শুরু</span></div>
-      <div data-rise style="--i:4"><b data-i="f.t2">রাত ১০টা</b><span data-i="f.t2s">রাতের ভোগ</span></div>
-      <div data-rise style="--i:5"><b data-i="f.t3">সন্ধ্যা ৬টা</b><span data-i="f.t3s">৯ নভেম্বর, বিসর্জন</span></div>
-    </div>
-    <div class="grid12">
-      <figure class="intro-photo" data-rise><img src="img/pandal-4x3.jpg" alt="" data-ialt="intro.alt" width="1440" height="1080" loading="lazy"></figure>
-      <p class="intro-cap" data-i="intro.cap">দিনের আলোয় প্যান্ডেল</p>
+      <div class="factrow">
+        <div data-rise style="--i:2"><b data-i="f.d1">৮ নভেম্বর</b><span data-i="f.d1s">রবিবার, অমাবস্যা</span></div>
+        <div data-rise style="--i:3"><b data-i="f.t1">সন্ধ্যা ৬টা ৩০</b><span data-i="f.t1s">কালীপুজো শুরু</span></div>
+        <div data-rise style="--i:4"><b data-i="f.t2">রাত ১০টা</b><span data-i="f.t2s">রাতের ভোগ</span></div>
+        <div data-rise style="--i:5"><b data-i="f.t3">সন্ধ্যা ৬টা</b><span data-i="f.t3s">৯ নভেম্বর, বিসর্জন</span></div>
+      </div>
+      </div>
+      <figure class="intro-photo shot" data-rise><img src="img/pandal-4x3.jpg" alt="" data-ialt="intro.alt" width="1440" height="1080" loading="lazy"><figcaption data-i="intro.cap">দিনের আলোয় প্যান্ডেল</figcaption></figure>
     </div>
   </section>
 
   <section class="sec white sched" id="schedule" aria-labelledby="sched-h" style="padding-top:0">
     <h2 id="sched-h" data-rise data-i="s.title">পুজোর নির্ঘণ্ট</h2>
     <div class="grid12 sched-body">
-      <figure class="sched-photo" data-rise><img src="img/bhog-4x5.jpg" alt="" data-ialt="s.bhogAlt" width="960" height="1200" loading="lazy"></figure>
+      <figure class="sched-photo shot" data-rise><img src="img/bhog-4x5.jpg" alt="" data-ialt="s.bhogAlt" width="960" height="1200" loading="lazy"><figcaption data-i="s.bhogCap">দুপুরের ভোগের রান্না</figcaption></figure>
       <p class="sched-word" data-i="s.two">দুদিন</p>
       <div class="table" id="table"></div>
     </div>
@@ -578,10 +605,12 @@ body.still .jaba{display:none}
           <p data-i="ch.thanks">পাড়ার সকলকে ধন্যবাদ। এ বছরের পুজো আপনাদের চাঁদাতেই হচ্ছে। চাঁদা দিতে চাইলে কমিটির যে কাউকে ফোন করুন।</p>
         </details>
       </div>
-      <figure class="ch-photo" data-rise style="--i:2"><img src="img/aanka-sq.jpg" alt="" data-ialt="ch.alt" width="1000" height="1000" loading="lazy"></figure>
+      <figure class="ch-photo shot" data-rise style="--i:2"><img src="img/aanka-sq.jpg" alt="" data-ialt="ch.alt" width="1000" height="1000" loading="lazy"><figcaption data-i="ch.cap">আঁকা প্রতিযোগিতা, ২০২৫</figcaption></figure>
     </div>
-    <div class="goal" id="goal"></div>
-    <div class="dist" id="dist"></div>
+    <div class="ch-more">
+      <div class="goal" id="goal"></div>
+      <div class="dist" id="dist"></div>
+    </div>
   </section>
 
   <section class="contact" id="contact" aria-labelledby="ct-h">
@@ -781,6 +810,9 @@ const D = {
   "f.t3": ["সন্ধ্যা ৬টা", "6 pm", "शाम ६ बजे"],
   "f.t3s": ["৯ নভেম্বর, বিসর্জন", "9 November, Visarjan", "९ नवंबर, विसर्जन"],
   "intro.alt": ["দিনের আলোয় প্যান্ডেলে মা, সামনে বাবার হাত ধরে একটি শিশু", "Maa in the pandal in daylight, with a child in front", "दिन की रोशनी में पंडाल में माँ, सामने एक बच्चा"],
+  "s.bhogCap": ["দুপুরের ভোগের রান্না", "Cooking the day bhog", "दिन के भोग की रसोई"],
+  "ch.cap": ["আঁকা প্রতিযোগিতা, ২০২৫", "Drawing competition, 2025", "चित्रकला प्रतियोगिता, २०२५"],
+  "book.go": ["স্লাইড করে শুরু করুন", "Slide to begin", "शुरू करने के लिए स्लाइड करें"],
   "intro.cap": ["দিনের আলোয় প্যান্ডেল", "The pandal in daylight", "दिन की रोशनी में पंडाल"],
   "s.title": ["পুজোর নির্ঘণ্ট", "Puja schedule", "पूजा का कार्यक्रम"],
   "s.bhogAlt": ["ভোগ রান্নার কড়াই আর উনুন", "Bhog cooking pots and stove", "भोग के बर्तन और चूल्हा"],
@@ -1126,6 +1158,11 @@ function drawGoal(){
   io.observe(box);
 }
 
+/* loops that never end (the red strip, the bhar's wave) pause while off screen */
+if ("IntersectionObserver" in window) {
+  const offs = new IntersectionObserver(es => es.forEach(e => e.target.classList.toggle("off", !e.isIntersecting)));
+  [".marquee", "#goal"].forEach(q => { const n = document.querySelector(q); if (n) offs.observe(n); });
+}
 /* the flowers fall only over the first two panels (title and invitation); further down they fade out and pause */
 (() => {
   const j = document.querySelector(".jaba"), top = [document.querySelector(".hero"), document.querySelector(".intro")];
@@ -1158,6 +1195,7 @@ function drawGoal(){
   let ctx, an, buf, raf = 0, lvl = 0, floor = .2, gustAt = -1e9;
   const jaba = document.querySelector(".jaba");
   const glow = [document.querySelector(".band"), document.querySelector(".marquee"), b, document.querySelector(".jaba")];
+  let shown = "";
   const still = matchMedia("(prefers-reduced-motion:reduce)");
   const meter = () => {
     if (ctx || still.matches) return;
@@ -1175,7 +1213,7 @@ function drawGoal(){
     lvl = hit > lvl ? hit : lvl * .86;                                         // fast attack, slow fade
     const now = performance.now();                                            // a big hit (the drop) sends a soft gust through the flowers
     if (hit > .75 && now - gustAt > 7000) { gustAt = now; jaba.style.setProperty("--g", 1); setTimeout(() => jaba.style.setProperty("--g", 0), 1700); }
-    glow.forEach(g => g && g.style.setProperty("--beat", lvl.toFixed(3)));
+    const v = lvl.toFixed(2); if (v !== shown) { shown = v; glow.forEach(g => g && g.style.setProperty("--beat", v)); }
     raf = requestAnimationFrame(loop);
   };
   const stopGlow = () => { cancelAnimationFrame(raf); raf = 0; lvl = 0; glow.forEach(g => g && g.style.removeProperty("--beat")); };
@@ -1200,46 +1238,96 @@ function drawGoal(){
 $("pj-open").onclick = () => $("pj").showModal();
 $("pj").addEventListener("click", e => { if (e.target === $("pj")) $("pj").close(); });
 
-/* ================= photo book ================= */
+/* photos breathe: a long photo (more than a tenth of it cut off) slides its window from end to end so every part is seen;
+   a photo that nearly fits drifts in slowly. Transforms only, paused off screen, none with reduced motion, never on Maa's artwork. */
+const PAN = (() => {
+  const still = matchMedia("(prefers-reduced-motion:reduce)"), anims = new WeakMap();
+  const io = "IntersectionObserver" in window ? new IntersectionObserver(es => es.forEach(e => {
+    const img = e.target, an = anims.get(img);
+    if (!img.isConnected) { io.unobserve(img); if (an) an.cancel(); anims.delete(img); return; }
+    if (an) e.isIntersecting ? an.play() : an.pause();
+  }), { rootMargin: "120px" }) : null;
+  function start(img){
+    const old = anims.get(img); if (old) old.cancel();
+    img.classList.remove("pan-x", "pan-y"); img.style.transformOrigin = "";
+    if (still.matches || !img.naturalWidth || !img.isConnected) return;
+    const f = img.parentElement, W = f.clientWidth, H = f.clientHeight; if (!W || !H) return;
+    const a = img.naturalWidth / img.naturalHeight, r = W / H;
+    const [fx = .5, fy = .5] = (img.style.objectPosition || "").split(" ").filter(Boolean).map(v => parseFloat(v) / 100);
+    let kf, dur, at = 0;
+    if (a < r * .9 || a > r * 1.1) {
+      const tall = a < r, hid = tall ? 1 - a / r : 1 - r / a;            // share of the photo out of view
+      img.classList.add(tall ? "pan-y" : "pan-x");
+      const travel = hid * (tall ? W / a : H * a);                        // px the window travels
+      kf = [{ transform: "translate3d(0,0,0)" }, { transform: tall ? `translate3d(0,${-hid * 100}%,0)` : `translate3d(${-hid * 100}%,0,0)` }];
+      dur = Math.min(30000, Math.max(9000, travel * 55));                 // about 18 px a second
+      at = tall ? fy : fx;                                                // start where the photo was framed before
+    } else {
+      img.style.transformOrigin = `${fx * 100}% ${fy * 100}%`;
+      kf = [{ transform: "scale(1)" }, { transform: "scale(1.07)" }];
+      dur = 16000;
+    }
+    const an = img.animate(kf, { duration: dur, iterations: Infinity, direction: "alternate", easing: "ease-in-out" });
+    an.currentTime = at * dur;
+    anims.set(img, an);
+    if (io) io.observe(img);
+  }
+  function add(img){
+    img.dataset.pan = "";
+    if (img.complete && img.naturalWidth) requestAnimationFrame(() => start(img));
+    else img.addEventListener("load", () => start(img), { once: true });
+  }
+  let rt;
+  addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => document.querySelectorAll("img[data-pan]").forEach(start), 250); });
+  return { add };
+})();
+document.querySelectorAll(".shot img").forEach(PAN.add);
+
+/* ================= photo book =================
+   Every photo carries its year and caption on itself (marigold year, white words, dark wash), so no page sits empty.
+   Wide screens open as two-page spreads; phones show one page at a time. */
 let bookRerender = () => {};
 (function(){
-  const P = SITE.photos;
+  const P = SITE.photos, book = $("book"), spread = $("spread");
+  const MQ = matchMedia("(max-width:760px)"), mobile = () => MQ.matches;
+  const still = () => matchMedia("(prefers-reduced-motion:reduce)").matches;
   const moreCap = () => {
     const parts = [t("book.end1") + " ", el("a", { href: SITE.whatsapp, target: "_blank", rel: "noopener", textContent: t("book.end2") })];
     const post = t("book.end3"); if (post) parts.push(" " + post);
     return parts;
   };
-  const pages = [
-    { left: () => textPage(t("book.h"), t("book.sub"), true), right: artPage },
-    ...P.map((p, i) => ({ left: () => textPage(p.year ? num(p.year) : "", capOf(p), !p.year, i), right: () => photoPage(p) })),
-    { left: () => textPage(t("book.more"), moreCap(), true),
-      right: () => photoPage({ src: "img/hero-tall.jpg", cap: "cap.diyas", pos: "50% 60%" }) },
-  ];
-  const total = pages.length;
-  function textPage(big, cap, small, i){
-    return el("div", { className: "pg text" },
-      el("div", { className: "yr" + (small ? " small" : ""), textContent: big }),
-      el("div", {}, el("p", { className: "cap" }, ...[].concat(cap)),
-        el("p", { className: "pn" }, el("span", { textContent: t("book.label") }),
-          el("span", { textContent: i == null ? "" : t("book.pn", { n: num(i + 1), total: num(P.length) }) }))));
-  }
-  function photoPage(p){
-    const img = el("img", { src: p.src, alt: capOf(p), decoding: "async" });
+  function photoPage(p, big, cap, word){
+    const img = el("img", { src: p.src, alt: typeof cap === "string" ? cap : "", decoding: "async", loading: "lazy" });
     img.style.objectPosition = p.pos || "50% 50%";
-    return el("div", { className: "pg photo" }, img);
+    PAN.add(img);
+    const ov = el("div", { className: "ov" });
+    if (big) ov.append(el("div", { className: "yr" + (word ? " word" : ""), textContent: big }));
+    ov.append(el("p", { className: "cap" }, ...[].concat(cap)));
+    return el("div", { className: "pg photo" }, img, ov);
   }
-  function artPage(){ return el("div", { className: "pg art-pg" }, el("img", { src: "img/kali-art.png", alt: t("art.alt") })); }
-
-  const book = $("book"), spread = $("spread");
-  const mobile = () => matchMedia("(max-width:760px)").matches;
-  const still = () => matchMedia("(prefers-reduced-motion:reduce)").matches;
-  let cur = 0, busy = false;
-  const render = i => { spread.replaceChildren(pages[i].left(), pages[i].right()); update(i); };
+  const artPage = () => el("div", { className: "pg art-pg" }, el("img", { src: "img/kali-art.png", alt: t("art.alt") }),
+    el("span", { className: "go" }, t("book.go"), el("i", { textContent: "→" })));
+  const endPage = () => el("div", { className: "pg end-pg" }, el("p", { textContent: t("f.jai") }));
+  // the leaves in order: the art, each photo, "more photos?"; a spread adds a closing page when the count is odd
+  const leaves = () => {
+    const L = [{ make: artPage },
+      ...P.map(p => ({ src: p.src, make: () => photoPage(p, p.year ? num(p.year) : "", capOf(p)) })),
+      { src: "img/hero-tall.jpg", make: () => photoPage({ src: "img/hero-tall.jpg", pos: "50% 60%" }, t("book.more"), moreCap(), true) }];
+    if (!mobile() && L.length % 2) L.push({ make: endPage });
+    return L;
+  };
+  let pages = [], total = 0, cur = 0, busy = false;
+  function build(){
+    const L = leaves();
+    pages = mobile() ? L.map(l => [l]) : Array.from({ length: L.length / 2 }, (_, i) => [L[2 * i], L[2 * i + 1]]);
+    total = pages.length;
+  }
+  const render = i => { spread.replaceChildren(...pages[i].map(l => l.make())); update(i); };
   function update(i){
-    $("pageno").textContent = i === 0 ? t("book.start") : t("book.page", { n: num(i + 1), total: num(total) });
+    $("pageno").textContent = t("book.page", { n: num(i + 1), total: num(total) });
     $("prev").disabled = i === 0; $("next").disabled = i === total - 1;
   }
-  const warm = i => [i, i + 1].forEach(j => { const p = P[j]; if (p) new Image().src = p.src; });
+  const warm = i => (pages[i + 1] || []).forEach(l => { if (l.src) new Image().src = l.src; });
 
   function turn(dir){
     const to = cur + dir;
@@ -1252,12 +1340,12 @@ let bookRerender = () => {};
     const leaf = el("div", { className: "leaf" }, front, back);
     if (dir > 0) {                       // right page lifts and turns over to the left
       leaf.style.left = "50%"; leaf.style.transformOrigin = "left center";
-      front.append(R, shade); back.append(pages[to].left());
-      spread.append(pages[to].right());
+      front.append(R, shade); back.append(pages[to][0].make());
+      spread.append(pages[to][1].make());
     } else {                             // left page turns back to the right
       leaf.style.left = "0"; leaf.style.transformOrigin = "right center";
-      front.append(L, shade); back.append(pages[to].right());
-      spread.prepend(pages[to].left());
+      front.append(L, shade); back.append(pages[to][1].make());
+      spread.prepend(pages[to][0].make());
     }
     book.append(leaf);
     const anim = leaf.animate([{ transform: "rotateY(0)" }, { transform: `rotateY(${dir > 0 ? -180 : 180}deg)` }],
@@ -1266,14 +1354,13 @@ let bookRerender = () => {};
     anim.onfinish = () => {
       const page = back.firstChild;
       if (dir > 0) spread.prepend(page); else spread.append(page);
-      // keep exactly two pages in the spread
-      while (spread.children.length > 2) spread.removeChild(spread.children[1]);
-      leaf.remove(); cur = to; update(cur); warm(cur); busy = false;
+      while (spread.children.length > 2) spread.removeChild(spread.children[1]);   // keep exactly two pages
+      leaf.remove(); cur = to; update(cur); warm(cur); busy = false; turned();
     };
   }
   function swapSingle(to, dir){
     busy = true;
-    const done = () => { render(to); cur = to; warm(cur); busy = false; };
+    const done = () => { render(to); cur = to; warm(cur); busy = false; turned(); };
     if (still()) return done();
     spread.animate([{ transform: "none", opacity: 1 }, { transform: `translateX(${-dir * 28}px) rotateY(${dir * 14}deg)`, opacity: 0 }],
       { duration: 240, easing: "cubic-bezier(.3,0,.2,1)" }).onfinish = () => {
@@ -1286,15 +1373,47 @@ let bookRerender = () => {};
   $("prev").onclick = () => turn(-1);
   book.addEventListener("keydown", e => { if (e.key === "ArrowRight") turn(1); if (e.key === "ArrowLeft") turn(-1); });
   let x0 = null;
-  book.addEventListener("pointerdown", e => { x0 = e.clientX; });
+  book.addEventListener("pointerdown", e => { x0 = e.target.closest("a") ? null : e.clientX; });   // a tap on a link is just a link
   book.addEventListener("pointerup", e => {
     if (x0 == null) return;
     const dx = e.clientX - x0; x0 = null;
     if (Math.abs(dx) > 40) return turn(dx < 0 ? 1 : -1);
     if (!mobile()) { const r = book.getBoundingClientRect(); turn(e.clientX > r.left + r.width / 2 ? 1 : -1); }
   });
-  bookRerender = () => { render(cur); };
-  render(0); warm(0);
+  // crossing the phone/laptop width keeps you on the same photo
+  MQ.addEventListener("change", () => { const was = cur; build(); cur = Math.min(total - 1, mobile() ? was * 2 : Math.floor(was / 2)); render(cur); });
+  bookRerender = () => { build(); render(cur); };
+  // a first-time hint for anyone who hasn't turned a page yet: the page lifts a little and a fingertip glides across, twice
+  const tried = () => { try { return localStorage.getItem("bookTurned") === "1"; } catch (e) { return false; } };
+  function turned(){ try { localStorage.setItem("bookTurned", "1"); } catch (e) {} }
+  function hint(){
+    if (tried() || cur !== 0 || busy || still()) return;
+    const phone = mobile(), w = book.clientWidth, from = phone ? .78 : .88, to = phone ? .3 : .62;
+    const dot = el("span", { className: "hint", "aria-hidden": "true" });
+    dot.style.left = from * 100 + "%"; dot.style.top = phone ? "86%" : "56%"; book.append(dot);   // on a phone it passes under the art, not over Maa
+    const go = -(from - to) * w;
+    const d = dot.animate([
+      { opacity: 0, transform: "translate3d(0,0,0) scale(.7)" },
+      { opacity: .95, transform: "translate3d(0,0,0) scale(1)", offset: .18 },
+      { opacity: .95, transform: `translate3d(${go}px,0,0) scale(1)`, offset: .78 },
+      { opacity: 0, transform: `translate3d(${go - 16}px,0,0) scale(.85)` }],
+      { duration: 1500, iterations: 2, easing: "cubic-bezier(.45,.05,.25,1)" });
+    const pg = phone ? spread : spread.children[1];
+    const lift = pg && pg.animate(phone
+      ? [{ transform: "none" }, { transform: "translate3d(-18px,0,0)", offset: .55 }, { transform: "none" }]
+      : [{ transform: "perspective(1600px) rotateY(0)", transformOrigin: "left center" },
+         { transform: "perspective(1600px) rotateY(-10deg)", transformOrigin: "left center", offset: .55 },
+         { transform: "perspective(1600px) rotateY(0)", transformOrigin: "left center" }],
+      { duration: 1500, iterations: 2, easing: "ease-in-out" });
+    const stop = () => { d.cancel(); if (lift) lift.cancel(); dot.remove(); };
+    d.onfinish = stop;
+    book.addEventListener("pointerdown", stop, { once: true });
+  }
+  if ("IntersectionObserver" in window) {
+    const hio = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { hio.disconnect(); setTimeout(hint, 700); } }, { threshold: .6 });
+    hio.observe(book);
+  }
+  build(); render(0); warm(0);
 })();
 
 /* fit the big lines to the width they have: the name, and the SVG lines */

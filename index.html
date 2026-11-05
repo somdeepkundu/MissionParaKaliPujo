@@ -342,35 +342,48 @@ a,button,summary,label,.r5,.wa,[role="button"]{cursor:pointer}
 .dhint{grid-column:1/-1;font-size:.6rem;opacity:.5;letter-spacing:.02em}
 @keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 @media (prefers-reduced-motion:reduce){.bar .fill{animation:none}}
-/* projected expenses: a jar that fills with the chanda collected so far */
-.goal{margin-top:3.5rem;display:grid;grid-template-columns:auto minmax(0,1fr);gap:clamp(20px,4vw,48px);align-items:center;max-width:40rem}
+/* projected expenses: a clay bhar that fills with the chanda collected so far.
+   Only the bhar, the percentage and what is left show; the breakdown opens on a tap. */
+.goal{margin-top:3.5rem;display:grid;grid-template-columns:auto minmax(0,1fr);gap:clamp(20px,4vw,44px);align-items:start;max-width:36rem}
 .goal h3{grid-column:1/-1;font-weight:400;font-size:var(--s-small);opacity:.7;margin:0 0 -.6rem}
-.jar{width:clamp(104px,22vw,132px);height:auto;display:block;overflow:visible}
-.jar .glass{fill:none;stroke:var(--ink);stroke-width:2;stroke-linejoin:round}
-.jar .shine{fill:none;stroke:#fff;stroke-width:3;stroke-linecap:round;opacity:.55}
-.jar .tick{stroke:var(--ink);stroke-width:1;stroke-dasharray:2 3;opacity:.28}
-.jar .lit{fill:var(--ink);opacity:0;transition:opacity .25s}
-.jar .lit.on{opacity:.1}
-.jar .liq{transform:translateY(136px);transition:transform 1.6s var(--ease)}
-.jar .liq rect,.jar .liq path{fill:var(--gaanda)}
-.jar .wave{animation:wave 3.2s linear infinite}
-.jar .wave.back{opacity:.45;animation-duration:5s;animation-direction:reverse}
+.bhar{width:clamp(96px,20vw,124px);height:auto;display:block;overflow:visible;cursor:pointer;
+  --clay:#B5562D;--clay-d:#6E2C14;--clay-l:#F4E3D5}
+.bhar .pot{fill:var(--clay-l)}
+.bhar .edge{fill:none;stroke:var(--clay);stroke-width:2.4;stroke-linejoin:round}
+.bhar .cap{fill:var(--clay)}
+.bhar .slot{fill:none;stroke:var(--clay-d);stroke-width:3.6;stroke-linecap:round}
+.bhar .turn{fill:none;stroke:var(--clay);stroke-width:.8;opacity:.3}
+.bhar .tick{stroke:var(--clay-d);stroke-width:1;stroke-dasharray:2 3;opacity:0;transition:opacity .3s}
+.goal.open .bhar .tick{opacity:.4}
+.bhar .lit{fill:var(--clay-d);opacity:0;transition:opacity .25s}
+.bhar .lit.on{opacity:.18}
+.bhar .liq{transform:translateY(136px);transition:transform 1.6s var(--ease)}
+.bhar .liq rect,.bhar .liq path{fill:var(--gaanda)}
+.bhar .wave{animation:wave 3.2s linear infinite}
+.bhar .wave.back{opacity:.45;animation-duration:5s;animation-direction:reverse}
+.bhar .coin{fill:var(--gaanda);stroke:var(--clay-d);stroke-width:1;opacity:0}
+.bhar .coin.drop{animation:drop 1s cubic-bezier(.5,0,.9,.5) .1s 2 both}
 @keyframes wave{to{transform:translateX(120px)}}
+@keyframes drop{0%{opacity:0;transform:translateY(-28px)}25%{opacity:1}80%{opacity:1;transform:translateY(3px)}100%{opacity:0;transform:translateY(8px)}}
 .gfig{font-size:var(--s-xl);font-weight:500;font-stretch:85%;font-variant-numeric:tabular-nums;line-height:1}
-.gsub{font-size:var(--s-small);color:var(--soft);margin:.35rem 0 0;font-variant-numeric:tabular-nums}
-.gsub b{font-weight:500;color:var(--jaba-d)}
-.cats{list-style:none;margin:1rem 0 0;padding:0}
+.gleft{font-size:var(--s-body);margin:.4rem 0 0;color:var(--jaba-d)}
+.gmore{margin-top:.9rem;font-size:var(--s-small)}
+.gmore summary{color:var(--soft)}
+.gmore .of{color:var(--soft);margin:.7rem 0 .2rem;font-variant-numeric:tabular-nums}
+.cats{list-style:none;margin:0;padding:0}
 .cat{display:block;width:100%;background:none;border:0;padding:.35rem 0;color:inherit;font:inherit;font-size:var(--s-small);text-align:left;cursor:pointer}
 .cat .lbl{display:flex;justify-content:space-between;gap:1rem}
 .cat .lbl span:last-child{color:var(--soft);font-variant-numeric:tabular-nums}
 .cat .track{display:block;height:3px;margin-top:.3rem;background:rgba(127,127,127,.22)}
-.cat .fill{display:block;height:100%;background:var(--gaanda);width:0;transition:width 1.2s var(--ease) .5s}
+.cat .fill{display:block;height:100%;background:var(--gaanda);width:0;transition:width 1s var(--ease) .15s}
 .cat .its{display:none;color:var(--soft);font-size:.78rem;margin-top:.3rem;line-height:1.45}
 .cat[aria-expanded="true"] .its{display:block}
 .cat[aria-expanded="true"] .lbl span:first-child{text-decoration:underline;text-underline-offset:3px}
-.goal .dhint{margin-top:.2rem}
-@media (max-width:420px){.goal{grid-template-columns:1fr auto}.goal .jar{grid-row:2;grid-column:2}.goal .gbox{grid-row:2;grid-column:1}}
-@media (prefers-reduced-motion:reduce){.jar .wave{animation:none}.jar .liq,.cat .fill{transition:none}}
+.gspon{grid-column:1/-1;font-size:var(--s-small);margin:.3rem 0 0;max-width:44ch}
+.gspon a{color:inherit;text-underline-offset:3px}
+.gspon a:hover{color:var(--jaba-d)}
+.goal .dhint{margin-top:-.4rem}
+@media (prefers-reduced-motion:reduce){.bhar .wave,.bhar .coin.drop{animation:none}.bhar .liq,.cat .fill{transition:none}}
 </style>
 </head>
 <body>
@@ -741,7 +754,12 @@ const D = {
   "ex.left": ["আরও ₹{n} লাগবে", "₹{n} to go", "₹{n} और चाहिए"],
   "ex.done": ["লক্ষ্য পূরণ!", "Goal reached!", "लक्ष्य पूरा!"],
   "ex.note": ["মূর্তি ও রাতের ভোগ দান হিসেবে আসছে, তাই এখানে ধরা নেই।", "Murti and night bhog are donated, so they are not counted here.", "मूर्ति और रात का भोग दान में मिले हैं, इसलिए यहाँ नहीं जोड़े गए।"],
-  "ex.aria": ["চাঁদার বয়াম: {p}% ভরা", "Chanda jar: {p}% full", "चंदे का जार: {p}% भरा"],
+  "ex.aria": ["চাঁদার ভাঁড়: {p}% ভরা", "Chanda bhar: {p}% full", "चंदे की गुल्लक: {p}% भरी"],
+  "ex.sponsor": ["কিছু স্পনসর করতে চাইলে {a}, {b} বা {c}-কে ফোন করুন, অথবা {w} লিখুন।", "Want to sponsor something? Call {a}, {b} or {c}, or write in our {w}.", "कुछ स्पॉन्सर करना चाहें तो {a}, {b} या {c} को फ़ोन करें, या {w} में लिखें।"],
+  "ex.group": ["WhatsApp গ্রুপে", "WhatsApp group", "WhatsApp ग्रुप"],
+  "name.rabi.s": ["রবি ব্যানার্জী", "Rabi Banerjee", "रबि बैनर्जी"],
+  "name.somdeep.s": ["সোমদীপ", "Somdeep", "सोमदीप"],
+  "name.suraj.s": ["সুরজিৎ", "Surajit", "सुरजीत"],
   "ex.pandal": ["প্যান্ডেল ও আলো", "Pandal & light", "पंडाल और रोशनी"],
   "ex.bhog": ["দিনের ভোগ ও রান্না", "Day bhog & kitchen", "दिन का भोग और रसोई"],
   "ex.puja": ["পুজো", "Puja", "पूजा"],
@@ -881,39 +899,40 @@ function drawDist(){
   box.append(bars, specials, el("p", { className: "dhint", textContent: t("dist.hint") }));
 }
 
-/* projected expenses: the jar fills to what has been collected; each band is one group of costs.
-   Tap a group to light its band and see what is in it. */
+/* projected expenses: the bhar fills to what has been collected; each dashed band inside is one group of costs.
+   Tap the bhar or "Details" for the breakdown; tap a group to light its band and list what is in it. */
 function drawGoal(){
-  const box = $("goal"), NS = "http://www.w3.org/2000/svg", B = 166, H = 136;   // jar floor and fill height (svg units)
+  const box = $("goal"), NS = "http://www.w3.org/2000/svg", B = 166, H = 136;   // bhar floor and fill height (svg units)
   const cats = SITE.expenses.map(c => ({ ...c, sum: c.items.reduce((a, i) => a + i[1], 0) }));
   const need = cats.reduce((a, c) => a + c.sum, 0), have = SITE.chanda.total;
   const p = Math.min(1, have / need), pct = Math.round(p * 100);
   const sv = (tag, at) => { const e = document.createElementNS(NS, tag); for (const k in at) e.setAttribute(k, at[k]); return e; };
   const rs = n => num(n.toLocaleString("en-IN"));
-  const body = "M36 14H84V22Q110 27 110 52V148Q110 166 92 166H28Q10 166 10 148V52Q10 27 36 22Z";
-  const svg = sv("svg", { viewBox: "0 0 120 172", class: "jar", role: "img", "aria-label": t("ex.aria", { p: num(pct) }) });
-  const clip = sv("clipPath", { id: "jarclip" }); clip.append(sv("path", { d: body }));
+  // the shape of a matir bhar: small knob, sloping shoulders, round belly, flat foot
+  const body = "M51 21C44 36 8 58 6 100C4 132 16 154 26 166H94C104 154 116 132 114 100C112 58 76 36 69 21Z";
+  const svg = sv("svg", { viewBox: "0 4 120 166", class: "bhar", role: "img", "aria-label": t("ex.aria", { p: num(pct) }) });
+  const clip = sv("clipPath", { id: "bharclip" }); clip.append(sv("path", { d: body }));
   const defs = sv("defs", {}); defs.append(clip); svg.append(defs);
-  const inside = sv("g", { "clip-path": "url(#jarclip)" });
+  const inside = sv("g", { "clip-path": "url(#bharclip)" });
   const wave = y => `M-120 ${y}` + " q15 -4 30 0 t30 0".repeat(4) + " V172 H-120Z";   // 240 wide, period 60
   const liq = sv("g", { class: "liq" });
-  const back = sv("path", { class: "wave back", d: wave(B - H + 1) }), front = sv("path", { class: "wave", d: wave(B - H + 3) });
-  liq.append(back, front, sv("rect", { x: 0, y: B - H + 6, width: 120, height: H + 10 }));
-  // bands: one per group, bottom to top
+  liq.append(sv("path", { class: "wave back", d: wave(B - H + 1) }), sv("path", { class: "wave", d: wave(B - H + 3) }),
+    sv("rect", { x: 0, y: B - H + 6, width: 120, height: H + 10 }));
+  inside.append(sv("path", { class: "pot", d: body }), liq);
   let acc = 0; const lits = [];
   cats.forEach((c, i) => {
     const y0 = B - (acc + c.sum) / need * H, y1 = B - acc / need * H; acc += c.sum;
-    const r = sv("rect", { class: "lit", x: 0, y: y0, width: 120, height: y1 - y0 }); lits.push(r);
-    inside.append(r);
-    if (i < cats.length - 1) inside.append(sv("line", { class: "tick", x1: 10, x2: 110, y1: y0, y2: y0 }));
+    const r = sv("rect", { class: "lit", x: 0, y: y0, width: 120, height: y1 - y0 }); lits.push(r); inside.append(r);
+    if (i < cats.length - 1) inside.append(sv("line", { class: "tick", x1: 0, x2: 120, y1: y0, y2: y0 }));
   });
-  inside.prepend(liq);
-  svg.append(inside, sv("path", { class: "glass", d: body }), sv("path", { class: "glass", d: "M32 6H88V14H32Z" }),
-    sv("path", { class: "shine", d: "M20 60V128" }));
-  // figures and the list of groups
+  ["M10 84Q60 93 110 84", "M6 124Q60 134 114 124"].forEach(d => inside.append(sv("path", { class: "turn", d })));   // wheel marks
+  const coin = sv("ellipse", { class: "coin", cx: 60, cy: 50, rx: 7, ry: 2.6 });
+  svg.append(inside, sv("path", { class: "edge", d: body }), sv("rect", { class: "cap", x: 45, y: 8, width: 30, height: 14, rx: 7 }),
+    coin, sv("path", { class: "slot", d: "M43 56Q60 52.5 77 56" }));
+
+  // shown: the percentage and what is left. Behind "Details": the totals and the groups.
   const fig = el("div", { className: "gfig", textContent: num(0) + "%" });
-  const sub = el("p", { className: "gsub" }, t("ex.of", { a: rs(have), b: rs(need) }) + " · ",
-    el("b", { textContent: have >= need ? t("ex.done") : t("ex.left", { n: rs(need - have) }) }));
+  const left = el("p", { className: "gleft", textContent: have >= need ? t("ex.done") : t("ex.left", { n: rs(need - have) }) });
   const ul = el("ul", { className: "cats" }); acc = 0; const fills = [];
   cats.forEach((c, i) => {
     const cover = Math.max(0, Math.min(1, (have - acc) / c.sum)); acc += c.sum;
@@ -930,12 +949,29 @@ function drawGoal(){
     };
     ul.append(el("li", {}, b));
   });
-  box.replaceChildren(el("h3", { textContent: t("ex.h") }), svg, el("div", { className: "gbox" }, fig, sub, ul),
+  const more = el("details", { className: "gmore" }, el("summary", { textContent: t("s.details") }),
+    el("p", { className: "of", textContent: t("ex.of", { a: rs(have), b: rs(need) }) }), ul);
+  more.ontoggle = () => {
+    box.classList.toggle("open", more.open);
+    fills.forEach(f => f.style.width = more.open ? f.dataset.w : "0");
+    if (!more.open) { lits.forEach(l => l.classList.remove("on")); ul.querySelectorAll(".cat").forEach(x => x.setAttribute("aria-expanded", "false")); }
+  };
+  svg.onclick = () => { more.open = !more.open; };
+
+  // "Want to sponsor something?" with each name a phone link and the group a WhatsApp link
+  const who = { a: SITE.committee[0], b: SITE.committee[1], c: SITE.committee[2] };
+  const spon = el("p", { className: "gspon" }, ...t("ex.sponsor").split(/\{(\w)\}/).map((part, i) => {
+    if (i % 2 === 0) return part;
+    if (part === "w") return el("a", { href: SITE.whatsapp, target: "_blank", rel: "noopener", textContent: t("ex.group") });
+    const c = who[part]; return el("a", { href: "tel:+91" + c.phone.replace(/\s/g, ""), textContent: t(c.name + ".s") });
+  }));
+  box.classList.remove("open");
+  box.replaceChildren(el("h3", { textContent: t("ex.h") }), svg, el("div", { className: "gbox" }, fig, left, more), spon,
     el("p", { className: "dhint", textContent: t("ex.note") }));
-  // fill up the first time the jar is seen; count the percentage up alongside
+
+  // fill up the first time it is seen; a coin drops in and the percentage counts up alongside
   const go = () => {
-    liq.style.transform = `translateY(${(1 - p) * H}px)`;
-    fills.forEach(f => f.style.width = f.dataset.w);
+    liq.style.transform = `translateY(${(1 - p) * H}px)`; coin.classList.add("drop");
     const still = matchMedia("(prefers-reduced-motion:reduce)").matches, t0 = performance.now();
     const step = now => { const k = still ? 1 : Math.min(1, (now - t0) / 1600), e = 1 - Math.pow(1 - k, 3);
       fig.textContent = num(Math.round(pct * e)) + "%"; if (k < 1) requestAnimationFrame(step); };

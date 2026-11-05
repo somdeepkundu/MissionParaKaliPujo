@@ -481,6 +481,15 @@ body.still .jaba{display:none}
 .music:not(.playing)::after{content:"";position:absolute;inset:-6px;border-radius:50%;border:2px solid var(--jaba);opacity:.6;animation:mping 1.8s ease-out infinite}
 @keyframes mping{to{transform:scale(1.35);opacity:0}}
 @media (prefers-reduced-motion:reduce){.music::after{animation:none!important}}
+/* first visit only: a quiet label beside the music button for a few seconds */
+.mtip{position:fixed;z-index:61;pointer-events:none;right:calc(max(14px,env(safe-area-inset-right)) + 70px);bottom:calc(max(14px,env(safe-area-inset-bottom)) + 29px);
+  transform:translate3d(10px,50%,0);opacity:0;transition:opacity .5s var(--ease),transform .5s var(--ease);
+  background:rgba(20,17,16,.86);color:#fff;font-size:var(--s-small);line-height:1.2;padding:.5rem .8rem;border-radius:999px;white-space:nowrap;
+  box-shadow:0 8px 24px rgba(0,0,0,.25);display:flex;align-items:center;gap:.45rem}
+.mtip::after{content:"";position:absolute;right:-5px;top:50%;width:10px;height:10px;margin-top:-5px;background:inherit;transform:rotate(45deg);border-radius:2px}
+.mtip.on{opacity:1;transform:translate3d(0,50%,0)}
+.mtip svg{width:14px;height:14px;flex:none;fill:var(--gaanda)}
+@media (prefers-reduced-motion:reduce){.mtip{transition:opacity .2s}}
 .credit{font-size:.72rem;opacity:.65;margin-top:.6rem}
 .credit a{color:inherit;text-underline-offset:3px}
 /* when the music plays, the title and the red strip glow with the bass (--beat 0..1, set from the audio) */
@@ -701,6 +710,7 @@ body.still .jaba{display:none}
   <i class="wide" style="--x:74%;--s:30px;--d:14s;--w:-10s;--dx:20px"></i><i class="wide near" style="--x:88%;--s:22px;--d:16s;--w:-7s;--dx:-40px"></i>
 </div>
 <audio id="song" src="music/kalipujo-dhak.mp3" loop preload="none"></audio>
+<span class="mtip" id="mtip" aria-hidden="true"></span>
 <button class="music" id="music" type="button" aria-pressed="false" data-ia="m.play" aria-label="Play music">
   <svg class="off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor"/><path d="m16 9 5 6m0-6-5 6"/></svg>
   <svg class="on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>
@@ -928,6 +938,7 @@ const D = {
   "name.suraj": ["সুরজিৎ চেল", "Surajeet Chell", "सुरजीत चेल"],
   "m.play": ["গান চালান", "Play music", "संगीत चलाएँ"],
   "m.mute": ["গান বন্ধ করুন", "Mute music", "संगीत बंद करें"],
+  "m.tip": ["শ্যামাসংগীত চালু / বন্ধ", "Shyama Sangeet on / off", "श्यामा संगीत चालू / बंद"],
   "m.credit": ["গান: আমার মায়ের চরণ বুকে ধরেছি (শ্যামাসংগীত)", "Music: Amar Mayer Charan Buke Dhorechi (Shyama Sangeet)", "संगीत: आमार मायेर चरण बुके धोरेछि (श्यामा संगीत)"],
   "f.addr": ["ঠিকানা", "Address", "पता"],
   "f.place": ["আপার মিশন পাড়া", "Upper Mission Para", "अपर मिशन पाड़ा"],
@@ -1281,7 +1292,16 @@ if ("IntersectionObserver" in window) {
   a.addEventListener("playing", () => { if (an && !raf) { ctx.resume(); loop(); } });
   a.addEventListener("pause", stopGlow);
   const play = () => { meter(); return a.play().catch(() => {}).finally(show); };
-  b.onclick = () => { if (a.paused) { save(true); play(); } else { save(false); a.pause(); show(); } };
+  b.onclick = () => { hideTip(); if (a.paused) { save(true); play(); } else { save(false); a.pause(); show(); } };
+  // first visit: say what the red button is for, softly, for a few seconds
+  const tip = $("mtip"); let tipT;
+  function hideTip(){ clearTimeout(tipT); tip.classList.remove("on"); }
+  let seen = true; try { seen = localStorage.getItem("musicTip") === "1"; localStorage.setItem("musicTip", "1"); } catch (e) {}
+  if (!seen) setTimeout(() => {
+    tip.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18.5A2.5 2.5 0 1 1 7 16V5l12-2v12.5A2.5 2.5 0 1 1 17 13V7.2L9 8.5Z"/></svg>';
+    tip.append(t("m.tip"));
+    tip.classList.add("on"); tipT = setTimeout(hideTip, 4500);
+  }, 1200);
   a.onplay = a.onpause = show;
   const first = e => {
     if (b.contains(e.target)) return;   // the button handles itself

@@ -366,7 +366,11 @@ a,button,summary,label,.r5,.wa,[role="button"]{cursor:pointer}
 @keyframes wave{to{transform:translateX(120px)}}
 @keyframes drop{0%{opacity:0;transform:translateY(-28px)}25%{opacity:1}80%{opacity:1;transform:translateY(3px)}100%{opacity:0;transform:translateY(8px)}}
 .gfig{font-size:var(--s-xl);font-weight:500;font-stretch:85%;font-variant-numeric:tabular-nums;line-height:1}
-.gleft{font-size:var(--s-body);margin:.4rem 0 0;color:var(--jaba-d)}
+.gfig small{font-size:.45em;font-weight:400;color:var(--soft);margin:0 .5em 0 .08em}
+.gfig .sec small{margin-right:0}
+.gfig .sec{color:var(--soft)}
+.gtill{font-size:var(--s-small);color:var(--soft);margin:.3rem 0 0}
+.gleft{font-size:var(--s-body);margin:.7rem 0 0;color:var(--jaba-d)}
 .gmore{margin-top:.9rem;font-size:var(--s-small)}
 .gmore summary{color:var(--soft)}
 .gmore .of{color:var(--soft);margin:.7rem 0 .2rem;font-variant-numeric:tabular-nums}
@@ -962,7 +966,19 @@ function buildGoal(){
     coin, sv("path", { class: "slot", d: "M43 56Q60 52.5 77 56" }));
 
   // shown: the percentage and what is left. Behind "Details": the totals and the groups.
-  const fig = el("div", { className: "gfig", textContent: num(0) + "%" });
+  // in place of the percentage: a live countdown to the start of the puja (first schedule row, IST)
+  const fig = el("div", { className: "gfig", "aria-live": "off" }), till = el("p", { className: "gtill" });
+  const start = ist(SITE.schedule[0].rows[0].start), end = ist(SITE.schedule.at(-1).rows.at(-1).end);
+  const pad = n => String(n).padStart(2, "0");
+  const tick = () => {
+    const now = nowIST(), ms = start - now;
+    if (ms <= 0) { fig.replaceChildren(now < end ? "Puja is on" : "Jai Maa Kali"); till.textContent = ""; return; }
+    const sec = Math.floor(ms / 1000), d = Math.floor(sec / 86400), h = Math.floor(sec / 3600) % 24, m = Math.floor(sec / 60) % 60, s2 = sec % 60;
+    const u = (n, l) => [String(n), el("small", { textContent: l })];
+    fig.replaceChildren(...(d ? u(d, "d") : []), ...u(d ? h : pad(h), "h"), ...u(pad(m), "m"), el("span", { className: "sec" }, pad(s2), el("small", { textContent: "s" })));
+    till.textContent = "until Kali Puja begins";
+  };
+  tick(); clearInterval(window.goalTimer); window.goalTimer = setInterval(tick, 1000);
   const left = el("p", { className: "gleft", textContent: have >= need ? t("ex.done") : t("ex.left", { n: rs(need - have) }) });
   // every item on its own row (grouped under a small label). The dot shows if the chanda so far covers it.
   // Tap a row: its slice lights up in the bhar, and a WhatsApp link to Rabi da offers to sponsor it.
@@ -1005,17 +1021,11 @@ function buildGoal(){
     const c = SITE.committee[0]; return el("a", { href: "tel:+91" + c.phone.replace(/\s/g, ""), textContent: t(c.name + ".s") });
   }));
   box.classList.remove("open"); box.lang = "en";
-  box.replaceChildren(el("h3", { textContent: t("ex.h") }), svg, el("div", { className: "gbox" }, fig, left, more), spon,
+  box.replaceChildren(el("h3", { textContent: t("ex.h") }), svg, el("div", { className: "gbox" }, fig, till, left, more), spon,
     el("p", { className: "dhint", textContent: t("ex.note") }));
 
-  // fill up the first time it is seen; a coin drops in and the percentage counts up alongside
-  const go = () => {
-    liq.style.transform = `translateY(${(1 - p) * H}px)`; coin.classList.add("drop");
-    const still = matchMedia("(prefers-reduced-motion:reduce)").matches, t0 = performance.now();
-    const step = now => { const k = still ? 1 : Math.min(1, (now - t0) / 1600), e = 1 - Math.pow(1 - k, 3);
-      fig.textContent = Math.round(pct * e) + "%"; if (k < 1) requestAnimationFrame(step); };
-    requestAnimationFrame(step);
-  };
+  // fill up the first time it is seen, and a coin drops in
+  const go = () => { liq.style.transform = `translateY(${(1 - p) * H}px)`; coin.classList.add("drop"); };
   if (box.dataset.seen || !("IntersectionObserver" in window)) { requestAnimationFrame(() => requestAnimationFrame(go)); return; }
   const io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { io.disconnect(); box.dataset.seen = 1; go(); } }, { threshold: .35 });
   io.observe(box);

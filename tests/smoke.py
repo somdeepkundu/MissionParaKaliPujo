@@ -67,6 +67,10 @@ with sync_playwright() as p:
         pg.locator("#schedule").scroll_into_view_if_needed(); pg.wait_for_timeout(700)
         check("slim section bar shows below the top", J("document.getElementById('topbar').classList.contains('on')"))
         check("slim bar marks the current section", J("(document.querySelector('#topbar a.cur')||{}).getAttribute?.('href')") == "#schedule", str(J("(document.querySelector('#topbar a.cur')||{}).outerHTML")))
+        check("drawing poster in the page language", J("document.getElementById('poster-img').getAttribute('src')") == "img/poster-bn.jpg")
+        pg.click("#poster"); pg.wait_for_timeout(300)
+        check("drawing competition card with groups and contact", J("document.querySelectorAll('#sitdraw .ev-groups li').length") == 3 and J("document.querySelector('#sitdraw a[href^=\"tel:\"]')!==null"))
+        check("poster opens full size", J("document.getElementById('pdlg').open")); pg.mouse.click(5, 5); pg.wait_for_timeout(200)
         check("akash prodip hangs in the schedule", J("!!document.querySelector('.sched .lantern svg')"))
         # photo book
         pg.locator("#book").scroll_into_view_if_needed(); pg.wait_for_timeout(1200)

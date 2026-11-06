@@ -558,6 +558,30 @@ section[id]{scroll-margin-top:50px}
 .bookline{display:flex;align-items:center;gap:.8rem}
 .bplay{font:inherit;font-size:.78rem;color:var(--fg-soft);background:none;border:1px solid rgba(127,127,127,.4);border-radius:999px;padding:.3rem .75rem;min-height:32px;cursor:pointer}
 .bplay:hover{color:var(--fg)}
+/* children's drawing competition card: poster colours as a thin crayon edge, the rest in the page's own style */
+.event{grid-column:7/13;margin-top:var(--sp-xl);display:grid;grid-template-columns:auto minmax(0,1fr);gap:var(--sp-l);align-items:start;
+  padding:var(--sp-l);border-radius:16px;background:#fff;position:relative;overflow:hidden;box-shadow:0 14px 34px -22px rgba(0,0,0,.35);
+  border:1px solid rgba(0,0,0,.06)}
+.event::before{content:"";position:absolute;left:0;right:0;top:0;height:5px;background:linear-gradient(90deg,#1FC3D8,#F7DD5A 45%,#F25C54 75%,#2B4DC1)}
+.ev-poster{padding:0;border:0;background:none;cursor:zoom-in}
+.ev-poster img{display:block;width:clamp(92px,9vw,120px);height:auto;border-radius:8px;transform:rotate(-2.5deg);box-shadow:0 10px 22px -12px rgba(0,0,0,.5);transition:transform .25s var(--ease)}
+.ev-poster:hover img{transform:rotate(0) scale(1.03)}
+.ev-tag{margin:0;font-size:.74rem;letter-spacing:.04em;color:#2B4DC1}
+.event h3{margin:.1rem 0 .2rem;font-size:var(--s-xl);font-weight:500;font-stretch:85%;line-height:1;color:#2B4DC1}
+.ev-when{margin:0;font-size:var(--s-small);color:var(--ink)}
+.ev-groups{list-style:none;margin:.7rem 0 0;padding:0;display:flex;flex-wrap:wrap;gap:.35rem}
+.ev-groups li{display:flex;align-items:center;gap:.35rem;font-size:.78rem;padding:.25rem .6rem .25rem .3rem;border-radius:999px;background:var(--sheet2)}
+.ev-groups b{display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:#F25C54;color:#fff;font-size:.7rem;font-weight:600}
+.ev-groups li:nth-child(2) b{background:#1FB5C9}.ev-groups li:nth-child(3) b{background:#E5B92E}
+.ev-note{margin:.6rem 0 0;font-size:.78rem;color:var(--soft)}
+.ev-act{margin:.7rem 0 0;display:flex;flex-wrap:wrap;gap:.4rem 1rem;font-size:var(--s-small)}
+.ev-act a{color:var(--jaba-d);text-underline-offset:3px}
+.ev-plink{font:inherit;color:var(--soft);background:none;border:0;padding:0;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+@media (max-width:760px){.event{grid-column:1/-1;order:1;grid-template-columns:auto minmax(0,1fr);gap:var(--sp-m);padding:var(--sp-m) var(--sp-m) var(--sp-l)}}
+.pdlg{padding:0;border:0;background:transparent;max-width:min(92vw,560px);max-height:92vh}
+.pdlg::backdrop{background:rgba(0,0,0,.78)}
+.pdlg img{display:block;width:100%;height:auto;max-height:90vh;object-fit:contain;border-radius:10px}
+.pdlg-x{position:absolute;top:8px;right:8px;width:40px;height:40px;border-radius:50%;border:0;background:rgba(0,0,0,.6);color:#fff;font-size:18px;cursor:pointer}
 .credit{font-size:.75rem;opacity:.8;margin-top:.6rem}
 .credit a{color:inherit;text-underline-offset:3px}
 /* when the music plays, the title and the red strip glow with the bass (--beat 0..1, set from the audio) */
@@ -703,6 +727,24 @@ section[id]{scroll-margin-top:50px}
         <a class="cal-g" id="cal-g" target="_blank" rel="noopener" data-i="cal.google">Google Calendar</a>
         <p data-i="cal.hint">রিমাইন্ডার সহ পুজোর সব সময় ফোনে</p>
       </div>
+      <!-- children's drawing competition: the poster's facts as a page card; the poster itself one tap away -->
+      <div class="event" id="sitdraw">
+        <button type="button" class="ev-poster" id="poster" data-ia="poster.cap" aria-label="পোস্টার দেখুন">
+          <img id="poster-img" src="img/poster-bn.jpg" alt="" data-ialt="poster.alt" width="1100" height="1424" loading="lazy">
+        </button>
+        <div class="ev-body">
+          <p class="ev-tag" data-i="ev.tag">সব বয়সের ছোটদের জন্য</p>
+          <h3 data-i="ev.h">বসে আঁকো</h3>
+          <p class="ev-when" data-i="ev.when">৯ নভেম্বর, সকাল ১০টা · গোরাদার বাড়ি</p>
+          <ul class="ev-groups">
+            <li><b data-i="ev.ga">ক</b><span data-i="ev.gaV">৫–১০ বছর</span></li>
+            <li><b data-i="ev.gb">খ</b><span data-i="ev.gbV">১০–১৫ বছর</span></li>
+            <li><b data-i="ev.gc">গ</b><span data-i="ev.gcV">সব বয়সের ছোটরা</span></li>
+          </ul>
+          <p class="ev-note" data-i="ev.paper">আঁকার কাগজ আমাদের তরফ থেকে দেওয়া হবে</p>
+          <p class="ev-act"><a href="tel:+919679443301"><span data-i="ev.call">নাম দিতে: সোমদীপ</span> 96794 43301</a><button type="button" class="ev-plink" id="poster2" data-i="poster.cap">পোস্টার দেখুন</button></p>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -808,6 +850,7 @@ section[id]{scroll-margin-top:50px}
   <svg class="on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>
 </button>
 
+<dialog id="pdlg" class="pdlg" aria-label="পোস্টার"><img id="pdlg-img" src="" alt=""><button type="button" class="pdlg-x" aria-label="বন্ধ করুন" data-ia="pj.close">✕</button></dialog>
 <dialog id="pj" aria-labelledby="pj-h">
   <div class="pj">
     <div class="pj-top"><span data-i="r.year">১৪৩৩ বঙ্গাব্দ</span><span id="pj-h" data-i="pj.month">কার্তিক</span></div>
@@ -1082,6 +1125,17 @@ const D = {
   "ex.nextH": ["এখনও যা লাগবে — একটা বেছে স্পনসর করুন", "Still needed — pick one to sponsor", "अभी चाहिए — एक चुनकर स्पॉन्सर करें"],
   "ex.spon": ["স্পনসর করুন", "Sponsor", "स्पॉन्सर करें"],
   "ex.all": ["সব খরচ দেখুন ও স্পনসর করুন ({n}টি)", "See all costs & sponsor ({n})", "सब खर्च देखें और स्पॉन्सर करें ({n})"],
+  "ev.tag": ["সব বয়সের ছোটদের জন্য", "For children, beyond age", "उम्र की सीमा से परे, बच्चों के लिए"],
+  "ev.h": ["বসে আঁকো", "Sit & Draw", "चित्रकला प्रतियोगिता"],
+  "ev.when": ["৯ নভেম্বর, সকাল ১০টা · গোরাদার বাড়ি", "9 Nov, 10 am · Gora Da's house", "९ नवंबर, सुबह १० बजे · गोरा दा का घर"],
+  "ev.ga": ["ক", "A", "A"], "ev.gaV": ["৫–১০ বছর", "5–10 years", "५–१० साल"],
+  "ev.gb": ["খ", "B", "B"], "ev.gbV": ["১০–১৫ বছর", "10–15 years", "१०–१५ साल"],
+  "ev.gc": ["গ", "C", "C"], "ev.gcV": ["সব বয়সের ছোটরা", "Kids of all ages", "हर उम्र के बच्चे"],
+  "ev.paper": ["আঁকার কাগজ আমাদের তরফ থেকে দেওয়া হবে", "Drawing paper will be provided by us", "ड्राइंग पेपर हमारी तरफ़ से दिया जाएगा"],
+  "ev.call": ["নাম দিতে: সোমদীপ", "To join: Somdeep", "नाम देने के लिए: सोमदीप"],
+  "poster.h": ["বসে আঁকো · ৯ নভেম্বর, সকাল ১০টা", "Sit & Draw · 9 Nov, 10 am", "चित्रकला प्रतियोगिता · ९ नवंबर, सुबह १०"],
+  "poster.cap": ["পোস্টার দেখুন", "See the poster", "पोस्टर देखें"],
+  "poster.alt": ["বসে আঁকো প্রতিযোগিতার পোস্টার", "Sit & Draw competition poster", "चित्रकला प्रतियोगिता का पोस्टर"],
   "ex.pandal": ["প্যান্ডেল ও আলো", "Pandal & light", "पंडाल और रोशनी"],
   "ex.bhog": ["দিনের ভোগ ও রান্না", "Day bhog & kitchen", "दिन का भोग और रसोई"],
   "ex.puja": ["পুজো", "Puja", "पूजा"],
@@ -1506,6 +1560,10 @@ document.querySelector(".pay-copy")?.addEventListener("click", e => {
   const btn = e.currentTarget, done = () => { btn.textContent = t("pay.copied"); setTimeout(() => btn.textContent = t("pay.copy"), 1600); };
   if (navigator.clipboard) navigator.clipboard.writeText("papaisomdeepkundu@okaxis").then(done, done); else done();
 });
+/* the poster follows the page language; a tap opens it full size */
+function drawPoster(){ const i = $("poster-img"); if (i) i.src = `img/poster-${LANG}.jpg`; }
+["poster", "poster2"].forEach(id => $(id)?.addEventListener("click", () => { const d = $("pdlg"), im = $("pdlg-img"); im.src = `img/poster-${LANG}.jpg`; im.alt = t("poster.alt"); d.showModal(); }));
+$("pdlg")?.addEventListener("click", e => { if (e.target.id !== "pdlg-img") $("pdlg").close(); });
 /* panjika */
 $("pj-open").onclick = () => $("pj").showModal();
 $("pj").addEventListener("click", e => { if (e.target === $("pj")) $("pj").close(); });
@@ -1770,7 +1828,7 @@ function applyStatic(){
 function setLang(l){
   LANG = l;
   try { localStorage.setItem("lang", l); } catch (e) {}
-  applyStatic(); drawTheme(); drawCount(); drawSchedule(); drawChanda(); drawPeople(); drawPay(); drawCal(); drawGoal(); drawDist(); bookRerender(); fitAll(); observeRise();
+  applyStatic(); drawTheme(); drawCount(); drawSchedule(); drawChanda(); drawPeople(); drawPay(); drawCal(); drawPoster(); drawGoal(); drawDist(); bookRerender(); fitAll(); observeRise();
 }
 document.querySelectorAll(".lang button").forEach(b => b.onclick = () => setLang(b.dataset.lang));
 document.querySelectorAll(".wa").forEach(a => a.href = SITE.whatsapp);

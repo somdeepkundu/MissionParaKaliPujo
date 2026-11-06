@@ -34,6 +34,7 @@ and stops with `FAIL` if anything has gone missing. Items without ✓ need a qui
 
 ## Schedule (white)
 - ✓ Two days of rows; the current row lights up, the next one says "এর পরে"
+- ✓ বসে আঁকো card: 9 Nov 10 am, Gora Da's house, groups ক/খ/গ, paper provided, call Somdeep; ✓ poster in the page language (bn / en / hi), ✓ opens full size
 - Bhog photo with caption inside, slowly sliding
 - ✓ Akash prodip hanging by its string, swaying, soft glow
 

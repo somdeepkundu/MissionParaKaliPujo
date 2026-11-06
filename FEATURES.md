@@ -22,7 +22,7 @@ and stops with `FAIL` if anything has gone missing. Items without ✓ need a qui
 
 ## Invitation (white)
 - Title, invitation text and four dates beside the pandal photo (1 : 1.618)
-- Caption inside the photo; photo slides slowly to show all of it
+- Caption inside the photo; photo moves slowly and gently (front-page photos are calmer than the photo book)
 - ✓ Faint alpona lotus behind, turning very slowly, drifting with the scroll
 
 ## Schedule (white)

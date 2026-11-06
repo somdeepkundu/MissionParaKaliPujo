@@ -1368,8 +1368,9 @@ const PAN = (() => {
       const tall = a < r, hid = tall ? 1 - a / r : 1 - r / a;            // share of the photo out of view
       img.classList.add(tall ? "pan-y" : "pan-x");
       const travel = hid * (tall ? W / a : H * a);                        // px the window travels
-      const sweep = Math.min(5000, Math.max(2600, travel / 80 * 1000));   // about 80 px a second
-      const hold = 700, dur = 2 * (sweep + hold);
+      const calm = !!img.dataset.calm;                                     // the three photos on the front pages move slowly
+      const sweep = calm ? Math.min(16000, Math.max(9000, travel / 18 * 1000)) : Math.min(5000, Math.max(2600, travel / 80 * 1000));
+      const hold = calm ? 2500 : 700, dur = 2 * (sweep + hold);
       let A = "translate3d(0,0,0)", B = tall ? `translate3d(0,${-hid * 100}%,0)` : `translate3d(${-hid * 100}%,0,0)`;
       if (img.dataset.rev) [A, B] = [B, A];                               // every other photo goes the other way
       const e = "cubic-bezier(.45,.05,.35,1)";
@@ -1379,9 +1380,11 @@ const PAN = (() => {
     } else {
       // nearly fits: come a little closer and drift right to left, so faces at both sides get their moment
       img.style.transformOrigin = `50% ${fy * 100}%`;
-      kf = [{ transform: "scale(1.1) translate3d(4%,0,0)" }, { transform: "scale(1.1) translate3d(-4%,0,0)" }];
+      const calm = !!img.dataset.calm;
+      kf = calm ? [{ transform: "scale(1.04) translate3d(1.5%,0,0)" }, { transform: "scale(1.04) translate3d(-1.5%,0,0)" }]
+                : [{ transform: "scale(1.1) translate3d(4%,0,0)" }, { transform: "scale(1.1) translate3d(-4%,0,0)" }];
       if (img.dataset.rev) kf.reverse();
-      opts = { duration: 4500, iterations: Infinity, direction: "alternate", easing: "ease-in-out" };
+      opts = { duration: calm ? 16000 : 4500, iterations: Infinity, direction: "alternate", easing: "ease-in-out" };
     }
     const an = img.animate(kf, opts);
     anims.set(img, an);
@@ -1396,7 +1399,7 @@ const PAN = (() => {
   addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => document.querySelectorAll("img[data-pan]").forEach(start), 250); });
   return { add };
 })();
-document.querySelectorAll(".shot img").forEach(PAN.add);
+document.querySelectorAll(".shot img").forEach(img => { img.dataset.calm = "1"; PAN.add(img); });
 
 /* ================= photo book =================
    Every photo is shown whole, with its year and caption on it; around it, a blurred copy of the photo instead of black.

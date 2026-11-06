@@ -31,9 +31,9 @@ and stops with `FAIL` if anything has gone missing. Items without ✓ need a qui
 - ✓ Akash prodip hanging by its string, swaying, soft glow
 
 ## Photo book
-- ✓ Every photo is shown whole (never cropped), with year (marigold) and caption on it; around it a soft blurred copy of the same photo instead of black; Maa's artwork first, never moves
+- ✓ Every page is a photo with year (marigold) and caption on it; ✓ photos glide (≈80 px/s, short rests), one left→right, the next right→left; Maa's artwork first, never moves
 - ✓ Laptop: two photos per spread, 3D page turn ~0.75 s (8 spreads). Phone: one photo per page (15 pages), quick slide right to left
-- ✓ Turns by itself every ~4 s while on screen (back to the start after the last page); ✓ any touch, click or key leaves it alone for 12 s
+- ✓ Turns by itself every ~6.5 s while on screen (back to the start after the last page); ✓ any touch, click or key leaves it alone for 12 s
 - The next two pages are loaded ahead, so a turn never shows an empty page
 - ✓ First time only: fingertip hint + page lift; "Slide to begin →" on the art page
 - ✓ Music button tucks aside while the book is on screen

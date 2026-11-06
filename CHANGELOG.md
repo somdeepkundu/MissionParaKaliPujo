@@ -7,7 +7,8 @@ To bring back an older version of the page: `git checkout <id> -- index.html`, t
 
 ## 2026-11-06
 
-- Photo book: photos shown whole (no crop) with a soft blurred fill instead of black; quicker page changes; turns by itself while on screen; singer credited (কণ্ঠ: অনুরাধা পড়োয়াল)
+- Photo book: moving photos back, about twice as fast (≈80 px/s, short rests); neighbouring photos glide in opposite directions; book turns every 6.5 s so each glide finishes
+- `14e60ce` Photo book: whole photos with a soft blurred fill (replaced next); singer credit
 - `94c2052` Photo book: group photos glided right to left (replaced next by whole photos)
 - `77d453a` Music label each time the music starts (বাংলা → हिन्दी → English); switch in the same order
 - `3336cca` Changelog: restore points by commit id

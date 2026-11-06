@@ -169,8 +169,8 @@ h2{font-size:var(--s-head);font-weight:300;font-stretch:80%;line-height:.98;lett
 .shot{position:relative;overflow:hidden;margin:0}
 .shot img{display:block;width:100%;height:100%;object-fit:cover}
 /* a long photo is laid out at full length and its window slides over it (see PAN in the script) */
-.shot img.pan-y{position:absolute;left:0;top:0;right:auto;bottom:auto;width:100%;height:auto;max-width:none;object-fit:fill}
-.shot img.pan-x{position:absolute;left:0;top:0;right:auto;bottom:auto;height:100%;width:auto;max-width:none;object-fit:fill}
+.shot img.pan-y,.pg.photo img.pan-y{position:absolute;left:0;top:0;right:auto;bottom:auto;width:100%;height:auto;max-width:none;object-fit:fill}
+.shot img.pan-x,.pg.photo img.pan-x{position:absolute;left:0;top:0;right:auto;bottom:auto;height:100%;width:auto;max-width:none;object-fit:fill}
 img[data-pan]{will-change:transform;backface-visibility:hidden}
 .shot figcaption{position:absolute;left:0;right:0;bottom:0;padding:var(--sp-xl) var(--sp-m) var(--sp-s);color:#fff;font-size:var(--s-small);line-height:1.35;
   background:linear-gradient(to top,rgba(12,8,6,.72),rgba(12,8,6,.28) 60%,transparent);text-shadow:0 1px 2px rgba(0,0,0,.35)}
@@ -214,7 +214,7 @@ details summary:hover{text-decoration-thickness:2px}
 .spread{position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr}
 .pg{position:relative;overflow:hidden;background:var(--sheet);color:var(--ink)}
 .pg.photo{background:var(--bg2)}
-.pg.photo img{position:absolute;inset:0;z-index:1;width:100%;height:100%;object-fit:contain}
+.pg.photo img{position:absolute;inset:0;z-index:1;width:100%;height:100%;object-fit:cover}
 /* the whole photo is shown, never cropped; the space around it is the same photo, softly blurred and dimmed */
 .pg.photo .bd{position:absolute;inset:-10%;background:center/cover no-repeat;filter:blur(26px) brightness(.85) saturate(1.35);opacity:0;transition:opacity .4s}
 .pg.photo .bd.in{opacity:1}
@@ -1368,9 +1368,10 @@ const PAN = (() => {
       const tall = a < r, hid = tall ? 1 - a / r : 1 - r / a;            // share of the photo out of view
       img.classList.add(tall ? "pan-y" : "pan-x");
       const travel = hid * (tall ? W / a : H * a);                        // px the window travels
-      const sweep = Math.min(14000, Math.max(4500, travel / 34 * 1000)); // about 34 px a second
-      const hold = 1400, dur = 2 * (sweep + hold);
-      const A = "translate3d(0,0,0)", B = tall ? `translate3d(0,${-hid * 100}%,0)` : `translate3d(${-hid * 100}%,0,0)`;
+      const sweep = Math.min(5000, Math.max(2600, travel / 80 * 1000));   // about 80 px a second
+      const hold = 700, dur = 2 * (sweep + hold);
+      let A = "translate3d(0,0,0)", B = tall ? `translate3d(0,${-hid * 100}%,0)` : `translate3d(${-hid * 100}%,0,0)`;
+      if (img.dataset.rev) [A, B] = [B, A];                               // every other photo goes the other way
       const e = "cubic-bezier(.45,.05,.35,1)";
       kf = [{ transform: A, offset: 0 }, { transform: A, offset: hold / dur, easing: e }, { transform: B, offset: (hold + sweep) / dur },
             { transform: B, offset: (2 * hold + sweep) / dur, easing: e }, { transform: A, offset: 1 }];
@@ -1379,14 +1380,15 @@ const PAN = (() => {
       // nearly fits: come a little closer and drift right to left, so faces at both sides get their moment
       img.style.transformOrigin = `50% ${fy * 100}%`;
       kf = [{ transform: "scale(1.1) translate3d(4%,0,0)" }, { transform: "scale(1.1) translate3d(-4%,0,0)" }];
-      opts = { duration: 9000, iterations: Infinity, direction: "alternate", easing: "ease-in-out" };
+      if (img.dataset.rev) kf.reverse();
+      opts = { duration: 4500, iterations: Infinity, direction: "alternate", easing: "ease-in-out" };
     }
     const an = img.animate(kf, opts);
     anims.set(img, an);
     if (io) io.observe(img);
   }
-  function add(img){
-    img.dataset.pan = "";
+  function add(img, rev){
+    img.dataset.pan = ""; if (rev) img.dataset.rev = "1";
     if (img.complete && img.naturalWidth) requestAnimationFrame(() => start(img));
     else img.addEventListener("load", () => start(img), { once: true });
   }
@@ -1409,11 +1411,12 @@ let bookRerender = () => {};
     const post = t("book.end3"); if (post) parts.push(" " + post);
     return parts;
   };
-  function photoPage(p, big, cap, word){
+  function photoPage(p, big, cap, word, rev){
     // the whole photo, never cropped; around it a soft blurred copy of itself instead of black
     const img = el("img", { src: p.src, alt: typeof cap === "string" ? cap : "", decoding: "async", loading: "lazy" });
     const bd = el("span", { className: "bd", "aria-hidden": "true" });
     img.addEventListener("load", () => { bd.style.backgroundImage = `url("${p.src}")`; bd.classList.add("in"); }, { once: true });
+    PAN.add(img, rev);                                                  // glides across; one photo left to right, the next right to left
     const ov = el("div", { className: "ov" });
     if (big) ov.append(el("div", { className: "yr" + (word ? " word" : ""), textContent: big }));
     ov.append(el("p", { className: "cap" }, ...[].concat(cap)));
@@ -1425,7 +1428,7 @@ let bookRerender = () => {};
   // the leaves in order: the art, each photo, "more photos?"; a spread adds a closing page when the count is odd
   const leaves = () => {
     const L = [{ make: artPage },
-      ...P.map(p => ({ src: p.src, make: () => photoPage(p, p.year ? num(p.year) : "", capOf(p)) })),
+      ...P.map((p, i) => ({ src: p.src, make: () => photoPage(p, p.year ? num(p.year) : "", capOf(p), false, i % 2 === 1) })),
       { src: "img/hero-tall.jpg", make: () => photoPage({ src: "img/hero-tall.jpg", pos: "50% 60%" }, t("book.more"), moreCap(), true) }];
     if (!mobile() && L.length % 2) L.push({ make: endPage });
     return L;
@@ -1549,7 +1552,7 @@ let bookRerender = () => {};
         }
       }
       if (onScreen) tick();
-    }, 4200);
+    }, 6500);
   }
   const hush = () => { quietUntil = performance.now() + 12000; };
   ["pointerdown", "keydown"].forEach(k => book.addEventListener(k, hush));

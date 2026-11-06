@@ -50,9 +50,9 @@ and stops with `FAIL` if anything has gone missing. Items without ✓ need a qui
 - ✓ Total ₹30,771, receipts, days; the drawing with caption inside; ✓ three clay diyas with live flames under it
 - ✓ UPI-তে চাঁদা দিন: pay Somdeep Kundu (papaisomdeepkundu@okaxis) — QR code on laptops, "Open in a UPI app" button on phones, copy button; then WhatsApp Somdeep (ready message) with name and amount for the digital receipt
 - ✓ Clay bhar fills to the share collected; live countdown to the puja; ₹ still needed
-- ✓ Details: 19 expense items in 5 groups, dots for covered / part / still needed, "Sponsor this → WhatsApp Robi da" with a ready message
+- ✓ Details: 19 expense items in 5 groups, dots for covered / part / still needed / ✓ donated (donated items shown with the giver and left out of the amount needed), "Sponsor this → WhatsApp Robi da" with a ready message
 - ✓ Sponsor line: Rabindranath (Robi) Banerjee (phone), Contact, community WhatsApp group
-- ✓ Donation statistics (4 bands, no names) and special donations (Murti — Rudrani De (Sasa); night bhog — Udayan Sengupta (Bile da))
+- ✓ Donation statistics (4 bands, no names) and special donations (Murti — Rudrani De (Sasa); night bhog — Udayan Sengupta (Bile da); laddu — Suparna (Mampi) Dey)
 - Note: donor names deliberately hidden; murti and night bhog not counted in expenses
 - ✓ Faint alpona in the corner
 

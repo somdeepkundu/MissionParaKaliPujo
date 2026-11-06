@@ -96,10 +96,11 @@ with sync_playwright() as p:
         check("bhar countdown ticks", c1 != c2 or "পুজো" in c1, f"{c1} / {c2}")
         pg.click(".gmore summary"); pg.wait_for_timeout(200)
         check("expenses list has 19 items", J("document.querySelectorAll('.it').length") == 19)
+        check("laddu shows donated by Suparna (Mampi) Dey, not counted", "মাম্পি" in J("document.querySelector('.it.gift').textContent") and "১৬,৪২৯" in J("document.querySelector('.gleft').textContent"), J("document.querySelector('.gleft').textContent"))
         links = J("[...document.querySelectorAll('.gspon a')].map(a=>a.getAttribute('href'))")
         check("sponsor line links: phone, contact, group", len(links) == 3 and links[0].startswith("tel:") and links[1] == "#contact" and "whatsapp" in links[2], str(links))
         check("UPI pay: upi link, QR file, WhatsApp receipt message", J("document.querySelector('.pay-btn').href.startsWith('upi://pay?pa=papaisomdeepkundu')") and J("document.getElementById('pay-wa').href.includes('wa.me/919679443301?text=')") and J("document.querySelector('.pay-qr').naturalWidth>0 || document.querySelector('.pay-qr').loading==='lazy'"))
-        check("donation bars and special donations", J("document.querySelectorAll('#dist .bar').length") == 4 and J("document.querySelectorAll('.specials li').length") == 2)
+        check("donation bars and special donations", J("document.querySelectorAll('#dist .bar').length") == 4 and J("document.querySelectorAll('.specials li').length") == 3)
         check("diyas and alpona on the white pages", J("document.querySelectorAll('.diya').length") == 3 and J("document.querySelectorAll('.alpona svg').length") == 2)
         # contact + footer
         ppl = J("[...document.querySelectorAll('#people li')].map(l=>l.textContent)")

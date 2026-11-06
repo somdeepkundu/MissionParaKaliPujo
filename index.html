@@ -433,6 +433,10 @@ a,button,summary,label,.r5,.wa,[role="button"]{cursor:pointer}
 .dot.full,.full .dot{background:var(--gaanda)}
 .dot.part,.part .dot{background:linear-gradient(90deg,var(--gaanda) 50%,transparent 50%)}
 .dot.none,.none .dot{border-color:rgba(127,127,127,.55)}
+.dot.gift,.gift .dot{background:var(--jaba);border-color:var(--jaba)}
+.it.gift{cursor:default}
+.it.gift .nm small{display:block;color:var(--soft);font-size:.74rem;margin-top:.1rem}
+.it.gift .v{color:var(--jaba-d)}
 .spon{display:none;font-size:.78rem;padding:.35rem 0 .5rem 1.15rem;color:var(--jaba-d);text-underline-offset:3px}
 li:has(> .it[aria-expanded="true"]) .spon{display:block}
 .key{font-size:.72rem;color:var(--soft);margin:.7rem 0 0;display:flex;gap:.35rem;align-items:center;flex-wrap:wrap;white-space:pre}
@@ -847,7 +851,7 @@ const SITE = {
     {k:"dist.b3", n:10, sum:5901},
     {k:"dist.b4", n:16, sum:19402},
     ],
-    specials: ["sp.murti", "sp.bhog"],
+    specials: ["sp.murti", "sp.bhog", "sp.laddu"],
   },
 
 
@@ -858,7 +862,7 @@ const SITE = {
     { k: "ex.pandal", items: [[["প্যান্ডেল, আলো ও ভ্যান", "Pandal, light & van", "पंडाल, लाइट और वैन"], 18500]] },
     { k: "ex.bhog",   items: [[["দিনের ভোগ", "Day bhog", "दिन का भोग"], 6500], [["দিনের সবজি", "Day sabji", "दिन की सब्ज़ी"], 3500],
                               [["রাঁধুনি ও জোগাড়ে", "Cook + helpers", "रसोइया और सहायक"], 3200], [["গ্যাস", "Gas", "गैस"], 1000],
-                              [["ফল", "Fruits", "फल"], 700], [["লাড্ডু", "Laddu", "लड्डू"], 200]] },
+                              [["ফল", "Fruits", "फल"], 700], [["লাড্ডু", "Laddu", "लड्डू"], 200, "don.mampi"]] },   // laddu: given by Suparna (Mampi) Dey, so not needed from chanda
     { k: "ex.puja",   items: [[["ঢাকি", "Dhaki", "ढाकी"], 2000], [["দশকর্মা", "Dashakarma", "दशकर्मा सामग्री"], 1500],
                               [["পুরোহিত", "Purohit", "पुरोहित"], 1000], [["ঠাকুরের জিনিস", "Thakurer jinis", "ठाकुर का सामान"], 500]] },
     { k: "ex.power",  items: [[["সাউন্ড সিস্টেম", "Sound system", "साउंड सिस्टम"], 2300], [["ইলেকট্রিক পারমিশন", "Electric permission", "बिजली की अनुमति"], 3000],
@@ -1073,6 +1077,11 @@ const D = {
   "dist.h1": ["দানের পরিসংখ্যান", "Donation statistics", "दान के आँकड़े"],
   "dist.h2": ["বিশেষ দান", "Special donations", "विशेष दान"],
   "sp.murti": ["মূর্তি দান ২০২৬ — রুদ্রাণী দে (সাসা)", "Murti donation 2026 — Rudrani De (Sasa)", "मूर्ति दान २०२६ — रुद्राणी दे (सासा)"],
+  "sp.laddu": ["লাড্ডু দান ২০২৬ — সুপর্ণা (মাম্পি) দে", "Laddu donation 2026 — Suparna (Mampi) Dey", "लड्डू दान २०२६ — सुपर्णा (माम्पी) दे"],
+  "don.mampi": ["সুপর্ণা (মাম্পি) দে", "Suparna (Mampi) Dey", "सुपर्णा (माम्पी) दे"],
+  "ex.giftBy": ["{x}-র দান", "donated by {x}", "{x} का दान"],
+  "ex.gift": ["দান", "donated", "दान"],
+  "ex.kgift": ["দান হয়েছে", "donated", "दान हो गया"],
   "sp.bhog": ["রাতের ভোগ দান ২০২৬ — উদয়ন সেনগুপ্ত (বিলে দা)", "Night bhog donation 2026 — Udayan Sengupta (Bile da)", "रात के भोग का दान २०२६ — उदयन सेनगुप्ता (बिले दा)"],
   "dist.hint": ["Donor names are deliberately hidden.", "Donor names are deliberately hidden.", "Donor names are deliberately hidden."],
   "dist.count": ["{n} টি রসিদ · ₹{s}", "{n} receipts · ₹{s}", "{n} रसीदें · ₹{s}"],
@@ -1217,7 +1226,8 @@ function drawDist(){
    Tap the bhar or "Details" for the breakdown; tap a group to light its band and list what is in it. */
 function drawGoal(){
   const box = $("goal"), NS = "http://www.w3.org/2000/svg", B = 166, H = 136;   // bhar floor and fill height (svg units)
-  const cats = SITE.expenses.map(c => ({ ...c, sum: c.items.reduce((a, i) => a + i[1], 0) }));
+  const cost = i => i[2] ? 0 : i[1];                                    // a donated item needs nothing from the chanda
+  const cats = SITE.expenses.map(c => ({ ...c, sum: c.items.reduce((a, i) => a + cost(i), 0) }));
   const need = cats.reduce((a, c) => a + c.sum, 0), have = SITE.chanda.total;
   const p = Math.min(1, have / need), pct = Math.round(p * 100);
   const sv = (tag, at) => { const e = document.createElementNS(NS, tag); for (const k in at) e.setAttribute(k, at[k]); return e; };
@@ -1235,7 +1245,8 @@ function drawGoal(){
   inside.append(sv("path", { class: "pot", d: body }), liq);
   let acc = 0; const lits = [];
   cats.forEach((c, i) => {
-    c.items.forEach(([, v]) => {
+    c.items.forEach(it => {
+      const v = cost(it);
       const y0 = B - (acc + v) / need * H, y1 = B - acc / need * H; acc += v;
       const r = sv("rect", { class: "lit", x: 0, y: y0, width: 120, height: Math.max(1.5, y1 - y0) }); lits.push(r); inside.append(r);
     });
@@ -1268,9 +1279,16 @@ function drawGoal(){
   const rabi = SITE.committee[0], wa = "https://wa.me/91" + rabi.phone.replace(/\s/g, "") + "?text=";
   cats.forEach(c => {
     ul.append(el("li", { className: "grp", textContent: t(c.k) }));
-    c.items.forEach(([names, v]) => {
-      const name = names[LI[LANG]];
-      const cover = Math.max(0, Math.min(1, (have - acc) / v)); acc += v; const k = n++;
+    c.items.forEach(([names, v, by]) => {
+      const name = names[LI[LANG]], k = n++;
+      if (by) {                                                           // donated: a tick, the giver's name, no sponsor link
+        ul.append(el("li", {}, el("div", { className: "it gift" },
+          el("span", { className: "dot", "aria-hidden": "true" }),
+          el("span", { className: "nm" }, name, el("small", { textContent: t("ex.giftBy", { x: t(by) }) })),
+          el("span", { className: "v", textContent: "✓ " + t("ex.gift") }))));
+        return;
+      }
+      const cover = Math.max(0, Math.min(1, (have - acc) / v)); acc += v;
       const state = cover >= 1 ? "full" : cover > 0 ? "part" : "none";
       const link = el("a", { className: "spon", target: "_blank", rel: "noopener", textContent: t("ex.this"),
         href: wa + encodeURIComponent(t("ex.msg", { x: name, v: rs(v) })) });
@@ -1288,7 +1306,7 @@ function drawGoal(){
   });
   const more = el("details", { className: "gmore" }, el("summary", { textContent: t("s.details") }),
     el("p", { className: "of", textContent: t("ex.of", { a: rs(have), b: rs(need) }) }), ul,
-    el("p", { className: "key" }, el("span", { className: "dot full" }), t("ex.kfull") + "  ", el("span", { className: "dot part" }), t("ex.kpart") + "  ", el("span", { className: "dot none" }), t("ex.knone")));
+    el("p", { className: "key" }, el("span", { className: "dot full" }), t("ex.kfull") + "  ", el("span", { className: "dot part" }), t("ex.kpart") + "  ", el("span", { className: "dot none" }), t("ex.knone") + "  ", el("span", { className: "dot gift" }), t("ex.kgift")));
   more.ontoggle = () => {
     box.classList.toggle("open", more.open);
     if (!more.open) { lits.forEach(l => l.classList.remove("on")); ul.querySelectorAll(".it").forEach(x => x.setAttribute("aria-expanded", "false")); }

@@ -285,7 +285,7 @@ details summary:hover{text-decoration-thickness:2px}
 .pay h3{font-size:var(--s-lead);font-weight:500;margin:0}
 .pay p{margin:.3rem 0 0}
 .pay-id{font-variant-numeric:tabular-nums;color:var(--soft);font-size:var(--s-small);display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
-.pay-copy{font:inherit;font-size:.75rem;border:1px solid rgba(127,127,127,.35);background:none;color:inherit;border-radius:999px;padding:.15rem .6rem;cursor:pointer}
+.pay-copy{font:inherit;font-size:.78rem;border:1px solid rgba(127,127,127,.4);background:none;color:inherit;border-radius:999px;padding:.3rem .8rem;min-height:32px;cursor:pointer}
 .pay-btn{display:none;margin-top:.7rem;background:var(--jaba);color:#fff;text-decoration:none;padding:.65rem 1.1rem;border-radius:999px;font-weight:500;width:max-content}
 .pay-note{font-size:var(--s-small);color:var(--soft);margin-top:.7rem!important;max-width:46ch}
 .pay-note a{color:var(--jaba-d);text-underline-offset:3px}
@@ -387,7 +387,7 @@ a,button,summary,label,.r5,.wa,[role="button"]{cursor:pointer}
 .bar:hover .fill{opacity:.75}
 .specials{list-style:none;margin:0;padding:0}
 .specials li{padding:.55rem 0;border-bottom:1px solid rgba(127,127,127,.22);font-size:var(--s-body)}
-.dhint{grid-column:1/-1;font-size:.6rem;opacity:.5;letter-spacing:.02em}
+.dhint{grid-column:1/-1;font-size:.7rem;opacity:.75;letter-spacing:.01em}
 @keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 @media (prefers-reduced-motion:reduce){.bar .fill{animation:none}}
 /* projected expenses: a clay bhar that fills with the chanda collected so far.
@@ -513,7 +513,38 @@ body.still .jaba{display:none}
 @keyframes eq{from{transform:scaleY(.25)}to{transform:scaleY(1)}}
 .mtip svg{width:11px;height:11px;flex:none;fill:var(--gaanda)}
 @media (prefers-reduced-motion:reduce){.mtip{transition:opacity .3s}.mtip .eq i{animation:none;transform:scaleY(.7)}}
-.credit{font-size:.72rem;opacity:.65;margin-top:.6rem}
+/* slim bar of section links once the top is scrolled past */
+.topbar{position:fixed;top:0;left:0;right:0;z-index:55;display:flex;justify-content:center;align-items:center;gap:2px;
+  padding:5px max(8px,env(safe-area-inset-left)) 5px max(8px,env(safe-area-inset-right));background:rgba(10,8,7,.88);
+  transform:translateY(-110%);transition:transform .35s var(--ease)}
+.topbar.on{transform:none}
+.topbar a,.topbar button{color:#fff;opacity:.75;text-decoration:none;font:inherit;font-size:var(--s-small);padding:8px 12px;min-height:38px;
+  border:0;background:none;border-radius:999px;cursor:pointer;display:flex;align-items:center;transition:opacity .2s,background .2s}
+.topbar a:hover,.topbar button:hover{opacity:1}
+.topbar a.cur{opacity:1;background:rgba(255,255,255,.13)}
+.topbar svg{width:18px;height:18px}
+@media (max-width:420px){.topbar a,.topbar button{padding:8px 9px}}
+section[id]{scroll-margin-top:50px}
+/* quiet pill buttons: calendar, directions, share */
+.pill{display:inline-flex;align-items:center;gap:.45rem;min-height:42px;padding:.55rem 1rem;border-radius:999px;font:inherit;font-size:var(--s-small);
+  text-decoration:none;cursor:pointer;border:1px solid currentColor;background:none;color:inherit;transition:background .2s}
+.pill svg{width:16px;height:16px}
+.cal{grid-column:7/13;margin-top:var(--sp-m);display:flex;flex-wrap:wrap;align-items:center;gap:.4rem 1rem}
+.cal .pill{color:var(--jaba-d);border-color:rgba(160,20,40,.35)}
+.cal .pill:hover{background:rgba(210,18,46,.06)}
+.cal-g{color:var(--soft);font-size:var(--s-small);text-underline-offset:3px}
+.cal p{flex-basis:100%;margin:0;color:var(--soft);font-size:.78rem}
+@media (max-width:760px){.cal{grid-column:1/-1;order:1}}
+.corners .pill{color:var(--fg);border-color:rgba(255,255,255,.3)}
+.corners .pill:hover{background:rgba(255,255,255,.08);text-decoration:none}
+[data-theme="day"] .corners .pill{border-color:rgba(0,0,0,.25)}
+.corners .r li:has(.pill){display:flex;justify-content:flex-end}
+@media (max-width:760px){.corners .r li:has(.pill){justify-content:flex-start}}
+/* photo book pause / play */
+.bookline{display:flex;align-items:center;gap:.8rem}
+.bplay{font:inherit;font-size:.78rem;color:var(--fg-soft);background:none;border:1px solid rgba(127,127,127,.4);border-radius:999px;padding:.3rem .75rem;min-height:32px;cursor:pointer}
+.bplay:hover{color:var(--fg)}
+.credit{font-size:.75rem;opacity:.8;margin-top:.6rem}
 .credit a{color:inherit;text-underline-offset:3px}
 /* when the music plays, the title and the red strip glow with the bass (--beat 0..1, set from the audio) */
 .band{position:relative}
@@ -567,6 +598,10 @@ body.still .jaba{display:none}
 <body>
 <a class="skip" href="#content" data-i="skip">মূল অংশে যান</a>
 
+<nav class="topbar" id="topbar" aria-label="পাতার অংশ" data-ia="nav.aria">
+  <a href="#schedule" data-i="nav.schedule">নির্ঘণ্ট</a><a href="#photos" data-i="nav.photos">ছবি</a><a href="#chanda" data-i="nav.chanda">চাঁদা</a><a href="#contact" data-i="nav.contact">যোগাযোগ</a>
+  <button type="button" class="share" data-ia="share.btn" aria-label="শেয়ার করুন"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7.5 7.5 12 3l4.5 4.5M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+</nav>
 <header class="hero">
   <div class="band"><h1><span class="fit" data-i="hero.name">মিশন পাড়া</span> <span class="fit"><span data-i="hero.sub">কালীপুজো</span> <span data-i="hero.year">২০২৬</span></span></h1></div>
 
@@ -649,6 +684,11 @@ body.still .jaba{display:none}
       <figure class="sched-photo shot" data-rise><img src="img/bhog-4x5.jpg" alt="" data-ialt="s.bhogAlt" width="960" height="1200" loading="lazy"><figcaption data-i="s.bhogCap">দুপুরের ভোগের রান্না</figcaption></figure>
       <p class="sched-word" data-i="s.two">দুদিন</p>
       <div class="table" id="table"></div>
+      <div class="cal">
+        <a class="pill" id="cal-ics" download="mission-para-kali-puja-2026.ics"><span aria-hidden="true">＋</span> <span data-i="cal.btn">ক্যালেন্ডারে রাখুন</span></a>
+        <a class="cal-g" id="cal-g" target="_blank" rel="noopener" data-i="cal.google">Google Calendar</a>
+        <p data-i="cal.hint">রিমাইন্ডার সহ পুজোর সব সময় ফোনে</p>
+      </div>
     </div>
   </section>
 
@@ -663,7 +703,7 @@ body.still .jaba{display:none}
       <div class="spine" aria-hidden="true"></div>
     </div>
     <div class="bookctl">
-      <span id="pageno" aria-live="polite"></span>
+      <div class="bookline"><span id="pageno" aria-live="polite"></span><button type="button" class="bplay" id="bookplay" aria-pressed="false"></button></div>
       <div class="arrows">
         <button type="button" id="prev" data-i="book.prev">আগের পাতা</button>
         <button type="button" id="next" data-i="book.next">পরের পাতা</button>
@@ -715,7 +755,8 @@ body.still .jaba{display:none}
       <ul id="people"></ul>
       <ul class="r">
         <li data-i="facts.whereV">আপার মিশন পাড়া, আদ্রা</li>
-        <li><a class="map" href="#" target="_blank" rel="noopener" data-i="map.btn">Google Maps-এ দেখুন</a></li>
+        <li><a class="map pill" href="#" target="_blank" rel="noopener"><span aria-hidden="true">➜</span> <span data-i="map.btn">পথ দেখান · Google Maps</span></a></li>
+        <li><button type="button" class="share pill"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7.5 7.5 12 3l4.5 4.5M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg> <span data-i="share.btn">শেয়ার করুন</span></button></li>
       </ul>
     </div>
   </section>
@@ -968,7 +1009,15 @@ const D = {
   "cap.diyas": ["পুজোর প্রদীপ", "Puja diyas", "पूजा के दीये"],
   "cap.pandalDay": ["দিনের আলোয় প্যান্ডেল", "The pandal in daylight", "दिन की रोशनी में पंडाल"],
   "cap.bhogPrep": ["ভোগ রান্না", "Cooking the bhog", "भोग की तैयारी"],
-  "map.btn": ["Google Maps-এ দেখুন", "View on Google Maps", "Google Maps पर देखें"],
+  "map.btn": ["পথ দেখান · Google Maps", "Directions · Google Maps", "रास्ता देखें · Google Maps"],
+  "share.btn": ["শেয়ার করুন", "Share", "शेयर करें"],
+  "share.text": ["মিশন পাড়া কালীপুজো ২০২৬ — নির্ঘণ্ট, ছবি, চাঁদা", "Mission Para Kali Puja 2026 — schedule, photos, chanda", "मिशन पाड़ा काली पूजा 2026 — समय-सूची, तस्वीरें, चंदा"],
+  "cal.btn": ["ক্যালেন্ডারে রাখুন", "Add to calendar", "कैलेंडर में जोड़ें"],
+  "cal.google": ["Google Calendar", "Google Calendar", "Google Calendar"],
+  "cal.hint": ["রিমাইন্ডার সহ পুজোর সব সময় ফোনে", "All puja times on your phone, with reminders", "रिमाइंडर के साथ पूजा के सभी समय फ़ोन में"],
+  "cal.place": ["আপার মিশন পাড়া, আদ্রা, পুরুলিয়া", "Upper Mission Para, Adra, Purulia", "अपर मिशन पाड़ा, आद्रा, पुरुलिया"],
+  "book.pause": ["থামান", "Pause", "रोकें"],
+  "book.play": ["চালান", "Play", "चलाएँ"],
   "con.lead": ["নির্ঘণ্টের খবর আর পুজোর ছবি, সব পাবেন গ্রুপে।", "Schedule updates and puja photos, all in the group.", "कार्यक्रम की खबरें और पूजा की तस्वीरें, सब ग्रुप में मिलेंगी।"],
   "name.rabi": ["রবীন্দ্রনাথ (রবি) ব্যানার্জী", "Rabindranath (Robi) Banerjee", "रवीन्द्रनाथ (रबि) बैनर्जी"],
   "name.somdeep": ["সোমদীপ কুণ্ডু", "Somdeep Kundu", "सोमदीप कुंडू"],
@@ -1375,6 +1424,41 @@ if ("IntersectionObserver" in window) {
   });
 })();
 
+/* calendar: a file with every puja time (with reminders) for any phone, and a Google Calendar link for the start */
+const SITE_URL = "https://somdeepkundu.github.io/MissionParaKaliPujo/";
+let calURL = "";
+function drawCal(){
+  const a = $("cal-ics"), g = $("cal-g"); if (!a) return;
+  const z = s => new Date(s + ":00+05:30").toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
+  const esc = x => String(x).replace(/[\\;,]/g, m => "\\" + m);
+  const stamp = z(new Date(Date.now() + 330 * 60000).toISOString().slice(0, 16));
+  const rows = SITE.schedule.flatMap(d => d.rows), place = t("cal.place");
+  const ev = rows.map((r, i) => ["BEGIN:VEVENT", `UID:mpkp2026-${i}@somdeepkundu.github.io`, `DTSTAMP:${stamp}`, `DTSTART:${z(r.start)}`, `DTEND:${z(r.end)}`,
+    `SUMMARY:${esc(t(r.ev) + " · " + t("hero.name"))}`, `LOCATION:${esc(place)}`, `URL:${SITE_URL}`,
+    "BEGIN:VALARM", "ACTION:DISPLAY", `DESCRIPTION:${esc(t(r.ev))}`, "TRIGGER:-PT30M", "END:VALARM", "END:VEVENT"].join("\r\n"));
+  const ics = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Mission Para Kali Puja//2026//EN", "CALSCALE:GREGORIAN", ...ev, "END:VCALENDAR"].join("\r\n");
+  if (calURL) URL.revokeObjectURL(calURL);
+  calURL = URL.createObjectURL(new Blob([ics], { type: "text/calendar" })); a.href = calURL;
+  const r0 = rows[0];
+  g.href = "https://calendar.google.com/calendar/render?action=TEMPLATE&text=" + encodeURIComponent(t("s.e1") + " · " + t("hero.name")) +
+    `&dates=${z(r0.start)}/${z(rows[2].end)}&location=${encodeURIComponent(place)}&details=${encodeURIComponent(SITE_URL)}`;
+}
+/* share: the phone's own share sheet; where there is none, WhatsApp */
+document.querySelectorAll(".share").forEach(b => b.addEventListener("click", async () => {
+  const text = t("share.text");
+  if (navigator.share) { try { await navigator.share({ title: text, text, url: SITE_URL }); } catch (e) {} return; }
+  window.open("https://wa.me/?text=" + encodeURIComponent(text + " " + SITE_URL), "_blank", "noopener");
+}));
+/* the slim bar: appears once the top is out of view, and marks the section you are in */
+if ("IntersectionObserver" in window) {
+  const bar = $("topbar"), links = [...bar.querySelectorAll("a")];
+  new IntersectionObserver(es => es.forEach(e => bar.classList.toggle("on", !e.isIntersecting)), { threshold: 0 }).observe(document.querySelector(".hero"));
+  const seen = new Map();
+  const mark = () => { let best = null, v = 0; seen.forEach((r, id) => { if (r > v) { v = r; best = id; } });
+    links.forEach(a => a.classList.toggle("cur", a.getAttribute("href") === "#" + best)); };
+  const sio = new IntersectionObserver(es => { es.forEach(e => seen.set(e.target.id, e.isIntersecting ? e.intersectionRatio : 0)); mark(); }, { threshold: [0, .15, .3, .5, .7] });
+  ["schedule", "photos", "chanda", "contact"].forEach(id => { const n = $(id); if (n) sio.observe(n); });
+}
 /* pay by UPI: WhatsApp message for the receipt (in the page language) and copying the UPI ID */
 function drawPay(){
   const wa = $("pay-wa"); if (!wa) return;
@@ -1550,7 +1634,7 @@ let bookRerender = () => {};
     const ph = mobile(); if (ph === phoneNow) return;                    // only a real switch between phone and laptop width
     phoneNow = ph; const was = cur; build(); cur = Math.min(total - 1, ph ? was * 2 : Math.floor(was / 2)); render(cur);
   });
-  bookRerender = () => { build(); render(cur); };
+  bookRerender = () => { build(); render(cur); drawPlay(); };
   // a first-time hint for anyone who hasn't turned a page yet: the page lifts a little and a fingertip glides across, twice
   const tried = () => { try { return localStorage.getItem("bookTurned") === "1"; } catch (e) { return false; } };
   function turned(){ try { localStorage.setItem("bookTurned", "1"); } catch (e) {} }
@@ -1587,7 +1671,7 @@ let bookRerender = () => {};
   function tick(){
     clearTimeout(autoT);
     autoT = setTimeout(() => {
-      if (onScreen && !document.hidden && !still() && performance.now() > quietUntil && !busy) {
+      if (onScreen && !paused && !document.hidden && !still() && performance.now() > quietUntil && !busy) {
         if (cur < total - 1) turn(1, true);
         else if (mobile()) swapSingle(0, 1, true);
         else {
@@ -1601,6 +1685,11 @@ let bookRerender = () => {};
     }, 6500);
   }
   const hush = () => { quietUntil = performance.now() + 12000; };
+  // pause / play: stops the book turning by itself until played again
+  let paused = false; const pb = $("bookplay");
+  const drawPlay = () => { pb.textContent = (paused ? "▶ " : "❚❚ ") + t(paused ? "book.play" : "book.pause"); pb.setAttribute("aria-pressed", String(paused)); };
+  pb.onclick = () => { paused = !paused; drawPlay(); if (!paused) { quietUntil = 0; tick(); } };
+  drawPlay();
   ["pointerdown", "keydown"].forEach(k => book.addEventListener(k, hush));
   $("next").addEventListener("click", hush); $("prev").addEventListener("click", hush);
   if ("IntersectionObserver" in window)
@@ -1644,7 +1733,7 @@ function applyStatic(){
 function setLang(l){
   LANG = l;
   try { localStorage.setItem("lang", l); } catch (e) {}
-  applyStatic(); drawTheme(); drawCount(); drawSchedule(); drawChanda(); drawPeople(); drawPay(); drawGoal(); drawDist(); bookRerender(); fitAll(); observeRise();
+  applyStatic(); drawTheme(); drawCount(); drawSchedule(); drawChanda(); drawPeople(); drawPay(); drawCal(); drawGoal(); drawDist(); bookRerender(); fitAll(); observeRise();
 }
 document.querySelectorAll(".lang button").forEach(b => b.onclick = () => setLang(b.dataset.lang));
 document.querySelectorAll(".wa").forEach(a => a.href = SITE.whatsapp);

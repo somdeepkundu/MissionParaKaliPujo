@@ -61,6 +61,12 @@ with sync_playwright() as p:
         check("share preview image set", "og.jpg" in (J("(document.querySelector('meta[property=\"og:image\"]')||{}).content") or ""))
         # schedule
         check("schedule has its rows", J("document.querySelectorAll('#table .row').length") >= 7)
+        ics = J("fetch(document.getElementById('cal-ics').href).then(r=>r.text())")
+        check("calendar file has all 7 puja times with reminders", ics.count("BEGIN:VEVENT") == 7 and ics.count("TRIGGER:-PT30M") == 7 and "DTSTART:20261108T130000Z" in ics, ics[:120])
+        check("Google Calendar link for the puja start", "dates=20261108T130000Z" in J("document.getElementById('cal-g').href"))
+        pg.locator("#schedule").scroll_into_view_if_needed(); pg.wait_for_timeout(700)
+        check("slim section bar shows below the top", J("document.getElementById('topbar').classList.contains('on')"))
+        check("slim bar marks the current section", J("(document.querySelector('#topbar a.cur')||{}).getAttribute?.('href')") == "#schedule", str(J("(document.querySelector('#topbar a.cur')||{}).outerHTML")))
         check("akash prodip hangs in the schedule", J("!!document.querySelector('.sched .lantern svg')"))
         # photo book
         pg.locator("#book").scroll_into_view_if_needed(); pg.wait_for_timeout(1200)
@@ -77,7 +83,12 @@ with sync_playwright() as p:
         check("photo carries year and caption", bool(J("(document.querySelector('#spread .ov .cap')||{}).textContent")))
         check("book photos glide (alternate directions)", J("(()=>{const im=[...document.querySelectorAll('#spread .pg.photo img')];return im.length>0&&im.some(i=>i.getAnimations().length)})()"))
         pg.wait_for_timeout(7000)
+        pause_label = J("document.getElementById('bookplay').textContent")
         check("a click stops the book turning by itself", "৩" in J("document.getElementById('pageno').textContent"))
+        pg.click("#bookplay"); p0 = J("document.getElementById('pageno').textContent"); pg.wait_for_timeout(13500)
+        check("pause button stops the book", J("document.getElementById('pageno').textContent") == p0 and J("document.getElementById('bookplay').getAttribute('aria-pressed')") == "true")
+        pg.click("#bookplay"); pg.wait_for_timeout(8200)
+        check("play button starts it again", J("document.getElementById('pageno').textContent") != p0, p0)
         # chanda
         pg.locator("#chanda").scroll_into_view_if_needed(); pg.wait_for_timeout(600)
         check("chanda total shown", "৩০,৭৭১" in J("document.getElementById('ch-dl').textContent"))
@@ -93,6 +104,11 @@ with sync_playwright() as p:
         # contact + footer
         ppl = J("[...document.querySelectorAll('#people li')].map(l=>l.textContent)")
         check("contacts in order: Robi, Surajit, Somdeep", len(ppl) == 3 and "রবীন্দ্রনাথ" in ppl[0] and "সুরজিৎ" in ppl[1] and "সোমদীপ" in ppl[2], str(ppl))
+        check("directions button opens Google Maps", "maps" in J("document.querySelector('.corners .map').href"))
+        J("window.open = u => { window.__opened = u; }")
+        pg.click(".corners .share"); pg.wait_for_timeout(200)
+        opened = J("window.__opened || ''")
+        check("share opens WhatsApp with the site link (no share sheet in this browser)", opened.startswith("https://wa.me/?text=") and "MissionParaKaliPujo" in opened, opened[:80])
         check("WhatsApp group link", "chat.whatsapp.com/FfAXltygtUfAkY8qnvqbdy" in J("document.querySelector('.display.wa').href"))
         check("music credit with YouTube link", "youtu" in J("document.querySelector('.credit a').href"))
         check("singer credited (Anuradha Paudwal)", "অনুরাধা" in J("document.querySelector('.credit').textContent"))

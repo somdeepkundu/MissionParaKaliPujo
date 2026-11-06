@@ -7,6 +7,7 @@ To bring back an older version of the page: `git checkout <id> -- index.html`, t
 
 ## 2026-11-06
 
+- Easier to use: slim section bar, share button, add to calendar (all times, reminders) + Google Calendar, directions button, photo book pause/play, faint notes easier to read
 - Chanda: give by UPI to Somdeep Kundu (QR on laptops, button on phones), then WhatsApp name and amount for the digital receipt
 - Front-page photos (pandal, bhog, drawing) move slowly and gently again; photo book unchanged
 - Photo book: moving photos back, about twice as fast (≈80 px/s, short rests); neighbouring photos glide in opposite directions; book turns every 6.5 s so each glide finishes

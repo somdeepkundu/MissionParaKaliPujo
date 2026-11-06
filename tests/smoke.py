@@ -87,6 +87,7 @@ with sync_playwright() as p:
         check("expenses list has 19 items", J("document.querySelectorAll('.it').length") == 19)
         links = J("[...document.querySelectorAll('.gspon a')].map(a=>a.getAttribute('href'))")
         check("sponsor line links: phone, contact, group", len(links) == 3 and links[0].startswith("tel:") and links[1] == "#contact" and "whatsapp" in links[2], str(links))
+        check("UPI pay: upi link, QR file, WhatsApp receipt message", J("document.querySelector('.pay-btn').href.startsWith('upi://pay?pa=papaisomdeepkundu')") and J("document.getElementById('pay-wa').href.includes('wa.me/919679443301?text=')") and J("document.querySelector('.pay-qr').naturalWidth>0 || document.querySelector('.pay-qr').loading==='lazy'"))
         check("donation bars and special donations", J("document.querySelectorAll('#dist .bar').length") == 4 and J("document.querySelectorAll('.specials li').length") == 2)
         check("diyas and alpona on the white pages", J("document.querySelectorAll('.diya').length") == 3 and J("document.querySelectorAll('.alpona svg').length") == 2)
         # contact + footer

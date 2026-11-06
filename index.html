@@ -278,6 +278,18 @@ details summary:hover{text-decoration-thickness:2px}
 .ch-list details p{margin-top:var(--sp-s);color:var(--soft)}
 .ch-side{grid-column:9/13}
 .ch-photo{aspect-ratio:1}
+/* pay by UPI: QR on laptops, a button on phones */
+.pay{display:grid;grid-template-columns:auto minmax(0,1fr);gap:var(--sp-l);align-items:center;margin-top:var(--sp-2xl);max-width:40rem;
+  padding:var(--sp-l);border:1px solid rgba(181,86,45,.22);border-radius:14px;background:rgba(244,227,213,.35)}
+.pay-qr{width:clamp(120px,12vw,160px);height:auto;background:#fff;border-radius:8px;padding:6px}
+.pay h3{font-size:var(--s-lead);font-weight:500;margin:0}
+.pay p{margin:.3rem 0 0}
+.pay-id{font-variant-numeric:tabular-nums;color:var(--soft);font-size:var(--s-small);display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
+.pay-copy{font:inherit;font-size:.75rem;border:1px solid rgba(127,127,127,.35);background:none;color:inherit;border-radius:999px;padding:.15rem .6rem;cursor:pointer}
+.pay-btn{display:none;margin-top:.7rem;background:var(--jaba);color:#fff;text-decoration:none;padding:.65rem 1.1rem;border-radius:999px;font-weight:500;width:max-content}
+.pay-note{font-size:var(--s-small);color:var(--soft);margin-top:.7rem!important;max-width:46ch}
+.pay-note a{color:var(--jaba-d);text-underline-offset:3px}
+@media (max-width:760px){.pay{grid-template-columns:1fr}.pay-qr{display:none}.pay-btn{display:inline-block}}
 /* the jar and the donation numbers sit side by side on wide screens (1 : 1.618) */
 .ch-more{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.618fr);gap:var(--sp-2xl);margin-top:var(--sp-2xl);align-items:start}
 .ch-more > .goal,.ch-more > .dist{margin-top:0}
@@ -678,6 +690,17 @@ body.still .jaba{display:none}
       <div class="diyas" aria-hidden="true"><span class="diya"><i class="flame"></i></span><span class="diya"><i class="flame"></i></span><span class="diya"><i class="flame"></i></span></div>
       </div>
     </div>
+    <!-- pay chanda by UPI: a button on phones, a QR code on laptops; then a WhatsApp message for the digital receipt -->
+    <div class="pay" data-rise>
+      <img class="pay-qr" src="img/upi-qr.svg" alt="" data-ialt="pay.qrAlt" width="160" height="160" loading="lazy">
+      <div class="pay-text">
+        <h3 data-i="pay.h">UPI-তে চাঁদা দিন</h3>
+        <p data-i="pay.to">সোমদীপ কুন্ডুকে পাঠান</p>
+        <p class="pay-id"><span>papaisomdeepkundu@okaxis</span> <button type="button" class="pay-copy" data-i="pay.copy">কপি</button></p>
+        <a class="pay-btn" href="upi://pay?pa=papaisomdeepkundu%40okaxis&amp;pn=Somdeep%20Kundu&amp;cu=INR&amp;tn=Mission%20Para%20Kali%20Puja%202026%20chanda" data-i="pay.btn">UPI অ্যাপে খুলুন</a>
+        <p class="pay-note"><span data-i="pay.note1">টাকা পাঠিয়ে</span> <a id="pay-wa" target="_blank" rel="noopener" data-i="pay.wa">WhatsApp-এ সোমদীপকে</a> <span data-i="pay.note2">আপনার নাম আর টাকার অঙ্ক লিখুন, ডিজিটাল রসিদ পাঠানো হবে।</span></p>
+      </div>
+    </div>
     <div class="ch-more">
       <div class="goal" id="goal"></div>
       <div class="dist" id="dist"></div>
@@ -983,6 +1006,16 @@ const D = {
   "ex.till": ["কালীপুজো শুরু হতে বাকি", "until Kali Puja begins", "काली पूजा शुरू होने में बाकी"],
   "ex.on": ["পুজো চলছে", "Puja is on", "पूजा चल रही है"],
   "u.d": ["দিন", "d", "दिन"], "u.h": ["ঘ", "h", "घं"], "u.m": ["মি", "m", "मि"], "u.s": ["সে", "s", "से"],
+  "pay.h": ["UPI-তে চাঁদা দিন", "Give chanda by UPI", "UPI से चंदा दें"],
+  "pay.to": ["সোমদীপ কুন্ডুকে পাঠান", "Pay to Somdeep Kundu", "सोमदीप कुंडु को भेजें"],
+  "pay.copy": ["কপি", "Copy", "कॉपी"],
+  "pay.copied": ["কপি হয়েছে", "Copied", "कॉपी हो गया"],
+  "pay.btn": ["UPI অ্যাপে খুলুন", "Open in a UPI app", "UPI ऐप में खोलें"],
+  "pay.note1": ["টাকা পাঠিয়ে", "After paying,", "पैसे भेजकर"],
+  "pay.wa": ["WhatsApp-এ সোমদীপকে", "message Somdeep on WhatsApp", "WhatsApp पर सोमदीप को"],
+  "pay.note2": ["আপনার নাম আর টাকার অঙ্ক লিখুন, ডিজিটাল রসিদ পাঠানো হবে।", "with your name and the amount for your digital receipt.", "अपना नाम और रकम लिखें, डिजिटल रसीद भेजी जाएगी।"],
+  "pay.msg": ["নমস্কার সোমদীপ, মিশন পাড়া কালী পুজো ২০২৬-এর চাঁদা পাঠালাম। নাম: … টাকা: ₹… ডিজিটাল রসিদটা পাঠিও।", "Namaskar Somdeep, I have sent chanda for Mission Para Kali Puja 2026. Name: … Amount: ₹… Please send the digital receipt.", "नमस्कार सोमदीप, मिशन पाड़ा काली पूजा 2026 का चंदा भेजा है। नाम: … रकम: ₹… डिजिटल रसीद भेज दीजिए।"],
+  "pay.qrAlt": ["সোমদীপ কুন্ডুকে UPI-তে টাকা পাঠানোর QR কোড", "QR code to pay Somdeep Kundu by UPI", "सोमदीप कुंडु को UPI से भुगतान का QR कोड"],
   "ex.pandal": ["প্যান্ডেল ও আলো", "Pandal & light", "पंडाल और रोशनी"],
   "ex.bhog": ["দিনের ভোগ ও রান্না", "Day bhog & kitchen", "दिन का भोग और रसोई"],
   "ex.puja": ["পুজো", "Puja", "पूजा"],
@@ -1342,6 +1375,16 @@ if ("IntersectionObserver" in window) {
   });
 })();
 
+/* pay by UPI: WhatsApp message for the receipt (in the page language) and copying the UPI ID */
+function drawPay(){
+  const wa = $("pay-wa"); if (!wa) return;
+  const ph = SITE.committee.find(c => c.name === "name.somdeep").phone.replace(/\s/g, "");
+  wa.href = `https://wa.me/91${ph}?text=${encodeURIComponent(t("pay.msg"))}`;
+}
+document.querySelector(".pay-copy")?.addEventListener("click", e => {
+  const btn = e.currentTarget, done = () => { btn.textContent = t("pay.copied"); setTimeout(() => btn.textContent = t("pay.copy"), 1600); };
+  if (navigator.clipboard) navigator.clipboard.writeText("papaisomdeepkundu@okaxis").then(done, done); else done();
+});
 /* panjika */
 $("pj-open").onclick = () => $("pj").showModal();
 $("pj").addEventListener("click", e => { if (e.target === $("pj")) $("pj").close(); });
@@ -1601,7 +1644,7 @@ function applyStatic(){
 function setLang(l){
   LANG = l;
   try { localStorage.setItem("lang", l); } catch (e) {}
-  applyStatic(); drawTheme(); drawCount(); drawSchedule(); drawChanda(); drawPeople(); drawGoal(); drawDist(); bookRerender(); fitAll(); observeRise();
+  applyStatic(); drawTheme(); drawCount(); drawSchedule(); drawChanda(); drawPeople(); drawPay(); drawGoal(); drawDist(); bookRerender(); fitAll(); observeRise();
 }
 document.querySelectorAll(".lang button").forEach(b => b.onclick = () => setLang(b.dataset.lang));
 document.querySelectorAll(".wa").forEach(a => a.href = SITE.whatsapp);

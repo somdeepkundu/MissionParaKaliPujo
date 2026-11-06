@@ -94,6 +94,7 @@ with sync_playwright() as p:
         check("chanda total shown", "৩০,৭৭১" in J("document.getElementById('ch-dl').textContent"))
         c1 = J("document.querySelector('.gfig').textContent"); pg.wait_for_timeout(1200); c2 = J("document.querySelector('.gfig').textContent")
         check("bhar countdown ticks", c1 != c2 or "পুজো" in c1, f"{c1} / {c2}")
+        check("three still-needed items shown with sponsor links", J("document.querySelectorAll('.gnext li a[href*=\"wa.me\"]').length") == 3)
         pg.click(".gmore summary"); pg.wait_for_timeout(200)
         check("expenses list has 19 items", J("document.querySelectorAll('.it').length") == 19)
         check("laddu shows donated by Suparna (Mampi) Dey, not counted", "মাম্পি" in J("document.querySelector('.it.gift').textContent") and "১৬,৪২৯" in J("document.querySelector('.gleft').textContent"), J("document.querySelector('.gleft').textContent"))

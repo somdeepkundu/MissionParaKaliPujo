@@ -7,6 +7,7 @@ To bring back an older version of the page: `git checkout <id> -- index.html`, t
 
 ## 2026-11-06
 
+- Expenses: the next three still-needed items shown openly with sponsor links; "বিস্তারিত" became a clear "সব খরচ দেখুন ও স্পনসর করুন" button
 - Laddu donated by Suparna (Mampi) Dey: marked ✓ দান in the expense list, left out of the amount needed (₹47,200; ₹16,429 to go), added to special donations
 - Easier to use: slim section bar, share button, add to calendar (all times, reminders) + Google Calendar, directions button, photo book pause/play, faint notes easier to read
 - Chanda: give by UPI to Somdeep Kundu (QR on laptops, button on phones), then WhatsApp name and amount for the digital receipt

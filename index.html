@@ -420,7 +420,17 @@ a,button,summary,label,.r5,.wa,[role="button"]{cursor:pointer}
 .gtill{font-size:var(--s-small);color:var(--soft);margin:.3rem 0 0}
 .gleft{font-size:var(--s-body);margin:.7rem 0 0;color:var(--jaba-d)}
 .gmore{margin-top:.9rem;font-size:var(--s-small)}
-.gmore summary{color:var(--soft)}
+.gmore summary{color:var(--jaba-d);border-color:rgba(160,20,40,.35);list-style:none;margin-top:.2rem}
+.gmore summary::-webkit-details-marker{display:none}
+.gmore[open] summary{background:rgba(210,18,46,.06)}
+.gnext{margin-top:.9rem}
+.gnext-h{font-size:.78rem;color:var(--soft);margin:0 0 .3rem}
+.gnext ul{list-style:none;margin:0;padding:0}
+.gnext li{display:flex;align-items:baseline;gap:.6rem;padding:.4rem 0;border-bottom:1px solid rgba(127,127,127,.18);font-size:var(--s-small)}
+.gnext li span:first-child{flex:1}
+.gnext .v{color:var(--soft);font-variant-numeric:tabular-nums}
+.gnext a{color:var(--jaba-d);font-size:.78rem;text-underline-offset:3px;white-space:nowrap}
+.gmore{margin-top:.9rem}
 .gmore .of{color:var(--soft);margin:.7rem 0 .2rem;font-variant-numeric:tabular-nums}
 .items{list-style:none;margin:0;padding:0}
 .items .grp{color:var(--soft);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;margin:.9rem 0 .15rem}
@@ -1069,6 +1079,9 @@ const D = {
   "pay.note2": ["আপনার নাম আর টাকার অঙ্ক লিখুন, ডিজিটাল রসিদ পাঠানো হবে।", "with your name and the amount for your digital receipt.", "अपना नाम और रकम लिखें, डिजिटल रसीद भेजी जाएगी।"],
   "pay.msg": ["নমস্কার সোমদীপ, মিশন পাড়া কালী পুজো ২০২৬-এর চাঁদা পাঠালাম। নাম: … টাকা: ₹… ডিজিটাল রসিদটা পাঠিও।", "Namaskar Somdeep, I have sent chanda for Mission Para Kali Puja 2026. Name: … Amount: ₹… Please send the digital receipt.", "नमस्कार सोमदीप, मिशन पाड़ा काली पूजा 2026 का चंदा भेजा है। नाम: … रकम: ₹… डिजिटल रसीद भेज दीजिए।"],
   "pay.qrAlt": ["সোমদীপ কুন্ডুকে UPI-তে টাকা পাঠানোর QR কোড", "QR code to pay Somdeep Kundu by UPI", "सोमदीप कुंडु को UPI से भुगतान का QR कोड"],
+  "ex.nextH": ["এখনও যা লাগবে — একটা বেছে স্পনসর করুন", "Still needed — pick one to sponsor", "अभी चाहिए — एक चुनकर स्पॉन्सर करें"],
+  "ex.spon": ["স্পনসর করুন", "Sponsor", "स्पॉन्सर करें"],
+  "ex.all": ["সব খরচ দেখুন ও স্পনসর করুন ({n}টি)", "See all costs & sponsor ({n})", "सब खर्च देखें और स्पॉन्सर करें ({n})"],
   "ex.pandal": ["প্যান্ডেল ও আলো", "Pandal & light", "पंडाल और रोशनी"],
   "ex.bhog": ["দিনের ভোগ ও রান্না", "Day bhog & kitchen", "दिन का भोग और रसोई"],
   "ex.puja": ["পুজো", "Puja", "पूजा"],
@@ -1275,7 +1288,7 @@ function drawGoal(){
   const left = el("p", { className: "gleft", textContent: have >= need ? t("ex.done") : t("ex.left", { n: rs(need - have) }) });
   // every item on its own row (grouped under a small label). The dot shows if the chanda so far covers it.
   // Tap a row: its slice lights up in the bhar, and a WhatsApp link to Robi da offers to sponsor it.
-  const ul = el("ul", { className: "items" }); acc = 0; let n = 0;
+  const ul = el("ul", { className: "items" }); acc = 0; let n = 0; const needs = [];
   const rabi = SITE.committee[0], wa = "https://wa.me/91" + rabi.phone.replace(/\s/g, "") + "?text=";
   cats.forEach(c => {
     ul.append(el("li", { className: "grp", textContent: t(c.k) }));
@@ -1290,6 +1303,7 @@ function drawGoal(){
       }
       const cover = Math.max(0, Math.min(1, (have - acc) / v)); acc += v;
       const state = cover >= 1 ? "full" : cover > 0 ? "part" : "none";
+      if (state !== "full") needs.push({ name, v, state, msg: t("ex.msg", { x: name, v: rs(v) }) });
       const link = el("a", { className: "spon", target: "_blank", rel: "noopener", textContent: t("ex.this"),
         href: wa + encodeURIComponent(t("ex.msg", { x: name, v: rs(v) })) });
       const b = el("button", { type: "button", className: "it " + state },
@@ -1304,7 +1318,12 @@ function drawGoal(){
       ul.append(el("li", {}, b, link));
     });
   });
-  const more = el("details", { className: "gmore" }, el("summary", { textContent: t("s.details") }),
+  // the next three things still needed, in plain sight, each with a sponsor link
+  const pick = needs.filter(x => x.state === "none").slice(0, 3);
+  const next = el("div", { className: "gnext" }, el("p", { className: "gnext-h", textContent: t("ex.nextH") }),
+    el("ul", {}, ...pick.map(x => el("li", {}, el("span", { textContent: x.name }), el("span", { className: "v", textContent: "₹" + rs(x.v) }),
+      el("a", { href: wa + encodeURIComponent(x.msg), target: "_blank", rel: "noopener", textContent: t("ex.spon") })))));
+  const more = el("details", { className: "gmore" }, el("summary", { className: "pill", textContent: t("ex.all", { n: num(String(needs.length)) }) }),
     el("p", { className: "of", textContent: t("ex.of", { a: rs(have), b: rs(need) }) }), ul,
     el("p", { className: "key" }, el("span", { className: "dot full" }), t("ex.kfull") + "  ", el("span", { className: "dot part" }), t("ex.kpart") + "  ", el("span", { className: "dot none" }), t("ex.knone") + "  ", el("span", { className: "dot gift" }), t("ex.kgift")));
   more.ontoggle = () => {
@@ -1322,7 +1341,7 @@ function drawGoal(){
     const c = SITE.committee[0]; return el("a", { href: "tel:+91" + c.phone.replace(/\s/g, ""), textContent: t(c.name + ".s") });
   }));
   box.classList.remove("open");
-  box.replaceChildren(el("h3", { textContent: t("ex.h") }), svg, el("div", { className: "gbox" }, fig, till, left, more), spon,
+  box.replaceChildren(el("h3", { textContent: t("ex.h") }), svg, el("div", { className: "gbox" }, fig, till, left, next, more), spon,
     el("p", { className: "dhint", textContent: t("ex.note") }));
 
   // fill up the first time it is seen, and a coin drops in

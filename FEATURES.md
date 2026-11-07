@@ -70,6 +70,7 @@ and stops with `FAIL` if anything has gone missing. Items without ✓ need a qui
 
 ## 2026-11-07
 
+- Chanda ₹37,326 from 70 receipts (added cash 68); still needed ₹9,474.
 - Chanda ₹36,576 from 69 receipts (added UPI 69–71 of 7 Nov); still needed ₹10,224.
 - 20th year: "Since 2007 · our 20th puja" line under the hero name; photo book subtitle now says since 2007 (was 2016).
 - Poster viewer rebuilt as a plain overlay (was <dialog>), so the full-size poster shows on iPad Safari; Esc / tap outside / ✕ close it.

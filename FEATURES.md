@@ -70,6 +70,7 @@ and stops with `FAIL` if anything has gone missing. Items without ✓ need a qui
 
 ## 2026-11-07
 
+- 20th year: "Since 2007 · our 20th puja" line under the hero name; photo book subtitle now says since 2007 (was 2016).
 - Poster viewer rebuilt as a plain overlay (was <dialog>), so the full-size poster shows on iPad Safari; Esc / tap outside / ✕ close it.
 - Chanda slips (₹400) marked donated by Somdeep; still needed now ₹12,074.
 - Sponsor line now reads "Chanda slips, printing etc." — Somdeep Kundu.

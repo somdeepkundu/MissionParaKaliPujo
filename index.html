@@ -90,6 +90,9 @@ h2{font-size:var(--s-head);font-weight:300;font-stretch:80%;line-height:.98;lett
 .band{background:var(--bg);overflow:hidden;padding:.1em 0 0}
 .band h1,.band .tglow{font-size:10vw;font-weight:700;font-stretch:75%;letter-spacing:-.035em;line-height:1.08;white-space:nowrap;text-align:center}
 .band h1{position:relative;z-index:1}
+/* twentieth year: one quiet marigold line under the name */
+.since{position:relative;z-index:1;margin:.15em 0 .5em;text-align:center;font-size:clamp(.9rem,2.2vw,1.25rem);letter-spacing:.06em;color:var(--clay)}
+.since span::before,.since span::after{content:"";display:inline-block;width:1.6em;height:1px;background:currentColor;opacity:.5;vertical-align:middle;margin:0 .6em}
 .fit{display:inline-block;white-space:nowrap}
 .band h1 .fit span{color:var(--jaba)}
 .links{display:grid;grid-template-columns:repeat(4,1fr) auto auto;gap:var(--gap)}
@@ -643,7 +646,7 @@ section[id]{scroll-margin-top:50px}
   <button type="button" class="share" data-ia="share.btn" aria-label="শেয়ার করুন"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7.5 7.5 12 3l4.5 4.5M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
 </nav>
 <header class="hero">
-  <div class="band"><h1><span class="fit" data-i="hero.name">মিশন পাড়া</span> <span class="fit"><span data-i="hero.sub">কালীপুজো</span> <span data-i="hero.year">২০২৬</span></span></h1></div>
+  <div class="band"><h1><span class="fit" data-i="hero.name">মিশন পাড়া</span> <span class="fit"><span data-i="hero.sub">কালীপুজো</span> <span data-i="hero.year">২০২৬</span></span></h1><p class="since"><span data-i="hero.since">২০০৭ থেকে · এবার কুড়িতম পুজো</span></p></div>
 
   <nav class="links" aria-label="পাতার অংশ" data-ia="nav.aria">
     <a href="#schedule"><img src="img/jaba.svg" alt="" width="28" height="28"><span data-i="nav.schedule">নির্ঘণ্ট</span></a>
@@ -753,7 +756,7 @@ section[id]{scroll-margin-top:50px}
   <section class="bookwrap" id="photos" aria-labelledby="book-h">
     <div class="bookhead">
       <h2 id="book-h" data-rise data-i="book.h">ছবির খাতা</h2>
-      <p data-rise style="--i:1" data-i="book.sub">মিশন পাড়ার কালীপুজো, ২০১৬ থেকে</p>
+      <p data-rise style="--i:1" data-i="book.sub">মিশন পাড়ার কালীপুজো, ২০০৭ থেকে · কুড়ি বছর</p>
     </div>
     <div class="stage">
     <div class="book" id="book" tabindex="0" role="region" data-ia="book.aria" aria-label="ছবির খাতা, পাতা ওল্টাতে ডান বা বাঁ তীর চাপুন">
@@ -962,6 +965,7 @@ const D = {
   "hero.name": ["মিশন পাড়া", "Mission Para", "मिशन पाड़ा"],
   "hero.sub": ["কালীপুজো", "Kali Puja", "काली पूजा"],
   "hero.year": ["২০২৬", "2026", "२०२६"],
+  "hero.since": ["২০০৭ থেকে · এবার কুড়িতম পুজো", "Since 2007 · our 20th puja", "२००७ से · इस बार बीसवीं पूजा"],
   "nav.aria": ["পাতার অংশ", "Page sections", "पेज के हिस्से"],
   "nav.schedule": ["নির্ঘণ্ট", "Schedule", "समय-सूची"],
   "nav.photos": ["ছবি", "Photos", "तस्वीरें"],
@@ -1048,7 +1052,7 @@ const D = {
   "ch.alt": ["২০২৫ সালের আঁকা প্রতিযোগিতার একটি ছবি", "A picture from the 2025 drawing competition", "२०२५ की चित्रकला प्रतियोगिता की एक तस्वीर"],
   "upd": ["শেষ আপডেট {d} {m} {y}", "Last updated {d} {m} {y}", "आखिरी अपडेट {d} {m} {y}"],
   "book.h": ["ছবির খাতা", "Photo book", "तस्वीरों की किताब"],
-  "book.sub": ["মিশন পাড়ার কালীপুজো, ২০১৬ থেকে", "Mission Para Kali Puja, since 2016", "मिशन पाड़ा की काली पूजा, २०१६ से"],
+  "book.sub": ["মিশন পাড়ার কালীপুজো, ২০০৭ থেকে · কুড়ি বছর", "Mission Para Kali Puja, since 2007 · twenty years", "मिशन पाड़ा की काली पूजा, २००७ से · बीस साल"],
   "book.aria": ["ছবির খাতা, পাতা ওল্টাতে ডান বা বাঁ তীর চাপুন", "Photo book. Press the left or right arrow to turn pages", "तस्वीरों की किताब, पन्ने पलटने के लिए दायाँ या बायाँ तीर दबाएँ"],
   "book.prev": ["আগের পাতা", "Previous page", "पिछला पन्ना"],
   "book.next": ["পরের পাতা", "Next page", "अगला पन्ना"],

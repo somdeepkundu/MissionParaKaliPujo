@@ -7,6 +7,7 @@ To bring back an older version of the page: `git checkout <id> -- index.html`, t
 
 ## 2026-11-07
 
+- Sponsor line now reads "Chanda slips, printing etc." — Somdeep Kundu.
 - Chanda updated: ₹34,726 from 66 receipts (added cash 54–59 of 6 Nov and online 61–67). Distribution bands and "still needed" (₹12,474) updated.
 
 ## 2026-11-06

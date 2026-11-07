@@ -70,7 +70,7 @@ with sync_playwright() as p:
         check("drawing poster in the page language", J("document.getElementById('poster-img').getAttribute('src')") == "img/poster-bn.jpg")
         pg.click("#poster"); pg.wait_for_timeout(300)
         check("drawing competition card with groups and contact", J("document.querySelectorAll('#sitdraw .ev-groups li').length") == 3 and J("document.querySelector('#sitdraw a[href^=\"tel:\"]')!==null"))
-        check("poster opens full size", J("document.getElementById('pdlg').open")); pg.mouse.click(5, 5); pg.wait_for_timeout(200)
+        pg.wait_for_timeout(400); check("poster opens full size", J("(()=>{const d=document.getElementById('pdlg'),i=document.getElementById('pdlg-img');return !d.hidden && i.complete && i.naturalWidth>0 && i.getBoundingClientRect().height>200})()")); pg.mouse.click(5, 5); pg.wait_for_timeout(200); check("poster closes", J("document.getElementById('pdlg').hidden"))
         check("akash prodip hangs in the schedule", J("!!document.querySelector('.sched .lantern svg')"))
         # photo book
         pg.locator("#book").scroll_into_view_if_needed(); pg.wait_for_timeout(1200)

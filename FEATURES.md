@@ -70,6 +70,7 @@ and stops with `FAIL` if anything has gone missing. Items without ✓ need a qui
 
 ## 2026-11-07
 
+- Poster viewer rebuilt as a plain overlay (was <dialog>), so the full-size poster shows on iPad Safari; Esc / tap outside / ✕ close it.
 - Chanda slips (₹400) marked donated by Somdeep; still needed now ₹12,074.
 - Sponsor line now reads "Chanda slips, printing etc." — Somdeep Kundu.
 - Chanda total ₹34,726 / 66 receipts; bhar shows ₹12,474 still needed.

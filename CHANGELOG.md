@@ -5,6 +5,10 @@ Every published version, newest first (from the git history). Good points to go 
 
 To bring back an older version of the page: `git checkout <id> -- index.html`, then commit.
 
+## 2026-11-07
+
+- Chanda updated: ₹34,726 from 66 receipts (added cash 54–59 of 6 Nov and online 61–67). Distribution bands and "still needed" (₹12,474) updated.
+
 ## 2026-11-06
 
 - Printing donated by Somdeep Kundu: ✓ দান in the expense list (Other) and in special donations

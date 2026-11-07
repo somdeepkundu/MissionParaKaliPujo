@@ -67,3 +67,8 @@ and stops with `FAIL` if anything has gone missing. Items without ✓ need a qui
 - Photos at most 1600 px; Maa's artwork 77 KB; book photos load only near the book
 - Every looping animation pauses off screen; only transform / opacity / filter change each frame
 - ✓ No broken images, no script errors; ✓ share preview image (og.jpg)
+
+## 2026-11-07
+
+- Chanda total ₹34,726 / 66 receipts; bhar shows ₹12,474 still needed.
+

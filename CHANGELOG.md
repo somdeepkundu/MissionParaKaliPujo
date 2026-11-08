@@ -7,6 +7,7 @@ To bring back an older version of the page: `git checkout <id> -- index.html`, t
 
 ## 2026-11-08
 
+- Front photo is now this year's Maa (img/maa-2026.jpg); the old lamps photo stays in the photo book.
 - Costing note under the bhar (3 languages): estimates are mostly from last year; several heads will rise this year.
 - Receipts 74–76 added: chanda ₹50,782 from 98 receipts.
 - Book B (receipts 1B–24B) added: chanda ₹50,081 from 95 receipts; goal reached. 8B (₹3,300, Rudrani De, Protima) left out of the site total since the murti is already shown as donated.

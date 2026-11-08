@@ -7,6 +7,7 @@ To bring back an older version of the page: `git checkout <id> -- index.html`, t
 
 ## 2026-11-08
 
+- New "Tonight, 2026" section after the schedule: a deck of this year's photos (polaroid stack). Drag or tap to send the top card back; deals in when scrolled into view; keyboard arrows too. Photos in photos/2026/.
 - Puja-evening notice under the hero (3 languages, pulsing dot): bring prasad thali now; auto-hides at 8 pm IST.
 - Founding year corrected to 1993 (34th puja); hero line and photo book subtitle.
 - Hero cinematic reworked: 4s zoom IN (done before most people scroll) toward Maa's face while the image brightens from dim.

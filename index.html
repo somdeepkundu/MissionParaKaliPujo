@@ -121,6 +121,22 @@ h2{font-size:var(--s-head);font-weight:300;font-stretch:80%;line-height:.98;lett
 .statement .pulse{flex:none;width:.5em;height:.5em;border-radius:50%;background:var(--jaba-d);animation:pulse 1.6s ease-in-out infinite;transform:translateY(-.1em)}
 @keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(200,30,50,.5)}50%{opacity:.6;box-shadow:0 0 0 .45em rgba(200,30,50,0)}}
 @media (prefers-reduced-motion:reduce){.statement .pulse{animation:none}}
+/* ---- tonight deck ---- */
+.magic{position:relative;padding:var(--sp-xl) var(--sp-m) calc(var(--sp-xl)*1.2);background:radial-gradient(ellipse 80% 60% at 50% 55%,#3a0f12 0%,#140808 60%,#0b0606 100%);color:#f6efe6;overflow:hidden;text-align:center}
+.magic::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 20% 30%,rgba(255,190,90,.12),transparent 30%),radial-gradient(circle at 80% 70%,rgba(255,120,90,.10),transparent 32%);animation:mgglow 7s ease-in-out infinite alternate;pointer-events:none}
+@keyframes mgglow{to{opacity:.5;transform:scale(1.08)}}
+.mg-head{position:relative}
+.mg-kick{display:inline-flex;align-items:center;gap:.5em;font-size:var(--s-small);letter-spacing:.08em;color:#ffb3a0;margin:0}
+.mg-kick .pulse{width:.5em;height:.5em;border-radius:50%;background:#ff6a5a;animation:pulse 1.6s ease-in-out infinite}
+.magic h2{margin:.2em 0 .1em;color:#fff}
+.mg-hint{font-size:var(--s-small);opacity:.6;margin:0 0 var(--sp-l)}
+.deck{position:relative;width:min(84vw,430px);aspect-ratio:4/5;margin:0 auto;touch-action:pan-y;perspective:1200px}
+.card{position:absolute;inset:0;margin:0;border-radius:14px;overflow:hidden;background:#222;box-shadow:0 22px 50px rgba(0,0,0,.55),0 0 0 6px #fbf6ee inset;padding:6px 6px 0;cursor:grab;will-change:transform;transition:transform .55s cubic-bezier(.2,.8,.2,1),opacity .4s;user-select:none;-webkit-user-select:none}
+.card img{display:block;width:100%;height:calc(100% - 2.6rem);object-fit:cover;border-radius:9px 9px 0 0;pointer-events:none}
+.card figcaption{height:2.6rem;display:flex;align-items:center;justify-content:center;background:#fbf6ee;color:#3b2a20;font-size:var(--s-small)}
+.card.drag{transition:none;cursor:grabbing}
+.mg-count{position:relative;margin:var(--sp-m) 0 0;font-size:.8rem;opacity:.55;letter-spacing:.1em}
+@media (prefers-reduced-motion:reduce){.magic::before{animation:none}.card{transition:opacity .3s}}
 .main img{width:100%;height:100%;object-fit:cover;object-position:50% 100%;animation:drift 24s var(--ease) both}
 /* this year's Maa, cinematic: starts wide and dim, then slowly closes in on her face while the light comes up */
 .main img.maa{object-position:50% 38%;transform-origin:53% 58%;animation:cine 4s cubic-bezier(.4,0,.2,1) .15s both}
@@ -770,6 +786,17 @@ section[id]{scroll-margin-top:50px}
     </div>
   </section>
 
+  <!-- tonight, 2026: a small deck of fresh photos. drag or tap to flip through; it loops -->
+  <section class="magic" id="tonight" aria-labelledby="mg-h">
+    <div class="mg-head">
+      <p class="mg-kick"><span class="pulse" aria-hidden="true"></span><span data-i="mg.kick">আজ রাতে, ২০২৬</span></p>
+      <h2 id="mg-h" data-i="mg.h">পুজোর রাত</h2>
+      <p class="mg-hint" data-i="mg.hint">ছবি সরিয়ে বা ছুঁয়ে পরেরটা দেখুন</p>
+    </div>
+    <div class="deck" id="deck" role="list"></div>
+    <p class="mg-count" id="mg-count" aria-live="polite"></p>
+  </section>
+
   <section class="bookwrap" id="photos" aria-labelledby="book-h">
     <div class="bookhead">
       <h2 id="book-h" data-rise data-i="book.h">ছবির খাতা</h2>
@@ -956,6 +983,11 @@ const SITE = {
 
   // The photo book, in order. year: a number, or "" when not known. cap: text in each language.
   // pos: which part of the photo to keep when it is cropped.
+  live: [   // tonight, 2026 (the deck)
+    { src: "photos/2026/maa-pandal.jpg", cap: "mg.c1", pos: "62% 30%" },
+    { src: "photos/2026/aarti-bhid.jpg", cap: "mg.c2", pos: "50% 40%" },
+    { src: "photos/2026/mayera.jpg",     cap: "mg.c3", pos: "50% 35%" },
+  ],
   photos: [
     { year: 2016, src: "photos/2016/raat-adda.jpg",          cap: "cap.adda",     pos: "50% 35%" },
     { year: 2020, src: "photos/2020/priest-puja.jpg",        cap: "cap.puja",     pos: "50% 30%" },
@@ -1003,6 +1035,12 @@ const D = {
   "facts.where": ["কোথায়", "Where", "कहाँ"],
   "facts.whereV": ["আপার মিশন পাড়া, আদ্রা", "Upper Mission Para, Adra", "अपर मिशन पाड़ा, आद्रा"],
   "main.alt": ["প্যান্ডেলে মা কালী, পেছনে আলোর ফুলকি, ২০২৬", "Maa Kali in the pandal, soft lights behind, 2026", "पंडाल में माँ काली, पीछे रोशनी, २०२६"],
+  "mg.kick": ["আজ রাতে, ২০২৬", "Tonight, 2026", "आज रात, २०२६"],
+  "mg.h": ["পুজোর রাত", "Puja night", "पूजा की रात"],
+  "mg.hint": ["ছবি সরিয়ে বা ছুঁয়ে পরেরটা দেখুন", "Swipe or tap for the next one", "अगली फ़ोटो के लिए सरकाएँ या छुएँ"],
+  "mg.c1": ["প্যান্ডেলে মা", "Maa in the pandal", "पंडाल में माँ"],
+  "mg.c2": ["পুজো শুরুর আগে, সবাই এসে বসেছেন", "Everyone gathered before the puja", "पूजा से पहले, सब आ बैठे"],
+  "mg.c3": ["মায়েরা", "The mothers of the para", "पाड़ा की माँएँ"],
   "st.now": ["যাঁরা প্রসাদের থালা দেবেন, এখন দিয়ে দিতে পারেন।", "If you are bringing a prasad thali, you may hand it in now.", "जो लोग प्रसाद की थाली देना चाहते हैं, वे अभी दे सकते हैं।"],
   "st.main": ["অমাবস্যার রাতে মায়ের পুজো, রবিবার ৮ নভেম্বর", "Maa's puja on Amavasya night, Sunday 8 November", "अमावस्या की रात माँ की पूजा, रविवार ८ नवंबर"],
   "st.time": ["সন্ধ্যা ৬টা ৩০-এ পুজো শুরু", "Puja begins at 6:30 pm", "शाम ६:३० बजे पूजा शुरू"],
@@ -1862,10 +1900,47 @@ function applyStatic(){
   document.querySelectorAll("[data-ialt]").forEach(e => e.alt = t(e.dataset.ialt));
   document.querySelectorAll(".lang button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.lang === LANG)));
 }
+// ---- tonight deck: stacked polaroids; drag/tap sends the top card to the back, with a soft deal-in when first seen
+(function deck(){
+  const box = document.getElementById("deck"); if (!box || !SITE.live) return;
+  const cnt = document.getElementById("mg-count");
+  const rot = [-4, 3, -2, 5, -5, 2];
+  let order = SITE.live.map((_, i) => i), cards = [];
+  SITE.live.forEach((p, i) => {
+    const f = document.createElement("figure"); f.className = "card"; f.setAttribute("role", "listitem");
+    f.innerHTML = `<img src="${p.src}" alt="" loading="lazy" style="object-position:${p.pos}"><figcaption data-i="${p.cap}"></figcaption>`;
+    f.querySelector("figcaption").textContent = t(p.cap); f.querySelector("img").alt = t(p.cap);
+    f.style.transform = "translateY(40px) scale(.85)"; f.style.opacity = "0";
+    box.appendChild(f); cards.push(f);
+  });
+  const lay = () => {
+    order.forEach((ci, k) => { const c = cards[ci];
+      c.style.zIndex = 50 - k; c.style.opacity = k < 4 ? 1 : 0;
+      c.style.transform = `translate(${k * 6}px, ${k * 8}px) rotate(${k ? rot[ci % rot.length] : 0}deg) scale(${1 - k * 0.04})`; });
+    cnt.textContent = num(order[0] + 1) + " / " + num(cards.length);
+  };
+  const next = (dir = 1) => {
+    const top = cards[order[0]];
+    top.style.transform = `translate(${dir * 130}%, -6%) rotate(${dir * 22}deg)`; top.style.opacity = 0;
+    setTimeout(() => { order.push(order.shift()); lay(); }, 280);
+  };
+  new IntersectionObserver((es, o) => { if (es[0].isIntersecting) { o.disconnect();
+    order.forEach((ci, k) => setTimeout(() => lay(), 120 + k * 90)); } }, { threshold: .3 }).observe(box);
+  let x0 = null, dx = 0, moved = false;
+  box.addEventListener("pointerdown", e => { const top = cards[order[0]]; if (!top.contains(e.target)) return;
+    x0 = e.clientX; dx = 0; moved = false; top.classList.add("drag"); top.setPointerCapture(e.pointerId); });
+  box.addEventListener("pointermove", e => { if (x0 === null) return; dx = e.clientX - x0; if (Math.abs(dx) > 6) moved = true;
+    cards[order[0]].style.transform = `translateX(${dx}px) rotate(${dx / 14}deg)`; });
+  const up = () => { if (x0 === null) return; const top = cards[order[0]]; top.classList.remove("drag"); x0 = null;
+    if (!moved) next(1); else if (Math.abs(dx) > 70) next(Math.sign(dx)); else lay(); };
+  box.addEventListener("pointerup", up); box.addEventListener("pointercancel", up);
+  box.tabIndex = 0; box.addEventListener("keydown", e => { if (e.key === "ArrowRight" || e.key === "Enter" || e.key === " ") { e.preventDefault(); next(1); } if (e.key === "ArrowLeft") next(-1); });
+  window.deckRelabel = () => { cards.forEach((c, i) => { c.querySelector("figcaption").textContent = t(SITE.live[i].cap); }); lay(); };
+})();
 function setLang(l){
   LANG = l;
   try { localStorage.setItem("lang", l); } catch (e) {}
-  applyStatic(); drawTheme(); drawCount(); drawSchedule(); drawChanda(); drawPeople(); drawPay(); drawCal(); drawPoster(); drawGoal(); drawDist(); bookRerender(); fitAll(); observeRise();
+  applyStatic(); drawTheme(); drawCount(); drawSchedule(); drawChanda(); drawPeople(); drawPay(); drawCal(); drawPoster(); drawGoal(); drawDist(); bookRerender(); if (window.deckRelabel) deckRelabel(); fitAll(); observeRise();
 }
 document.querySelectorAll(".lang button").forEach(b => b.onclick = () => setLang(b.dataset.lang));
 document.querySelectorAll(".wa").forEach(a => a.href = SITE.whatsapp);

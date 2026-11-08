@@ -7,6 +7,8 @@ To bring back an older version of the page: `git checkout <id> -- index.html`, t
 
 ## 2026-11-08
 
+- Puja-evening notice under the hero (3 languages, pulsing dot): bring prasad thali now; auto-hides at 8 pm IST.
+- Founding year corrected to 1993 (34th puja); hero line and photo book subtitle.
 - Hero cinematic reworked: 4s zoom IN (done before most people scroll) toward Maa's face while the image brightens from dim.
 - Hero: new full Maa photo (img/maa-2026-hero.jpg) with a cinematic rise-from-dark slow push-in and soft vignette; the close-up moved into the intro photo (replacing the daylight pandal, which stays in the book).
 - Front photo is now this year's Maa (img/maa-2026.jpg); the old lamps photo stays in the photo book.

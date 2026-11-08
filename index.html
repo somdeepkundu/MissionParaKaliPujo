@@ -113,6 +113,14 @@ h2{font-size:var(--s-head);font-weight:300;font-stretch:80%;line-height:.98;lett
 .main{grid-column:3/11;min-height:0}
 .main picture{display:block;height:100%;width:100%}
 .body > *{min-width:0}
+/* live notice on puja evening: a small pulsing dot and one line, gone by 8 pm */
+.statement .now{display:flex;align-items:baseline;gap:.5em;margin-top:.55em;font-size:var(--s-small);font-weight:500;color:#e2334a}
+:root[data-theme="dark"] .statement .now{color:#ff7d8c}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .statement .now{color:#ff7d8c}}
+.statement .now[hidden]{display:none}
+.statement .pulse{flex:none;width:.5em;height:.5em;border-radius:50%;background:var(--jaba-d);animation:pulse 1.6s ease-in-out infinite;transform:translateY(-.1em)}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(200,30,50,.5)}50%{opacity:.6;box-shadow:0 0 0 .45em rgba(200,30,50,0)}}
+@media (prefers-reduced-motion:reduce){.statement .pulse{animation:none}}
 .main img{width:100%;height:100%;object-fit:cover;object-position:50% 100%;animation:drift 24s var(--ease) both}
 /* this year's Maa, cinematic: starts wide and dim, then slowly closes in on her face while the light comes up */
 .main img.maa{object-position:50% 38%;transform-origin:53% 58%;animation:cine 4s cubic-bezier(.4,0,.2,1) .15s both}
@@ -655,7 +663,7 @@ section[id]{scroll-margin-top:50px}
   <button type="button" class="share" data-ia="share.btn" aria-label="শেয়ার করুন"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7.5 7.5 12 3l4.5 4.5M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
 </nav>
 <header class="hero">
-  <div class="band"><h1><span class="fit" data-i="hero.name">মিশন পাড়া</span> <span class="fit"><span data-i="hero.sub">কালীপুজো</span> <span data-i="hero.year">২০২৬</span></span></h1><p class="since"><span data-i="hero.since">২০০৭ থেকে · এবার কুড়িতম পুজো</span></p></div>
+  <div class="band"><h1><span class="fit" data-i="hero.name">মিশন পাড়া</span> <span class="fit"><span data-i="hero.sub">কালীপুজো</span> <span data-i="hero.year">২০২৬</span></span></h1><p class="since"><span data-i="hero.since">১৯৯৩ থেকে · এবার ৩৪তম পুজো</span></p></div>
 
   <nav class="links" aria-label="পাতার অংশ" data-ia="nav.aria">
     <a href="#schedule"><img src="img/jaba.svg" alt="" width="28" height="28"><span data-i="nav.schedule">নির্ঘণ্ট</span></a>
@@ -689,6 +697,7 @@ section[id]{scroll-margin-top:50px}
       <div class="statement">
         <p data-i="st.main">অমাবস্যার রাতে মায়ের পুজো, রবিবার ৮ নভেম্বর</p>
         <p data-i="st.time">সন্ধ্যা ৬টা ৩০-এ পুজো শুরু</p>
+        <p class="now" id="st-now" hidden><span class="pulse" aria-hidden="true"></span><span data-i="st.now">যাঁরা প্রসাদের থালা দেবেন, এখন দিয়ে দিতে পারেন।</span></p>
       </div>
     </div>
 
@@ -764,7 +773,7 @@ section[id]{scroll-margin-top:50px}
   <section class="bookwrap" id="photos" aria-labelledby="book-h">
     <div class="bookhead">
       <h2 id="book-h" data-rise data-i="book.h">ছবির খাতা</h2>
-      <p data-rise style="--i:1" data-i="book.sub">মিশন পাড়ার কালীপুজো, ২০০৭ থেকে · কুড়ি বছর</p>
+      <p data-rise style="--i:1" data-i="book.sub">মিশন পাড়ার কালীপুজো, ১৯৯৩ থেকে</p>
     </div>
     <div class="stage">
     <div class="book" id="book" tabindex="0" role="region" data-ia="book.aria" aria-label="ছবির খাতা, পাতা ওল্টাতে ডান বা বাঁ তীর চাপুন">
@@ -973,7 +982,7 @@ const D = {
   "hero.name": ["মিশন পাড়া", "Mission Para", "मिशन पाड़ा"],
   "hero.sub": ["কালীপুজো", "Kali Puja", "काली पूजा"],
   "hero.year": ["২০২৬", "2026", "२०२६"],
-  "hero.since": ["২০০৭ থেকে · এবার কুড়িতম পুজো", "Since 2007 · our 20th puja", "२००७ से · इस बार बीसवीं पूजा"],
+  "hero.since": ["১৯৯৩ থেকে · এবার ৩৪তম পুজো", "Since 1993 · our 34th puja", "१९९३ से · इस बार ३४वीं पूजा"],
   "nav.aria": ["পাতার অংশ", "Page sections", "पेज के हिस्से"],
   "nav.schedule": ["নির্ঘণ্ট", "Schedule", "समय-सूची"],
   "nav.photos": ["ছবি", "Photos", "तस्वीरें"],
@@ -994,6 +1003,7 @@ const D = {
   "facts.where": ["কোথায়", "Where", "कहाँ"],
   "facts.whereV": ["আপার মিশন পাড়া, আদ্রা", "Upper Mission Para, Adra", "अपर मिशन पाड़ा, आद्रा"],
   "main.alt": ["প্যান্ডেলে মা কালী, পেছনে আলোর ফুলকি, ২০২৬", "Maa Kali in the pandal, soft lights behind, 2026", "पंडाल में माँ काली, पीछे रोशनी, २०२६"],
+  "st.now": ["যাঁরা প্রসাদের থালা দেবেন, এখন দিয়ে দিতে পারেন।", "If you are bringing a prasad thali, you may hand it in now.", "जो लोग प्रसाद की थाली देना चाहते हैं, वे अभी दे सकते हैं।"],
   "st.main": ["অমাবস্যার রাতে মায়ের পুজো, রবিবার ৮ নভেম্বর", "Maa's puja on Amavasya night, Sunday 8 November", "अमावस्या की रात माँ की पूजा, रविवार ८ नवंबर"],
   "st.time": ["সন্ধ্যা ৬টা ৩০-এ পুজো শুরু", "Puja begins at 6:30 pm", "शाम ६:३० बजे पूजा शुरू"],
   "r.puja": ["পুজো", "Puja", "पूजा"],
@@ -1060,7 +1070,7 @@ const D = {
   "ch.alt": ["২০২৫ সালের আঁকা প্রতিযোগিতার একটি ছবি", "A picture from the 2025 drawing competition", "२०२५ की चित्रकला प्रतियोगिता की एक तस्वीर"],
   "upd": ["শেষ আপডেট {d} {m} {y}", "Last updated {d} {m} {y}", "आखिरी अपडेट {d} {m} {y}"],
   "book.h": ["ছবির খাতা", "Photo book", "तस्वीरों की किताब"],
-  "book.sub": ["মিশন পাড়ার কালীপুজো, ২০০৭ থেকে · কুড়ি বছর", "Mission Para Kali Puja, since 2007 · twenty years", "मिशन पाड़ा की काली पूजा, २००७ से · बीस साल"],
+  "book.sub": ["মিশন পাড়ার কালীপুজো, ১৯৯৩ থেকে", "Mission Para Kali Puja, since 1993", "मिशन पाड़ा की काली पूजा, १९९३ से"],
   "book.aria": ["ছবির খাতা, পাতা ওল্টাতে ডান বা বাঁ তীর চাপুন", "Photo book. Press the left or right arrow to turn pages", "तस्वीरों की किताब, पन्ने पलटने के लिए दायाँ या बायाँ तीर दबाएँ"],
   "book.prev": ["আগের পাতা", "Previous page", "पिछला पन्ना"],
   "book.next": ["পরের পাতা", "Next page", "अगला पन्ना"],
@@ -1212,6 +1222,9 @@ const el = (tag, p = {}, ...k) => { const e = Object.assign(document.createEleme
 const ist = s => new Date(s + ":00+05:30");
 /* ?demo=2026-11-08T21:10 shows the page as it will look at that moment (India time) */
 const nowIST = () => { const q = new URLSearchParams(location.search).get("demo"); return q ? ist(q) : new Date(); };
+// puja-evening notice (prasad thali): shown until 8 pm IST on 8 Nov
+(function nowNote(){ const n = document.getElementById("st-now"); if (!n) return;
+  const on = nowIST() < ist("2026-11-08T20:00"); n.hidden = !on; if (on) setTimeout(nowNote, 60000); })();
 const capOf = p => t(p.cap);
 
 /* day / night */

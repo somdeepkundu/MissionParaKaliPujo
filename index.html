@@ -114,9 +114,9 @@ h2{font-size:var(--s-head);font-weight:300;font-stretch:80%;line-height:.98;lett
 .main picture{display:block;height:100%;width:100%}
 .body > *{min-width:0}
 .main img{width:100%;height:100%;object-fit:cover;object-position:50% 100%;animation:drift 24s var(--ease) both}
-/* this year's Maa, cinematic: rises out of the dark and slowly comes closer, with a soft vignette */
-.main img.maa{object-position:50% 38%;animation:cine 16s cubic-bezier(.22,.61,.36,1) both;transform-origin:50% 40%}
-@keyframes cine{0%{transform:scale(1.16);filter:brightness(.35) saturate(.7)}35%{filter:brightness(1) saturate(1)}100%{transform:scale(1.02);filter:none}}
+/* this year's Maa, cinematic: starts wide and dim, then slowly closes in on her face while the light comes up */
+.main img.maa{object-position:50% 38%;transform-origin:53% 58%;animation:cine 20s cubic-bezier(.45,.05,.35,1) .3s both}
+@keyframes cine{0%{transform:scale(1);filter:brightness(.4) saturate(.75) contrast(1.05)}100%{transform:scale(1.22);filter:brightness(1.08) saturate(1.05) contrast(1)}}
 .main picture{position:relative}
 .main picture::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 75% 70% at 50% 42%,transparent 55%,rgba(0,0,0,.45))}
 @media (max-width:860px){.main img.maa{object-position:50% 30%}}

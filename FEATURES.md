@@ -70,6 +70,7 @@ and stops with `FAIL` if anything has gone missing. Items without ✓ need a qui
 
 ## 2026-11-08
 
+- Hero now shuffles between 3 photos of this year each visit (arati crowd, full Maa, close-up), each with its own ~4s move: push in toward Maa through the crowd, zoom to her face, or pull back from her eyes; all brighten from dim.
 - Tonight deck: gate and lit lane photos first, credited to Dipam (camera watermark cropped).
 - Tonight deck: +3 photos (hom fire, chanting & hom, elders).
 - New "Tonight, 2026" section after the schedule: a deck of this year's photos (polaroid stack). Drag or tap to send the top card back; deals in when scrolled into view; keyboard arrows too. Photos in photos/2026/.

@@ -139,11 +139,17 @@ h2{font-size:var(--s-head);font-weight:300;font-stretch:80%;line-height:.98;lett
 @media (prefers-reduced-motion:reduce){.magic::before{animation:none}.card{transition:opacity .3s}}
 .main img{width:100%;height:100%;object-fit:cover;object-position:50% 100%;animation:drift 24s var(--ease) both}
 /* this year's Maa, cinematic: starts wide and dim, then slowly closes in on her face while the light comes up */
-.main img.maa{object-position:50% 38%;transform-origin:53% 58%;animation:cine 4s cubic-bezier(.4,0,.2,1) .15s both}
+/* this year's Maa: three photos, three camera moves, about 4s each (done before most people scroll) */
+.main img.maa{animation:4s cubic-bezier(.4,0,.2,1) .15s both}
+.main img.maa[data-m="face"]{object-position:50% 38%;transform-origin:53% 58%;animation-name:cine}
+.main img.maa[data-m="arati"]{object-position:50% 28%;transform-origin:55% 40%;animation-name:cineArati;animation-duration:4.6s}
+.main img.maa[data-m="close"]{object-position:50% 74%;transform-origin:50% 50%;animation-name:cineClose}
 @keyframes cine{0%{transform:scale(1);filter:brightness(.4) saturate(.75) contrast(1.05)}100%{transform:scale(1.22);filter:brightness(1.08) saturate(1.05) contrast(1)}}
+@keyframes cineArati{0%{transform:scale(1.02) translateY(2%);filter:brightness(.3) saturate(.7)}100%{transform:scale(1.28) translateY(0);filter:brightness(1.06) saturate(1.08)}}
+@keyframes cineClose{0%{transform:scale(1.32);filter:brightness(.35) saturate(.7)}100%{transform:scale(1.03);filter:brightness(1.05) saturate(1.05)}}
 .main picture{position:relative}
 .main picture::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 75% 70% at 50% 42%,transparent 55%,rgba(0,0,0,.45))}
-@media (max-width:860px){.main img.maa{object-position:50% 30%}}
+@media (max-width:860px){.main img.maa[data-m="face"]{object-position:50% 30%}.main img.maa[data-m="arati"]{object-position:50% 22%}.main img.maa[data-m="close"]{object-position:50% 45%}}
 @keyframes drift{from{transform:scale(1.08)}to{transform:scale(1)}}
 .statement{position:absolute;left:0;bottom:0;width:min(34rem,72%);background:var(--bg);padding:24px;transition:background .4s}
 .statement p{font-size:var(--s-lead);font-weight:300;line-height:1.15;letter-spacing:-.01em}
@@ -708,7 +714,15 @@ section[id]{scroll-margin-top:50px}
 
     <div class="tile main">
       <picture>
-        <img src="img/maa-2026-hero.jpg" alt="" data-ialt="main.alt" width="1227" height="1374" fetchpriority="high" class="maa">
+        <img alt="" data-ialt="main.alt" fetchpriority="high" class="maa" id="hero-img">
+        <script>/* pick one of this year's three photos at random, each with its own camera move */
+          (function(){var H=[
+            {s:"img/maa-2026-arati.jpg",w:1600,h:1600,m:"arati",k:"main.altA"},
+            {s:"img/maa-2026-hero.jpg",w:1227,h:1374,m:"face",k:"main.alt"},
+            {s:"img/maa-2026.jpg",w:1207,h:1600,m:"close",k:"main.altC"}],
+            p=H[Math.floor(Math.random()*H.length)],i=document.getElementById("hero-img");
+            i.width=p.w;i.height=p.h;i.dataset.m=p.m;i.dataset.ialt=p.k;i.src=p.s;})();</script>
+        <noscript><img src="img/maa-2026-hero.jpg" alt="" width="1227" height="1374"></noscript>
       </picture>
       <div class="statement">
         <p data-i="st.main">অমাবস্যার রাতে মায়ের পুজো, রবিবার ৮ নভেম্বর</p>
@@ -1039,6 +1053,8 @@ const D = {
   "facts.tithiV": ["দীপান্বিতা অমাবস্যা", "Dipanwita Amavasya", "दीपान्विता अमावस्या"],
   "facts.where": ["কোথায়", "Where", "कहाँ"],
   "facts.whereV": ["আপার মিশন পাড়া, আদ্রা", "Upper Mission Para, Adra", "अपर मिशन पाड़ा, आद्रा"],
+  "main.altA": ["আরতির সময় মায়ের সামনে ভিড়, ২০২৬", "The crowd before Maa at arati, 2026", "आरती के समय माँ के सामने भीड़, २०२६"],
+  "main.altC": ["কাছ থেকে মা কালীর মুখ ও মুকুট, ২০২৬", "Close-up of Maa Kali's face and crown, 2026", "माँ काली का चेहरा और मुकुट, पास से, २०२६"],
   "main.alt": ["প্যান্ডেলে মা কালী, পেছনে আলোর ফুলকি, ২০২৬", "Maa Kali in the pandal, soft lights behind, 2026", "पंडाल में माँ काली, पीछे रोशनी, २०२६"],
   "mg.kick": ["আজ রাতে, ২০২৬", "Tonight, 2026", "आज रात, २०२६"],
   "mg.h": ["পুজোর রাত", "Puja night", "पूजा की रात"],

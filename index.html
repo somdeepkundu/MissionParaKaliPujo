@@ -422,6 +422,9 @@ a,button,summary,label,.r5,.wa,[role="button"]{cursor:pointer}
 .gfig .sec{color:var(--soft)}
 .gtill{font-size:var(--s-small);color:var(--soft);margin:.3rem 0 0}
 .gleft{font-size:var(--s-body);margin:.7rem 0 0;color:var(--jaba-d)}
+/* costing caveat: one quiet line, not a warning box */
+.gnote{font-size:.74rem;line-height:1.45;color:var(--soft);margin:.35rem 0 0;max-width:30em}
+.gnote::before{content:"* ";color:var(--jaba-d)}
 .gmore{margin-top:.9rem;font-size:var(--s-small)}
 .gmore summary{color:var(--jaba-d);border-color:rgba(160,20,40,.35);list-style:none;margin-top:.2rem}
 .gmore summary::-webkit-details-marker{display:none}
@@ -1101,6 +1104,7 @@ const D = {
   "f.legal": ["মিশন পাড়া কালীপুজো কমিটি", "Mission Para Kali Puja Committee", "मिशन पाड़ा काली पूजा समिति"],
   "ex.h": ["আনুমানিক খরচ", "Projected expenses", "अनुमानित खर्च"],
   "ex.of": ["₹{a} / ₹{b}", "₹{a} of ₹{b}", "₹{b} में से ₹{a}"],
+  "ex.cost": ["খরচের হিসেব মূলত গত বছরের খরচ দেখে করা। এ বছর বিভিন্ন খাতে খরচ কিছুটা বাড়বে।", "Costs here are mostly based on last year's spending. This year several heads will cost a little more.", "खर्च का अनुमान ज़्यादातर पिछले साल के खर्च पर आधारित है। इस साल कई मदों में खर्च कुछ बढ़ेगा।"],
   "ex.left": ["আরও ₹{n} লাগবে", "₹{n} to go", "₹{n} और चाहिए"],
   "ex.done": ["লক্ষ্য পূরণ!", "Goal reached!", "लक्ष्य पूरा!"],
   "ex.note": ["মূর্তি ও রাতের ভোগ দান হিসেবে আসছে, তাই এখানে ধরা নেই।", "Murti and night bhog are donated, so they are not counted here.", "मूर्ति और रात का भोग दान में मिले हैं, इसलिए यहाँ नहीं जोड़े गए।"],
@@ -1408,7 +1412,7 @@ function drawGoal(){
     const c = SITE.committee[0]; return el("a", { href: "tel:+91" + c.phone.replace(/\s/g, ""), textContent: t(c.name + ".s") });
   }));
   box.classList.remove("open");
-  box.replaceChildren(el("h3", { textContent: t("ex.h") }), svg, el("div", { className: "gbox" }, fig, till, left, next, more), spon,
+  box.replaceChildren(el("h3", { textContent: t("ex.h") }), svg, el("div", { className: "gbox" }, fig, till, left, el("p", { className: "gnote", textContent: t("ex.cost") }), next, more), spon,
     el("p", { className: "dhint", textContent: t("ex.note") }));
 
   // fill up the first time it is seen, and a coin drops in

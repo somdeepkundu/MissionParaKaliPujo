@@ -95,7 +95,7 @@ with sync_playwright() as p:
         check("play button starts it again", J("document.getElementById('pageno').textContent") != p0, p0)
         # chanda
         pg.locator("#chanda").scroll_into_view_if_needed(); pg.wait_for_timeout(600)
-        check("chanda total shown", "৫০,০৮১" in J("document.getElementById('ch-dl').textContent"))
+        check("chanda total shown", "৫০,৭৮২" in J("document.getElementById('ch-dl').textContent"))
         c1 = J("document.querySelector('.gfig').textContent"); pg.wait_for_timeout(1200); c2 = J("document.querySelector('.gfig').textContent")
         check("bhar countdown ticks", c1 != c2 or "পুজো" in c1, f"{c1} / {c2}")
         check("goal reached: no still-needed list", J("document.querySelectorAll('.gnext li a[href*=\"wa.me\"]').length") == 0)

@@ -5,6 +5,10 @@ Every published version, newest first (from the git history). Good points to go 
 
 To bring back an older version of the page: `git checkout <id> -- index.html`, then commit.
 
+## 2026-11-08
+
+- Book B (receipts 1B–24B) added: chanda ₹50,081 from 95 receipts; goal reached. 8B (₹3,300, Rudrani De, Protima) left out of the site total since the murti is already shown as donated.
+
 ## 2026-11-07
 
 - Chanda ₹38,726 from 73 receipts (added 60, 72, 73); still needed ₹8,074.

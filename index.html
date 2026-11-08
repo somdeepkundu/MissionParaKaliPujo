@@ -883,8 +883,8 @@ const SITE = {
   pujaDate: "2026-11-08",
   mapUrl: "https://maps.app.goo.gl/FmLAPDkEYG28Jmdk8",
   whatsapp: "https://chat.whatsapp.com/FfAXltygtUfAkY8qnvqbdy",
-  updated: "2026-11-07",
-  chanda: { total: 38726, receipts: 73 },
+  updated: "2026-11-08",
+  chanda: { total: 50081, receipts: 95 },
 
   // start/end are India time (IST); they light up "now" and "next". t / ev / day / note are keys in D below.
   schedule: [
@@ -904,10 +904,10 @@ const SITE = {
   // Donation statistics: counts and totals by gift size (no names). Special donations are listed by name.
   distribution: {
     bands: [
-    {k:"dist.b1", n:10, sum:1213},
-    {k:"dist.b2", n:25, sum:6559},
-    {k:"dist.b3", n:18, sum:10352},
-    {k:"dist.b4", n:17, sum:20602},
+    {k:"dist.b1", n:12, sum:1363},
+    {k:"dist.b2", n:35, sum:8763},
+    {k:"dist.b3", n:21, sum:11952},
+    {k:"dist.b4", n:24, sum:28003},
     ],
     specials: ["sp.murti", "sp.bhog", "sp.laddu", "sp.print"],
   },
@@ -1131,6 +1131,7 @@ const D = {
   "pay.qrAlt": ["সোমদীপ কুন্ডুকে UPI-তে টাকা পাঠানোর QR কোড", "QR code to pay Somdeep Kundu by UPI", "सोमदीप कुंडु को UPI से भुगतान का QR कोड"],
   "ex.nextH": ["এখনও যা লাগবে — একটা বেছে স্পনসর করুন", "Still needed — pick one to sponsor", "अभी चाहिए — एक चुनकर स्पॉन्सर करें"],
   "ex.spon": ["স্পনসর করুন", "Sponsor", "स्पॉन्सर करें"],
+  "ex.allDone": ["সব খরচ দেখুন", "See all costs", "सब खर्च देखें"],
   "ex.all": ["সব খরচ দেখুন ও স্পনসর করুন ({n}টি)", "See all costs & sponsor ({n})", "सब खर्च देखें और स्पॉन्सर करें ({n})"],
   "ev.tag": ["সব বয়সের ছোটদের জন্য", "For children, beyond age", "उम्र की सीमा से परे, बच्चों के लिए"],
   "ev.h": ["বসে আঁকো", "Sit & Draw", "चित्रकला प्रतियोगिता"],
@@ -1389,6 +1390,9 @@ function drawGoal(){
   const more = el("details", { className: "gmore" }, el("summary", { className: "pill", textContent: t("ex.all", { n: num(String(needs.length)) }) }),
     el("p", { className: "of", textContent: t("ex.of", { a: rs(have), b: rs(need) }) }), ul,
     el("p", { className: "key" }, el("span", { className: "dot full" }), t("ex.kfull") + "  ", el("span", { className: "dot part" }), t("ex.kpart") + "  ", el("span", { className: "dot none" }), t("ex.knone") + "  ", el("span", { className: "dot gift" }), t("ex.kgift")));
+  // goal reached: nothing left to sponsor, so the list header goes and the button just opens the cost sheet
+  if (!pick.length) next.hidden = true;
+  if (!needs.length) more.querySelector("summary").textContent = t("ex.allDone");
   more.ontoggle = () => {
     box.classList.toggle("open", more.open);
     if (!more.open) { lits.forEach(l => l.classList.remove("on")); ul.querySelectorAll(".it").forEach(x => x.setAttribute("aria-expanded", "false")); }

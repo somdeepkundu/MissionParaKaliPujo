@@ -5,6 +5,12 @@ Every published version, newest first (from the git history). Good points to go 
 
 To bring back an older version of the page: `git checkout <id> -- index.html`, then commit.
 
+## 2026-11-09
+
+- Restore point before this change: branch `layout-before-sitdraw` (commit e3c746a). To go back: `git checkout layout-before-sitdraw -- index.html`.
+- Time-boxed notices (SITE.notices): yesterday's prasad note retired; today's Sit & Draw note (3 languages) shows under the hero until 1 pm IST.
+- Spotlight (SITE.spotlight): the Sit & Draw card is lifted to just under the hero until 1 pm IST on 9 Nov, then returns to its place in the schedule by itself.
+
 ## 2026-11-08
 
 - Hero now shuffles between 3 photos of this year each visit (arati crowd, full Maa, close-up), each with its own ~4s move: push in toward Maa through the crowd, zoom to her face, or pull back from her eyes; all brighten from dim.

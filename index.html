@@ -1074,6 +1074,7 @@ const SITE = {
   ],
   // Sit & Draw 2026 drawings (group a/b/c). No ranking shown.
   art: ["a1","a2","a3","a4","a5","a6","a7","b1","c1","c2","c3","c4"],
+  artApart: [["a2","c2"]],   // similar drawings (both Shivling): never shown one after the other
   live: [   // tonight, 2026 (the deck)
     { src: "photos/2026/bose-anko.jpg",  cap: "mg.c9", pos: "50% 55%" },
     { src: "photos/2026/gate.jpg",       cap: "mg.c7", pos: "50% 40%" },
@@ -2092,7 +2093,16 @@ function applyStatic(){
     const n = list[(pos + 1) % list.length]; (new Image()).src = src(n);
   };
   const play = () => { clearInterval(timer); if (seen && !matchMedia("(prefers-reduced-motion:reduce)").matches) timer = setInterval(() => show(pos + 1), 6500); };
-  const build = () => { list = shuffle(SITE.art.filter(k => !filt || k[0] === filt));
+  // keep look-alike drawings apart: never neighbours, counting the loop back to the start
+  const apart = l => { const bad = (x, y) => (SITE.artApart || []).some(([p, q]) => (x === p && y === q) || (x === q && y === p));
+    for (let tries = 0; tries < 50; tries++) { const n = l.length; let i = -1;
+      for (let j = 0; j < n && n > 2; j++) if (bad(l[j], l[(j + 1) % n])) { i = (j + 1) % n; break; }
+      if (i < 0) break; const [k] = l.splice(i, 1);
+      const spots = [...Array(l.length + 1).keys()].filter(at => { const L = [...l.slice(0, at), k, ...l.slice(at)], m = L.length;
+        return !L.some((x, j) => bad(x, L[(j + 1) % m])); });
+      l.splice(spots.length ? spots[Math.floor(Math.random() * spots.length)] : i, 0, k); }
+    return l; };
+  const build = () => { list = apart(shuffle(SITE.art.filter(k => !filt || k[0] === filt)));
     strip.replaceChildren(...list.map((k, i) => { const b = document.createElement("button"); b.type = "button"; b.dataset.k = k;
       b.innerHTML = `<img src="${src(k)}" alt="" loading="lazy">`; b.onclick = () => { show(i); play(); }; return b; }));
     show(0); play(); };

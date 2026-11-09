@@ -7,6 +7,7 @@ To bring back an older version of the page: `git checkout <id> -- index.html`, t
 
 ## 2026-11-09
 
+- Drawings slideshow: the two Shivling drawings (a2, c2) are never shown one after the other (SITE.artApart), including across the loop.
 - New section #anko "ছোটদের আঁকা" (Sit & Draw 2026 drawings): plays by itself in random order with a slow drift (zoom in or out) and crossfade; whole drawing always visible; filter by group ক/খ/গ (no ranking); swipe, arrows, thumbnails; tap for full size; share button sends …/#anko to WhatsApp. Drawings perspective-corrected from the photos and lightly cleaned (paper whitened, colours lifted), in photos/2026/art/.
 - Sit & Draw 2026 photo: shown in the spotlight band as "Happening now" (until 1 pm) and added to the front of the photo deck.
 - Restore point before this change: branch `layout-before-sitdraw` (commit e3c746a). To go back: `git checkout layout-before-sitdraw -- index.html`.

@@ -70,6 +70,7 @@ and stops with `FAIL` if anything has gone missing. Items without ✓ need a qui
 
 ## 2026-11-09
 
+- Photo deck retitled from "Tonight, 2026 · Puja night" to "8–9 November 2026 · This year's puja" (puja is over); live dot removed.
 - Photo deck: two bhog photos (eating together, serving) added at the front.
 - Drawings slideshow: the two Shivling drawings (a2, c2) are never shown one after the other (SITE.artApart), including across the loop.
 - New section #anko "ছোটদের আঁকা" (Sit & Draw 2026 drawings): plays by itself in random order with a slow drift (zoom in or out) and crossfade; whole drawing always visible; filter by group ক/খ/গ (no ranking); swipe, arrows, thumbnails; tap for full size; share button sends …/#anko to WhatsApp. Drawings perspective-corrected from the photos and lightly cleaned (paper whitened, colours lifted), in photos/2026/art/.

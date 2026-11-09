@@ -626,6 +626,10 @@ section[id]{scroll-margin-top:50px}
 .spot[hidden]{display:none}
 .spot-k{display:inline-flex;align-items:center;gap:.5em;margin:0 0 var(--sp-m);font-size:var(--s-small);letter-spacing:.06em;color:#2B4DC1}
 .spot-k .pulse{width:.5em;height:.5em;border-radius:50%;background:#F25C54;animation:pulse 1.6s ease-in-out infinite}
+.spot-ph{position:relative;margin:0 auto var(--sp-m);max-width:760px;border-radius:14px;overflow:hidden;box-shadow:0 18px 40px -24px rgba(0,0,0,.45)}
+.spot-ph[hidden]{display:none}
+.spot-ph img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;object-position:50% 55%}
+.spot-ph figcaption{position:absolute;left:12px;top:12px;padding:.25rem .65rem;border-radius:999px;background:rgba(242,92,84,.92);color:#fff;font-size:.78rem;letter-spacing:.04em}
 .spot .event{margin:0 auto;max-width:760px;text-align:left;box-shadow:0 22px 50px -26px rgba(43,77,193,.45)}
 /* poster viewer: a plain fixed overlay (not <dialog>) so it shows on every iPad Safari */
 .pdlg{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;padding:4vh 4vw;background:rgba(0,0,0,.82);-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px)}
@@ -752,6 +756,7 @@ section[id]{scroll-margin-top:50px}
   <!-- spotlight: filled only while an event is on (see SITE.spotlight); empty and hidden otherwise -->
   <section class="spot" id="spot" hidden aria-labelledby="spot-k">
     <p class="spot-k"><span class="pulse" aria-hidden="true"></span><span id="spot-k"></span></p>
+    <figure class="spot-ph" id="spot-ph" hidden><img alt="" loading="lazy"><figcaption></figcaption></figure>
     <div class="spot-in"></div>
   </section>
 
@@ -1018,9 +1023,10 @@ const SITE = {
   ],
   // lift an event card to the top while it matters; put back automatically after "until"
   spotlight: [
-    { card: "sitdraw", key: "spot.draw", from: "2026-11-09T00:00", until: "2026-11-09T13:00" },
+    { card: "sitdraw", key: "spot.draw", photo: "photos/2026/bose-anko.jpg", cap: "spot.drawNow", from: "2026-11-09T00:00", until: "2026-11-09T13:00" },
   ],
   live: [   // tonight, 2026 (the deck)
+    { src: "photos/2026/bose-anko.jpg",  cap: "mg.c9", pos: "50% 55%" },
     { src: "photos/2026/gate.jpg",       cap: "mg.c7", pos: "50% 40%" },
     { src: "photos/2026/alo-goli.jpg",   cap: "mg.c8", pos: "50% 50%" },
     { src: "photos/2026/maa-pandal.jpg", cap: "mg.c1", pos: "62% 30%" },
@@ -1092,6 +1098,8 @@ const D = {
   "mg.c8": ["আলোয় মোড়া গলি · ছবি: দীপম", "The lane in lights · photo: Dipam", "रोशनी से सजी गली · फ़ोटो: दीपम"],
 "st.prasad": ["যাঁরা প্রসাদের থালা দেবেন, এখন দিয়ে দিতে পারেন।", "If you are bringing a prasad thali, you may hand it in now.", "जो लोग प्रसाद की थाली देना चाहते हैं, वे अभी दे सकते हैं।"],
   "st.draw": ["আজ সকাল ১০টায় গোরাদার বাড়িতে বসে আঁকো প্রতিযোগিতা শুরু হবে। আঁকার কাগজ আমরাই দেব, শুধু নিজের রঙ-পেনসিল সাথে আনলেই হবে। ছোটরা (এবং সব বয়সের ছোটরা!) সবাই চলে এসো!", "The Sit & Draw competition starts today at 10:00 AM at Gora Da's house. Drawing paper will be provided by us, just bring your own colours and pencils. Kids of all ages are welcome!", "आज सुबह 10:00 बजे गोरा दा के घर पर चित्रकला प्रतियोगिता शुरू होगी। ड्राइंग पेपर हमारी तरफ़ से दिया जाएगा, बस अपने रंग और पेंसिल साथ ले आइए। सभी बच्चे (और हर उम्र के बच्चे!) ज़रूर आएँ!"],
+  "mg.c9": ["বসে আঁকো ২০২৬, গোরাদার বাড়িতে", "Sit & Draw 2026, at Gora Da's house", "बैठो और बनाओ २०२६, गोरा दा के घर"],
+  "spot.drawNow": ["এখন চলছে", "Happening now", "अभी चल रहा है"],
   "spot.draw": ["আজ সকাল ১০টা · গোরাদার বাড়ি", "Today, 10 AM · Gora Da's house", "आज सुबह 10 बजे · गोरा दा का घर"],
   "st.main": ["অমাবস্যার রাতে মায়ের পুজো, রবিবার ৮ নভেম্বর", "Maa's puja on Amavasya night, Sunday 8 November", "अमावस्या की रात माँ की पूजा, रविवार ८ नवंबर"],
   "st.time": ["সন্ধ্যা ৬টা ৩০-এ পুজো শুরু", "Puja begins at 6:30 pm", "शाम ६:३० बजे पूजा शुरू"],
@@ -1323,6 +1331,9 @@ const nowIST = () => { const q = new URLSearchParams(location.search).get("demo"
   if (!sec) return;
   if (on) { const card = document.getElementById(on.card), home = document.getElementById(on.card + "-home");
     if (card && card.parentNode !== sec.querySelector(".spot-in")) sec.querySelector(".spot-in").appendChild(card);
+    const ph = document.getElementById("spot-ph");
+    if (on.photo) { ph.hidden = false; ph.querySelector("img").src = on.photo; ph.querySelector("img").alt = t("mg.c9");
+      const fc = ph.querySelector("figcaption"); fc.dataset.i = on.cap; fc.textContent = t(on.cap); }
     sec.hidden = false; document.getElementById("spot-k").dataset.i = on.key; document.getElementById("spot-k").textContent = t(on.key);
     setTimeout(() => { if (nowIST() >= ist(on.until)) { home && home.after(card); sec.hidden = true; } else spot(); }, 60000);
   } else sec.hidden = true;

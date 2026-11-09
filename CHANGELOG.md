@@ -7,6 +7,7 @@ To bring back an older version of the page: `git checkout <id> -- index.html`, t
 
 ## 2026-11-09
 
+- Sit & Draw 2026 photo: shown in the spotlight band as "Happening now" (until 1 pm) and added to the front of the photo deck.
 - Restore point before this change: branch `layout-before-sitdraw` (commit e3c746a). To go back: `git checkout layout-before-sitdraw -- index.html`.
 - Time-boxed notices (SITE.notices): yesterday's prasad note retired; today's Sit & Draw note (3 languages) shows under the hero until 1 pm IST.
 - Spotlight (SITE.spotlight): the Sit & Draw card is lifted to just under the hero until 1 pm IST on 9 Nov, then returns to its place in the schedule by itself.

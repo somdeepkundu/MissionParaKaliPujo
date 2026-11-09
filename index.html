@@ -138,6 +138,30 @@ h2{font-size:var(--s-head);font-weight:300;font-stretch:80%;line-height:.98;lett
 .card.drag{transition:none;cursor:grabbing}
 .mg-count{position:relative;margin:var(--sp-m) 0 0;font-size:.8rem;opacity:.55;letter-spacing:.1em}
 @media (prefers-reduced-motion:reduce){.magic::before{animation:none}.card{transition:opacity .3s}}
+/* ---- Sit & Draw drawings: whole sheet always visible (contain), slow drift, crossfade ---- */
+.anko{padding:var(--sp-xl) var(--sp-m);background:#f7f3ec;color:#2a211b;text-align:center;scroll-margin-top:56px}
+.ak-kick{margin:0;font-size:var(--s-small);letter-spacing:.06em;color:#2B4DC1}
+.anko h2{margin:.15em 0 .1em;color:#2B4DC1}
+.ak-sub{margin:0 0 var(--sp-l);font-size:var(--s-small);color:#6b6560}
+.ak-stage{position:relative;width:min(92vw,620px);aspect-ratio:4/5;margin:0 auto;border-radius:16px;overflow:hidden;
+  background:radial-gradient(ellipse at 50% 40%,#fffdf8,#ece5d8);box-shadow:0 26px 60px -30px rgba(60,40,20,.55);outline:none}
+.ak-sl{position:absolute;inset:0;margin:0;display:grid;place-items:center;padding:5%;opacity:0;transition:opacity 1.4s ease}
+.ak-sl.on{opacity:1}
+.ak-sl img{max-width:100%;max-height:100%;object-fit:contain;box-shadow:0 12px 28px -14px rgba(0,0,0,.45);background:#fff;transform-origin:var(--ox,50%) var(--oy,50%)}
+.ak-sl.on img{animation:akdrift 7s ease-in-out both}
+@keyframes akdrift{from{transform:scale(var(--s0,1)) translate(var(--x0,0),var(--y0,0))}to{transform:scale(var(--s1,1.05)) translate(var(--x1,0),var(--y1,0))}}
+.ak-grp{position:absolute;left:12px;top:12px;padding:.2rem .6rem;border-radius:999px;background:rgba(43,77,193,.9);color:#fff;font-size:.74rem}
+.ak-nav{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;border:0;background:rgba(255,255,255,.75);color:#2a211b;font-size:1.4rem;cursor:pointer;opacity:.7}
+.ak-nav:hover{opacity:1}.ak-nav.prev{left:8px}.ak-nav.next{right:8px}
+.ak-filter{display:flex;flex-wrap:wrap;justify-content:center;gap:.4rem;margin:var(--sp-m) 0 .6rem}
+.ak-filter button{font:inherit;font-size:.78rem;padding:.35rem .8rem;border-radius:999px;border:1px solid rgba(43,77,193,.3);background:#fff;color:#2B4DC1;cursor:pointer}
+.ak-filter button.on{background:#2B4DC1;color:#fff}
+.ak-strip{display:flex;gap:8px;overflow-x:auto;padding:6px 2px 10px;max-width:760px;margin:0 auto;scroll-snap-type:x mandatory}
+.ak-strip button{flex:none;width:64px;height:64px;padding:0;border:2px solid transparent;border-radius:10px;overflow:hidden;background:#fff;cursor:pointer;scroll-snap-align:center}
+.ak-strip button.on{border-color:#2B4DC1}
+.ak-strip img{width:100%;height:100%;object-fit:contain;display:block}
+.ak-share{margin:.4rem 0 0}
+@media (prefers-reduced-motion:reduce){.ak-sl.on img{animation:none}.ak-sl{transition:opacity .3s}}
 .main img{width:100%;height:100%;object-fit:cover;object-position:50% 100%;animation:drift 24s var(--ease) both}
 /* this year's Maa, cinematic: starts wide and dim, then slowly closes in on her face while the light comes up */
 /* this year's Maa: three photos, three camera moves, about 4s each (done before most people scroll) */
@@ -819,6 +843,29 @@ section[id]{scroll-margin-top:50px}
     </div>
   </section>
 
+  <!-- Sit & Draw 2026: the children's drawings. Shareable as …/#anko. Plays by itself in random order. -->
+  <section class="anko" id="anko" aria-labelledby="ak-h">
+    <div class="ak-head">
+      <p class="ak-kick" data-i="ak.kick">বসে আঁকো ২০২৬ · গোরাদার বাড়ি</p>
+      <h2 id="ak-h" data-i="ak.h">ছোটদের আঁকা</h2>
+      <p class="ak-sub" data-i="ak.sub">৯ নভেম্বরের সকালে পাড়ার ছোটরা যা এঁকেছে</p>
+    </div>
+    <div class="ak-stage" id="ak-stage" tabindex="0" aria-roledescription="slideshow">
+      <figure class="ak-sl on"><img alt=""></figure><figure class="ak-sl"><img alt=""></figure>
+      <span class="ak-grp" id="ak-grp"></span>
+      <button type="button" class="ak-nav prev" aria-label="আগের ছবি" data-ia="ak.prev">‹</button>
+      <button type="button" class="ak-nav next" aria-label="পরের ছবি" data-ia="ak.next">›</button>
+    </div>
+    <div class="ak-filter" role="group">
+      <button type="button" data-g="" class="on" data-i="ak.all">সব</button>
+      <button type="button" data-g="a" data-i="ak.ga">ক · ৫–১০ বছর</button>
+      <button type="button" data-g="b" data-i="ak.gb">খ · ১০–১৫ বছর</button>
+      <button type="button" data-g="c" data-i="ak.gc">গ · সব বয়সের ছোটরা</button>
+    </div>
+    <div class="ak-strip" id="ak-strip"></div>
+    <p class="ak-share"><button type="button" class="pill" id="ak-share" data-i="ak.share">এই অংশটা শেয়ার করুন</button></p>
+  </section>
+
   <!-- tonight, 2026: a small deck of fresh photos. drag or tap to flip through; it loops -->
   <section class="magic" id="tonight" aria-labelledby="mg-h">
     <div class="mg-head">
@@ -1025,6 +1072,8 @@ const SITE = {
   spotlight: [
     { card: "sitdraw", key: "spot.draw", photo: "photos/2026/bose-anko.jpg", cap: "spot.drawNow", from: "2026-11-09T00:00", until: "2026-11-09T13:00" },
   ],
+  // Sit & Draw 2026 drawings (group a/b/c). No ranking shown.
+  art: ["a1","a2","a3","a4","a5","a6","a7","b1","c1","c2","c3","c4"],
   live: [   // tonight, 2026 (the deck)
     { src: "photos/2026/bose-anko.jpg",  cap: "mg.c9", pos: "50% 55%" },
     { src: "photos/2026/gate.jpg",       cap: "mg.c7", pos: "50% 40%" },
@@ -1085,6 +1134,17 @@ const D = {
   "main.altA": ["আরতির সময় মায়ের সামনে ভিড়, ২০২৬", "The crowd before Maa at arati, 2026", "आरती के समय माँ के सामने भीड़, २०२६"],
   "main.altC": ["কাছ থেকে মা কালীর মুখ ও মুকুট, ২০২৬", "Close-up of Maa Kali's face and crown, 2026", "माँ काली का चेहरा और मुकुट, पास से, २०२६"],
   "main.alt": ["প্যান্ডেলে মা কালী, পেছনে আলোর ফুলকি, ২০২৬", "Maa Kali in the pandal, soft lights behind, 2026", "पंडाल में माँ काली, पीछे रोशनी, २०२६"],
+  "ak.kick": ["বসে আঁকো ২০২৬ · গোরাদার বাড়ি", "Sit & Draw 2026 · Gora Da's house", "बैठो और बनाओ २०२६ · गोरा दा का घर"],
+  "ak.h": ["ছোটদের আঁকা", "The children's drawings", "बच्चों की ड्रॉइंग"],
+  "ak.sub": ["৯ নভেম্বরের সকালে পাড়ার ছোটরা যা এঁকেছে", "What the little ones of the para drew on the morning of 9 November", "९ नवंबर की सुबह पाड़ा के बच्चों ने जो बनाया"],
+  "ak.all": ["সব", "All", "सब"],
+  "ak.ga": ["ক · ৫–১০ বছর", "A · 5–10 yrs", "A · ५–१० साल"],
+  "ak.gb": ["খ · ১০–১৫ বছর", "B · 10–15 yrs", "B · १०–१५ साल"],
+  "ak.gc": ["গ · সব বয়সের ছোটরা", "C · kids of all ages", "C · हर उम्र के बच्चे"],
+  "ak.g.a": ["বিভাগ ক", "Group A", "ग्रुप A"], "ak.g.b": ["বিভাগ খ", "Group B", "ग्रुप B"], "ak.g.c": ["বিভাগ গ", "Group C", "ग्रुप C"],
+  "ak.prev": ["আগের ছবি", "Previous", "पिछला"], "ak.next": ["পরের ছবি", "Next", "अगला"],
+  "ak.share": ["এই অংশটা শেয়ার করুন", "Share this section", "यह हिस्सा शेयर करें"],
+  "ak.shareMsg": ["মিশন পাড়া কালীপুজো ২০২৬ — বসে আঁকোয় ছোটদের আঁকা দেখুন", "Mission Para Kali Puja 2026: see the children's drawings from Sit & Draw", "मिशन पाड़ा काली पूजा २०२६ — बच्चों की ड्रॉइंग देखें"],
   "mg.kick": ["আজ রাতে, ২০২৬", "Tonight, 2026", "आज रात, २०२६"],
   "mg.h": ["পুজোর রাত", "Puja night", "पूजा की रात"],
   "mg.hint": ["ছবি সরিয়ে বা ছুঁয়ে পরেরটা দেখুন", "Swipe or tap for the next one", "अगली फ़ोटो के लिए सरकाएँ या छुएँ"],
@@ -2012,10 +2072,52 @@ function applyStatic(){
   box.tabIndex = 0; box.addEventListener("keydown", e => { if (e.key === "ArrowRight" || e.key === "Enter" || e.key === " ") { e.preventDefault(); next(1); } if (e.key === "ArrowLeft") next(-1); });
   window.deckRelabel = () => { cards.forEach((c, i) => { c.querySelector("figcaption").textContent = t(SITE.live[i].cap); }); lay(); };
 })();
+// ---- Sit & Draw drawings: random order, slow cinematic drift + crossfade; whole drawing always in view
+(function anko(){
+  const st = document.getElementById("ak-stage"); if (!st || !SITE.art) return;
+  const sl = [...st.querySelectorAll(".ak-sl")], strip = document.getElementById("ak-strip"), grpEl = document.getElementById("ak-grp");
+  const shuffle = a => { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+  let filt = "", list = [], pos = 0, cur = 0, timer = null, seen = false;
+  const src = k => `photos/2026/art/${k}.jpg`;
+  const moves = () => { const r = (a, b) => a + Math.random() * (b - a), z = Math.random() < .5;   // zoom in or out, small drift
+    return { "--s0": z ? 1 : r(1.06, 1.1), "--s1": z ? r(1.06, 1.1) : 1, "--x0": r(-1.5, 1.5) + "%", "--y0": r(-1.5, 1.5) + "%", "--x1": r(-1.5, 1.5) + "%", "--y1": r(-1.5, 1.5) + "%", "--ox": r(35, 65) + "%", "--oy": r(30, 60) + "%" }; };
+  const show = i => {
+    pos = (i + list.length) % list.length; const k = list[pos], nx = sl[1 - cur], img = nx.querySelector("img");
+    const go = () => { Object.entries(moves()).forEach(([a, b]) => img.style.setProperty(a, b));
+      img.style.animation = "none"; void img.offsetWidth; img.style.animation = "";
+      nx.classList.add("on"); sl[cur].classList.remove("on"); cur = 1 - cur;
+      grpEl.dataset.i = "ak.g." + k[0]; grpEl.textContent = t("ak.g." + k[0]);
+      strip.querySelectorAll("button").forEach(b => b.classList.toggle("on", b.dataset.k === k)); };
+    img.alt = t("ak.g." + k[0]); if (img.getAttribute("src") === src(k) && img.complete) go(); else { img.onload = go; img.src = src(k); }
+    const n = list[(pos + 1) % list.length]; (new Image()).src = src(n);
+  };
+  const play = () => { clearInterval(timer); if (seen && !matchMedia("(prefers-reduced-motion:reduce)").matches) timer = setInterval(() => show(pos + 1), 6500); };
+  const build = () => { list = shuffle(SITE.art.filter(k => !filt || k[0] === filt));
+    strip.replaceChildren(...list.map((k, i) => { const b = document.createElement("button"); b.type = "button"; b.dataset.k = k;
+      b.innerHTML = `<img src="${src(k)}" alt="" loading="lazy">`; b.onclick = () => { show(i); play(); }; return b; }));
+    show(0); play(); };
+  st.querySelector(".prev").onclick = () => { show(pos - 1); play(); };
+  st.querySelector(".next").onclick = () => { show(pos + 1); play(); };
+  st.addEventListener("keydown", e => { if (e.key === "ArrowRight") { show(pos + 1); play(); } if (e.key === "ArrowLeft") { show(pos - 1); play(); } });
+  let x0 = null; st.addEventListener("pointerdown", e => { if (!e.target.closest(".ak-nav")) x0 = e.clientX; });
+  st.addEventListener("pointerup", e => { if (x0 === null) return; const d = e.clientX - x0; x0 = null;
+    if (Math.abs(d) > 50) { show(pos + (d < 0 ? 1 : -1)); play(); }
+    else if (!e.target.closest(".ak-nav")) { const d2 = $("pdlg"), im = $("pdlg-img"); im.src = src(list[pos]); im.alt = t("ak.g." + list[pos][0]);
+      d2.hidden = false; d2.classList.add("on"); document.documentElement.style.overflow = "hidden"; } });
+  document.querySelectorAll(".ak-filter button").forEach(b => b.onclick = () => {
+    document.querySelectorAll(".ak-filter button").forEach(x => x.classList.toggle("on", x === b)); filt = b.dataset.g; build(); });
+  new IntersectionObserver(es => es.forEach(e => { seen = e.isIntersecting; if (seen) play(); else clearInterval(timer); }), { threshold: .25 }).observe(st);
+  document.getElementById("ak-share").onclick = () => { const u = location.origin + location.pathname + "#anko", m = t("ak.shareMsg");
+    if (navigator.share) navigator.share({ title: m, url: u }).catch(() => {}); else window.open("https://wa.me/?text=" + encodeURIComponent(m + " " + u), "_blank"); };
+  window.ankoRelabel = () => { const k = list[pos]; if (k) { grpEl.textContent = t("ak.g." + k[0]); } };
+  build();
+  // opened from a shared #anko link: land on the section once images and fonts have settled the layout
+  if (location.hash === "#anko") { const go = () => st.closest("section").scrollIntoView({ block: "start" }); go(); addEventListener("load", () => setTimeout(go, 150)); }
+})();
 function setLang(l){
   LANG = l;
   try { localStorage.setItem("lang", l); } catch (e) {}
-  applyStatic(); drawTheme(); drawCount(); drawSchedule(); drawChanda(); drawPeople(); drawPay(); drawCal(); drawPoster(); drawGoal(); drawDist(); bookRerender(); if (window.deckRelabel) deckRelabel(); fitAll(); observeRise();
+  applyStatic(); drawTheme(); drawCount(); drawSchedule(); drawChanda(); drawPeople(); drawPay(); drawCal(); drawPoster(); drawGoal(); drawDist(); bookRerender(); if (window.deckRelabel) deckRelabel(); if (window.ankoRelabel) ankoRelabel(); fitAll(); observeRise();
 }
 document.querySelectorAll(".lang button").forEach(b => b.onclick = () => setLang(b.dataset.lang));
 document.querySelectorAll(".wa").forEach(a => a.href = SITE.whatsapp);

@@ -5,6 +5,11 @@ Every published version, newest first (from the git history). Good points to go 
 
 To bring back an older version of the page: `git checkout <id> -- index.html`, then commit.
 
+## 2026-11-10
+
+- Countdown to next Kali Puja (Thu 28 Oct 2027, 6:30 pm assumed; SITE.nextPuja): the bhar shows days/hours/minutes/seconds "until next Kali Puja", and the top line reads "See you next year · N days to go".
+- Photo deck: 8 photos of the games, sindoor khela and bisarjan added at the front (3 languages).
+
 ## 2026-11-09
 
 - Photo deck retitled from "Tonight, 2026 · Puja night" to "8–9 November 2026 · This year's puja" (puja is over); live dot removed.

@@ -68,6 +68,11 @@ and stops with `FAIL` if anything has gone missing. Items without ✓ need a qui
 - Every looping animation pauses off screen; only transform / opacity / filter change each frame
 - ✓ No broken images, no script errors; ✓ share preview image (og.jpg)
 
+## 2026-11-10
+
+- Countdown to next Kali Puja (Thu 28 Oct 2027, 6:30 pm assumed; SITE.nextPuja): the bhar shows days/hours/minutes/seconds "until next Kali Puja", and the top line reads "See you next year · N days to go".
+- Photo deck: 8 photos of the games, sindoor khela and bisarjan added at the front (3 languages).
+
 ## 2026-11-09
 
 - Photo deck retitled from "Tonight, 2026 · Puja night" to "8–9 November 2026 · This year's puja" (puja is over); live dot removed.

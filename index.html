@@ -1005,6 +1005,9 @@ document.documentElement.classList.add("js");
    ===================================================================== */
 const SITE = {
   pujaDate: "2026-11-08",
+  // next year's puja: Kartik Amavasya, Thursday 28 Oct 2027 (drikpanchang / officeholidays). Start time is a guess
+  // based on this year (6:30 pm); fix it when the panjika time is known.
+  nextPuja: { date: "2027-10-28", start: "2027-10-28T18:30" },
   mapUrl: "https://maps.app.goo.gl/FmLAPDkEYG28Jmdk8",
   whatsapp: "https://chat.whatsapp.com/FfAXltygtUfAkY8qnvqbdy",
   updated: "2026-11-08",
@@ -1076,6 +1079,14 @@ const SITE = {
   art: ["a1","a2","a3","a4","a5","a6","a7","b1","c1","c2","c3","c4"],
   artApart: [["a2","c2"]],   // similar drawings (both Shivling): never shown one after the other
   live: [   // tonight, 2026 (the deck)
+    { src: "photos/2026/bisarjan-sobai.jpg", cap: "mg.c12", pos: "50% 50%" },
+    { src: "photos/2026/bisarjan-maa.jpg", cap: "mg.c13", pos: "55% 35%" },
+    { src: "photos/2026/sindur-khela.jpg", cap: "mg.c14", pos: "55% 40%" },
+    { src: "photos/2026/bisarjan-path.jpg", cap: "mg.c15", pos: "45% 40%" },
+    { src: "photos/2026/khela-table.jpg", cap: "mg.c16", pos: "45% 45%" },
+    { src: "photos/2026/clip-khela.jpg", cap: "mg.c17", pos: "45% 45%" },
+    { src: "photos/2026/mombati-khela.jpg", cap: "mg.c18", pos: "45% 30%" },
+    { src: "photos/2026/prodip.jpg", cap: "mg.c19", pos: "40% 45%" },
     { src: "photos/2026/bhog-khawa.jpg",      cap: "mg.c10", pos: "55% 55%" },
     { src: "photos/2026/bhog-pariveshon.jpg", cap: "mg.c11", pos: "50% 45%" },
     { src: "photos/2026/bose-anko.jpg",  cap: "mg.c9", pos: "50% 55%" },
@@ -1161,6 +1172,14 @@ const D = {
   "mg.c8": ["আলোয় মোড়া গলি · ছবি: দীপম", "The lane in lights · photo: Dipam", "रोशनी से सजी गली · फ़ोटो: दीपम"],
 "st.prasad": ["যাঁরা প্রসাদের থালা দেবেন, এখন দিয়ে দিতে পারেন।", "If you are bringing a prasad thali, you may hand it in now.", "जो लोग प्रसाद की थाली देना चाहते हैं, वे अभी दे सकते हैं।"],
   "st.draw": ["আজ সকাল ১০টায় গোরাদার বাড়িতে বসে আঁকো প্রতিযোগিতা শুরু হবে। আঁকার কাগজ আমরাই দেব, শুধু নিজের রঙ-পেনসিল সাথে আনলেই হবে। ছোটরা (এবং সব বয়সের ছোটরা!) সবাই চলে এসো!", "The Sit & Draw competition starts today at 10:00 AM at Gora Da's house. Drawing paper will be provided by us, just bring your own colours and pencils. Kids of all ages are welcome!", "आज सुबह 10:00 बजे गोरा दा के घर पर चित्रकला प्रतियोगिता शुरू होगी। ड्राइंग पेपर हमारी तरफ़ से दिया जाएगा, बस अपने रंग और पेंसिल साथ ले आइए। सभी बच्चे (और हर उम्र के बच्चे!) ज़रूर आएँ!"],
+  "mg.c12": ["বিসর্জনের আগে, পাড়ার সবাই একসাথে", "The whole para together before bisarjan", "विसर्जन से पहले, पाड़ा के सब एक साथ"],
+  "mg.c13": ["বিদায় মা, আসছে বছর আবার এসো", "Farewell, Maa. Come again next year", "अलविदा माँ, अगले साल फिर आना"],
+  "mg.c14": ["সিঁদুর খেলা", "Sindoor khela", "सिंदूर खेला"],
+  "mg.c15": ["বিসর্জনের পথে", "On the way to bisarjan", "विसर्जन की राह में"],
+  "mg.c16": ["খেলার টেবিলে সবাই", "Everyone at the games table", "खेल की मेज़ पर सब"],
+  "mg.c17": ["ক্লিপের খেলা, ঘড়ি ধরে", "The paper-clip game, against the clock", "क्लिप वाला खेल, घड़ी देखकर"],
+  "mg.c18": ["মোমবাতি জ্বালানোর খেলা", "The candle-lighting game", "मोमबत्ती जलाने का खेल"],
+  "mg.c19": ["মাটির প্রদীপ", "The clay lamp", "मिट्टी का दीया"],
   "mg.c10": ["দুপুরের ভোগ, সবাই একসাথে", "Afternoon bhog, everyone together", "दोपहर का भोग, सब एक साथ"],
   "mg.c11": ["ভোগ পরিবেশন", "Serving the bhog", "भोग परोसते हुए"],
   "mg.c9": ["বসে আঁকো ২০২৬, গোরাদার বাড়িতে", "Sit & Draw 2026, at Gora Da's house", "बैठो और बनाओ २०२६, गोरा दा के घर"],
@@ -1221,6 +1240,7 @@ const D = {
   "count.days": ["আর {n} দিন বাকি", "{n} days to go", "पूजा में अब {n} दिन बाकी हैं"],
   "count.tomorrow": ["কাল পুজো", "Puja is tomorrow", "कल पूजा है"],
   "count.today": ["আজ পুজো", "Puja is today", "आज पूजा है"],
+  "count.next": ["আসছে বছর আবার হবে · আর {n} দিন", "See you next year · {n} days to go", "अगले साल फिर · {n} दिन बाकी"],
   "count.over": ["আসছে বছর আবার হবে", "See you next year", "अगले साल फिर मिलेंगे"],
   "ch.h": ["চাঁদা", "Donation", "चंदा"],
   "ch.total": ["{d} {m} পর্যন্ত মোট চাঁদা", "Total collected till {d} {m}", "{d} {m} तक कुल चंदा"],
@@ -1298,6 +1318,7 @@ const D = {
   "ex.kpart": ["কিছুটা", "part", "आंशिक"],
   "ex.knone": ["এখনও বাকি", "still needed", "अभी बाकी"],
   "ex.till": ["কালীপুজো শুরু হতে বাকি", "until Kali Puja begins", "काली पूजा शुरू होने में बाकी"],
+  "ex.tillNext": ["আসছে বছরের কালীপুজো, ২৮ অক্টোবর ২০২৭ পর্যন্ত", "until next Kali Puja, 28 October 2027", "अगली काली पूजा, २८ अक्टूबर २०२७ तक"],
   "ex.on": ["পুজো চলছে", "Puja is on", "पूजा चल रही है"],
   "u.d": ["দিন", "d", "दिन"], "u.h": ["ঘ", "h", "घं"], "u.m": ["মি", "m", "मि"], "u.s": ["সে", "s", "से"],
   "pay.h": ["UPI-তে চাঁদা দিন", "Give chanda by UPI", "UPI से चंदा दें"],
@@ -1431,6 +1452,9 @@ $("theme").onclick = () => {
 function drawCount(){
   const dayIST = d => Math.floor((d.getTime() + 5.5 * 3600e3) / 864e5);
   const diff = dayIST(ist(SITE.pujaDate + "T00:00")) - dayIST(nowIST());
+  if (diff < 0 && SITE.nextPuja) {                                          // after this year's puja: days to next year's
+    const nd = dayIST(ist(SITE.nextPuja.date + "T00:00")) - dayIST(nowIST());
+    $("count").textContent = t("count.next", { n: num(nd) }); return; }
   $("count").textContent = diff > 1 ? t("count.days", { n: num(diff) }) : diff === 1 ? t("count.tomorrow") : diff === 0 ? t("count.today") : t("count.over");
 }
 
@@ -1542,11 +1566,15 @@ function drawGoal(){
   const pad = n => String(n).padStart(2, "0");
   const tick = () => {
     const now = nowIST(), ms = start - now;
-    if (ms <= 0) { fig.replaceChildren(now < end ? t("ex.on") : t("f.jai")); till.textContent = ""; return; }
-    const sec = Math.floor(ms / 1000), d = Math.floor(sec / 86400), h = Math.floor(sec / 3600) % 24, m = Math.floor(sec / 60) % 60, s2 = sec % 60;
+    let left = ms, tl = "ex.till";
+    if (ms <= 0) {
+      if (now < end || !SITE.nextPuja) { fig.replaceChildren(now < end ? t("ex.on") : t("f.jai")); till.textContent = ""; return; }
+      left = ist(SITE.nextPuja.start) - now; tl = "ex.tillNext";            // puja is over: count down to next year's
+    }
+    const sec = Math.floor(left / 1000), d = Math.floor(sec / 86400), h = Math.floor(sec / 3600) % 24, m = Math.floor(sec / 60) % 60, s2 = sec % 60;
     const u = (n, l) => [num(String(n)), el("small", { textContent: t(l) })];
-    fig.replaceChildren(...(d ? u(d, "u.d") : []), ...u(d ? h : pad(h), "u.h"), ...u(pad(m), "u.m"), el("span", { className: "sec" }, ...u(pad(s2), "u.s")));
-    till.textContent = t("ex.till");
+    fig.replaceChildren(...(d ? u(d, "u.d") : []), ...u(d ? h : pad(h), "u.h"), ...u(pad(m), "u.m"), ...(d >= 100 ? [] : [el("span", { className: "sec" }, ...u(pad(s2), "u.s"))]));   // a year away: seconds would overflow, and don't matter
+    till.textContent = t(tl);
   };
   tick(); clearInterval(window.goalTimer); window.goalTimer = setInterval(tick, 1000);
   const left = el("p", { className: "gleft", textContent: have >= need ? t("ex.done") : t("ex.left", { n: rs(need - have) }) });

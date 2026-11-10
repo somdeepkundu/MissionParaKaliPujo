@@ -68,6 +68,10 @@ and stops with `FAIL` if anything has gone missing. Items without ✓ need a qui
 - Every looping animation pauses off screen; only transform / opacity / filter change each frame
 - ✓ No broken images, no script errors; ✓ share preview image (og.jpg)
 
+## 2026-11-11
+
+- Drawings: c3 (the swirl drawing, group C) replaced with a clean flat scan, upright.
+
 ## 2026-11-10
 
 - Final chanda: ₹52,883 from 102 receipts (last ones 77–80 added).

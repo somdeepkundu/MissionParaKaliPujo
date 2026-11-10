@@ -5,6 +5,10 @@ Every published version, newest first (from the git history). Good points to go 
 
 To bring back an older version of the page: `git checkout <id> -- index.html`, then commit.
 
+## 2026-11-11
+
+- Drawings: c3 (the swirl drawing, group C) replaced with a clean flat scan, upright.
+
 ## 2026-11-10
 
 - Final chanda: ₹52,883 from 102 receipts (last ones 77–80 added).

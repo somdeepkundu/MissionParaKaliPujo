@@ -43,9 +43,7 @@ with sync_playwright() as p:
         check("language switch changes text", len(set(texts.values())) == 3, str(texts))
         pg.click(".lang button >> nth=0"); pg.wait_for_timeout(150)
         # flowers
-        n = J("[...document.querySelectorAll('.jaba i')].filter(e=>getComputedStyle(e).display!='none').length")
-        check("jaba flowers falling (7 phone / 13 laptop)", n == (7 if w < 760 else 13), str(n))
-        check("flowers have three depths", J("document.querySelectorAll('.jaba i.far').length>0 && document.querySelectorAll('.jaba i.near').length>0"))
+        check("no falling flowers (removed for speed)", J("document.querySelector('.jaba')") is None)
         # music
         check("music file and button", J("!!document.getElementById('song') && !!document.getElementById('music')"))
         check("music label shows on first visit", J("document.getElementById('mtip').classList.contains('on')") or J("document.getElementById('mtip').textContent.length>0"))
@@ -122,7 +120,6 @@ with sync_playwright() as p:
         J("window.scrollTo({top:document.documentElement.scrollHeight,behavior:'instant'})"); pg.wait_for_timeout(1200)
         broken = J("[...document.images].filter(i=>i.complete&&i.naturalWidth===0&&i.getAttribute('src')).map(i=>i.getAttribute('src'))")
         check("no broken images", not broken, str(broken))
-        check("flowers rest below the first two panels", "gone" in J("document.querySelector('.jaba').className"))
         check("no script errors", not errs, "; ".join(errs)[:300])
         pg.close()
     b.close()

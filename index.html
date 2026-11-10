@@ -19,6 +19,24 @@
 <meta name="theme-color" content="#000000" id="theme-color">
 <link rel="icon" href="img/jaba.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="img/jaba-180.png">
+<script>
+/* adaptive photos: each photo also exists at 640px and 1200px wide (name@640.jpg, name@1200.jpg).
+   Every <img> gets a srcset, so a phone downloads the small copy and a big screen the full original.
+   Covers images in the page and ones set later by script (book, deck, drawings, hero). */
+(function(){var M={"img/aanka-sq.jpg":[640,1000],"img/bhog-4x5.jpg":[640,960],"img/hero-tall.jpg":[640,1036],"img/hero-wide.jpg":[640,1200,2000],"img/maa-2026-arati.jpg":[640,1200,1600],"img/maa-2026-face.jpg":[640,1207],"img/maa-2026-hero.jpg":[640,1227],"img/maa-2026.jpg":[640,1207],"img/pandal-4x3.jpg":[640,1200,1440],"img/poster-bn.jpg":[640,1100],"img/poster-en.jpg":[640,1100],"img/poster-hi.jpg":[640,1100],"photos/2016/raat-adda.jpg":[640,1200,1600],"photos/2020/boys-gang.jpg":[640,1200,1600],"photos/2020/group-pandal-1.jpg":[640,1200,1600],"photos/2020/group-pandal-2.jpg":[640,1200,1600],"photos/2020/priest-puja.jpg":[640,1067],"photos/2021/protima-aagomon.jpg":[640,1100],"photos/2022/priest-aarti.jpg":[640,1200],"photos/2025/aanka-protijogita.jpg":[640,901],"photos/2026/aarti-bhid.jpg":[640,1100],"photos/2026/alo-goli.jpg":[640,1100],"photos/2026/art/a1.jpg":[640,990],"photos/2026/art/a2.jpg":[640,990],"photos/2026/art/a3.jpg":[640,990],"photos/2026/art/a4.jpg":[640,990],"photos/2026/art/a5.jpg":[640,990],"photos/2026/art/a6.jpg":[640,990],"photos/2026/art/a7.jpg":[640,1200,1980],"photos/2026/art/b1.jpg":[640,1099],"photos/2026/art/c1.jpg":[640,1141],"photos/2026/art/c2.jpg":[640,1114],"photos/2026/art/c3.jpg":[640,1113],"photos/2026/art/c4.jpg":[640,1153],"photos/2026/bhog-khawa.jpg":[640,1200,1400],"photos/2026/bhog-pariveshon.jpg":[640,1200,1400],"photos/2026/bisarjan-maa.jpg":[640,1200,1400],"photos/2026/bisarjan-path.jpg":[640,788],"photos/2026/bisarjan-sobai.jpg":[640,1200,1400],"photos/2026/bose-anko.jpg":[640,1200,1400],"photos/2026/boyoshkora.jpg":[640,1100],"photos/2026/clip-khela.jpg":[640,788],"photos/2026/draw-a/a1.jpg":[640,1200],"photos/2026/draw-a/a2.jpg":[640,1200],"photos/2026/draw-a/a3.jpg":[640,1200],"photos/2026/draw-a/a4.jpg":[640,1200],"photos/2026/draw-a/a5.jpg":[640,1200],"photos/2026/draw-a/a6.jpg":[640,1200],"photos/2026/draw-a/a7.jpg":[640,1200],"photos/2026/draw-b/b1.jpg":[640,1200],"photos/2026/draw-c/c1.jpg":[640,1200],"photos/2026/draw-c/c2.jpg":[640,1200],"photos/2026/draw-c/c3.jpg":[640,1200],"photos/2026/draw-c/c4.jpg":[640,1200],"photos/2026/gate.jpg":[640,827],"photos/2026/hom.jpg":[640,1100],"photos/2026/khela-table.jpg":[640,1200,1400],"photos/2026/maa-pandal.jpg":[640,1100],"photos/2026/mayera.jpg":[640,1100],"photos/2026/mombati-khela.jpg":[640,788],"photos/2026/path-hom.jpg":[640,1100],"photos/2026/sindur-khela.jpg":[640,1200,1400],"photos/more/bhog-ranna.jpg":[640,1200],"photos/more/bondhura.jpg":[640,1152],"photos/more/pandal-din.jpg":[640,1200,1440],"photos/more/prodip.jpg":[640,1200,1600]};
+  function set(img,src){var k=(src||"").split("?")[0].replace(/^\.\//,""),w=M[k];if(!w||img.hasAttribute("srcset"))return;
+    var b=k.slice(0,-4);img.setAttribute("srcset",w.map(function(x,i){return(i<w.length-1?b+"@"+x+".jpg":k)+" "+x+"w"}).join(", "));
+    if(!img.getAttribute("sizes"))img.setAttribute("sizes",img.dataset.sizes||"(max-width:760px) 100vw, 60vw");}
+  var d=Object.getOwnPropertyDescriptor(HTMLImageElement.prototype,"src");
+  Object.defineProperty(HTMLImageElement.prototype,"src",{configurable:true,enumerable:true,get:function(){return d.get.call(this)},
+    set:function(v){this.removeAttribute("srcset");set(this,v);d.set.call(this,v)}});
+  var sa=Element.prototype.setAttribute;Element.prototype.setAttribute=function(n,v){if(this instanceof HTMLImageElement&&n==="src"){this.removeAttribute("srcset");set(this,v)}return sa.call(this,n,v)};
+  window.__rs=set;
+  // for images written as HTML text: returns ' srcset="…" sizes="…"' (or "" if no copies)
+  window.__ss=function(src,sz){var t=document.createElement("img");t.dataset.sizes=sz||"";set(t,src);
+    return t.hasAttribute("srcset")?' srcset="'+t.getAttribute("srcset")+'" sizes="'+(sz||t.getAttribute("sizes"))+'"':"";};
+})();
+</script>
 <link rel="preload" href="fonts/anek-bangla-bengali-wdth-normal.woff2" as="font" type="font/woff2" crossorigin>
 <script>
 /* pick day or night before the page paints. Saved choice "day" or "night" wins; otherwise (auto)
@@ -531,36 +549,7 @@ li:has(> .it[aria-expanded="true"]) .spon{display:block}
 .gspon a:hover{color:var(--jaba-d)}
 .goal .dhint{margin-top:-.4rem}
 @media (prefers-reduced-motion:reduce){.bhar .wave,.bhar .coin.drop{animation:none}.bhar .liq,.cat .fill{transition:none}}
-/* falling jaba (hibiscus): a handful of flowers, transform-only animation, no JS per frame */
-.jaba{position:fixed;inset:0;pointer-events:none;z-index:40;overflow:hidden;contain:strict}
-.jaba{--k:1}
-.jaba i{z-index:1;position:absolute;top:-70px;left:var(--x);width:calc(var(--s) * var(--k));height:calc(var(--s) * var(--k));will-change:transform;
-  animation:jfall var(--d) linear var(--w) infinite}
-.jaba i.wide{display:none}
-@media (min-width:760px){.jaba{--k:1.35}.jaba i.wide{display:block}}
-.jaba i::before{content:"";position:absolute;inset:0;background:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-50 -50 100 100'><g fill='%23D2122E'><path transform='rotate(0)' d='M0 0C-24-8-32-36-14-46C-5-51 5-51 14-46C32-36 24-8 0 0Z'/><path transform='rotate(72)' d='M0 0C-24-8-32-36-14-46C-5-51 5-51 14-46C32-36 24-8 0 0Z'/><path transform='rotate(144)' d='M0 0C-24-8-32-36-14-46C-5-51 5-51 14-46C32-36 24-8 0 0Z'/><path transform='rotate(216)' d='M0 0C-24-8-32-36-14-46C-5-51 5-51 14-46C32-36 24-8 0 0Z'/><path transform='rotate(288)' d='M0 0C-24-8-32-36-14-46C-5-51 5-51 14-46C32-36 24-8 0 0Z'/></g><g fill='none' stroke='%23930A1F' stroke-width='1.4' opacity='.55'><path transform='rotate(0)' d='M0-6V-34'/><path transform='rotate(72)' d='M0-6V-34'/><path transform='rotate(144)' d='M0-6V-34'/><path transform='rotate(216)' d='M0-6V-34'/><path transform='rotate(288)' d='M0-6V-34'/></g><circle r='7' fill='%23930A1F'/><path d='M0 0L13-31' stroke='%23F2B33D' stroke-width='2.6' stroke-linecap='round'/><g fill='%23F2B33D'><circle cx='13' cy='-32' r='2.6'/><circle cx='9' cy='-33' r='2'/><circle cx='16' cy='-29' r='2'/></g></svg>") center/contain no-repeat;
-  animation:jsway calc(var(--d) / 3) ease-in-out var(--w) infinite alternate;
-  /* a gentle gust when the beat drops: each flower leans its own way for a moment (--g goes 0 → 1 → 0) */
-  translate:calc(var(--g,0) * var(--dx,20px) * .7) 0;rotate:calc(var(--g,0) * 25deg);transition:translate 1.6s ease-in-out,rotate 1.6s ease-in-out}
-.jaba{transition:opacity .8s}
-.jaba.gone{opacity:0}
-.jaba.gone.rest i,.jaba.gone.rest i::before{animation-play-state:paused}
-@keyframes jfall{to{transform:translate3d(var(--dx,0px),calc(100vh + 140px),0)}}
-@keyframes jsway{from{transform:translateX(-22px) rotate(-30deg)}to{transform:translateX(22px) rotate(40deg)}}
-/* depth: far flowers are small, soft and slow; near ones bigger and a touch quicker */
-.jaba i.far{--s2:.68;filter:blur(1.1px);opacity:.55;animation-duration:calc(var(--d) * 1.45)}
-.jaba i.near{--s2:1.3;filter:drop-shadow(0 4px 5px rgba(120,10,30,.18));animation-duration:calc(var(--d) * .85)}
-.jaba i{width:calc(var(--s) * var(--k) * var(--s2,1));height:calc(var(--s) * var(--k) * var(--s2,1))}
-/* a faint warm glow behind the flowers: breathes slowly, and swells softly with the beat when music plays */
-.jaba::before,.jaba::after{content:"";position:absolute;inset:0;pointer-events:none;will-change:opacity}
-.jaba::before{background:radial-gradient(40% 35% at 22% 30%,rgba(210,18,46,.07),transparent 70%),
-  radial-gradient(38% 32% at 78% 62%,rgba(242,179,61,.09),transparent 70%);animation:jglow 3.7s ease-in-out infinite alternate}
-.jaba::after{background:radial-gradient(55% 45% at 50% 45%,rgba(210,18,46,.07),rgba(242,179,61,.04) 50%,transparent 75%);
-  opacity:calc(var(--beat,0) * .8)}
-@keyframes jglow{from{opacity:.35;transform:scale(1)}to{opacity:.9;transform:scale(1.05)}}
-.jaba.gone.rest::before{animation-play-state:paused}
-body.still .jaba{display:none}
-@media (prefers-reduced-motion:reduce){.jaba{display:none}}
+
 
 /* music: one big round button, always on screen */
 .music{position:fixed;right:max(14px,env(safe-area-inset-right));bottom:max(14px,env(safe-area-inset-bottom));z-index:60;
@@ -757,7 +746,7 @@ section[id]{scroll-margin-top:50px}
             {s:"img/maa-2026.jpg",w:1207,h:1600,m:"close",k:"main.altC"}],
             p=H[Math.floor(Math.random()*H.length)],i=document.getElementById("hero-img");
             i.width=p.w;i.height=p.h;i.dataset.m=p.m;i.dataset.ialt=p.k;i.src=p.s;})();</script>
-        <noscript><img src="img/maa-2026-hero.jpg" alt="" width="1227" height="1374"></noscript>
+        <noscript><img src="img/maa-2026-hero.jpg" srcset="img/maa-2026-hero@640.jpg 640w, img/maa-2026-hero.jpg 1227w" sizes="(max-width:760px) 100vw, 60vw" alt="" width="1227" height="1374"></noscript>
       </picture>
       <div class="statement">
         <p data-i="st.main">অমাবস্যার রাতে মায়ের পুজো, রবিবার ৮ নভেম্বর</p>
@@ -799,7 +788,7 @@ section[id]{scroll-margin-top:50px}
         <div data-rise style="--i:5"><b data-i="f.t3">সন্ধ্যা ৬টা</b><span data-i="f.t3s">৯ নভেম্বর, বিসর্জন</span></div>
       </div>
       </div>
-      <figure class="intro-photo shot" data-rise><img src="img/maa-2026-face.jpg" alt="" data-ialt="intro.alt" width="1207" height="905" loading="lazy"><figcaption data-i="intro.cap">মায়ের মুখ, ২০২৬</figcaption></figure>
+      <figure class="intro-photo shot" data-rise><img src="img/maa-2026-face.jpg" srcset="img/maa-2026-face@640.jpg 640w, img/maa-2026-face.jpg 1207w" sizes="(max-width:760px) 100vw, 60vw" alt="" data-ialt="intro.alt" width="1207" height="905" loading="lazy"><figcaption data-i="intro.cap">মায়ের মুখ, ২০২৬</figcaption></figure>
     </div>
   </section>
 
@@ -813,7 +802,7 @@ section[id]{scroll-margin-top:50px}
       <path d="M30 98V110" stroke-width=".7"/><path d="M26 110L30 126L34 110Z" fill="#D2122E" fill-opacity=".55"/></svg></div>
     <h2 id="sched-h" data-rise data-i="s.title">পুজোর নির্ঘণ্ট</h2>
     <div class="grid12 sched-body">
-      <figure class="sched-photo shot" data-rise><img src="img/bhog-4x5.jpg" alt="" data-ialt="s.bhogAlt" width="960" height="1200" loading="lazy"><figcaption data-i="s.bhogCap">দুপুরের ভোগের রান্না</figcaption></figure>
+      <figure class="sched-photo shot" data-rise><img src="img/bhog-4x5.jpg" srcset="img/bhog-4x5@640.jpg 640w, img/bhog-4x5.jpg 960w" sizes="(max-width:760px) 100vw, 60vw" alt="" data-ialt="s.bhogAlt" width="960" height="1200" loading="lazy"><figcaption data-i="s.bhogCap">দুপুরের ভোগের রান্না</figcaption></figure>
       <p class="sched-word" data-i="s.two">দুদিন</p>
       <div class="table" id="table"></div>
       <div class="cal">
@@ -825,7 +814,7 @@ section[id]{scroll-margin-top:50px}
       <span id="sitdraw-home" hidden></span>
       <div class="event" id="sitdraw">
         <button type="button" class="ev-poster" id="poster" data-ia="poster.cap" aria-label="পোস্টার দেখুন">
-          <img id="poster-img" src="img/poster-bn.jpg" alt="" data-ialt="poster.alt" width="1100" height="1424" loading="lazy">
+          <img id="poster-img" src="img/poster-bn.jpg" srcset="img/poster-bn@640.jpg 640w, img/poster-bn.jpg 1100w" sizes="(max-width:760px) 100vw, 60vw" alt="" data-ialt="poster.alt" width="1100" height="1424" loading="lazy">
         </button>
         <div class="ev-body">
           <p class="ev-tag" data-i="ev.tag">সব বয়সের ছোটদের জন্য</p>
@@ -911,7 +900,7 @@ section[id]{scroll-margin-top:50px}
         </details>
       </div>
       <div class="ch-side">
-      <figure class="ch-photo shot" data-rise style="--i:2"><img src="img/aanka-sq.jpg" alt="" data-ialt="ch.alt" width="1000" height="1000" loading="lazy"><figcaption data-i="ch.cap">আঁকা প্রতিযোগিতা, ২০২৫</figcaption></figure>
+      <figure class="ch-photo shot" data-rise style="--i:2"><img src="img/aanka-sq.jpg" srcset="img/aanka-sq@640.jpg 640w, img/aanka-sq.jpg 1000w" sizes="(max-width:760px) 100vw, 60vw" alt="" data-ialt="ch.alt" width="1000" height="1000" loading="lazy"><figcaption data-i="ch.cap">আঁকা প্রতিযোগিতা, ২০২৫</figcaption></figure>
       <div class="diyas" aria-hidden="true"><span class="diya"><i class="flame"></i></span><span class="diya"><i class="flame"></i></span><span class="diya"><i class="flame"></i></span></div>
       </div>
     </div>
@@ -963,15 +952,7 @@ section[id]{scroll-margin-top:50px}
   </div>
 </footer>
 
-<div class="jaba" aria-hidden="true">
-  <i class="far" style="--x:5%;--s:26px;--d:14s;--w:-2s;--dx:40px"></i><i class="near" style="--x:19%;--s:20px;--d:18s;--w:-11s;--dx:-30px"></i>
-  <i style="--x:33%;--s:30px;--d:16s;--w:-6s;--dx:25px"></i><i class="far" style="--x:50%;--s:22px;--d:19s;--w:-15s;--dx:-45px"></i>
-  <i class="near" style="--x:66%;--s:28px;--d:15s;--w:-9s;--dx:35px"></i><i style="--x:81%;--s:20px;--d:17s;--w:-3s;--dx:-20px"></i>
-  <i class="far" style="--x:93%;--s:24px;--d:13s;--w:-12s;--dx:-35px"></i>
-  <i class="wide far" style="--x:12%;--s:22px;--d:17s;--w:-8s;--dx:30px"></i><i class="wide" style="--x:27%;--s:26px;--d:13s;--w:-1s;--dx:-25px"></i>
-  <i class="wide near" style="--x:43%;--s:20px;--d:15s;--w:-13s;--dx:40px"></i><i class="wide far" style="--x:59%;--s:24px;--d:18s;--w:-5s;--dx:-30px"></i>
-  <i class="wide" style="--x:74%;--s:30px;--d:14s;--w:-10s;--dx:20px"></i><i class="wide near" style="--x:88%;--s:22px;--d:16s;--w:-7s;--dx:-40px"></i>
-</div>
+<!-- falling jaba removed 11 Nov 2026 (speed); restore from commit d7af3f5 if wanted -->
 <audio id="song" src="music/kalipujo-dhak.mp3" loop preload="none"></audio>
 <span class="mtip" id="mtip" aria-hidden="true"></span>
 <button class="music" id="music" type="button" aria-pressed="false" data-ia="m.play" aria-label="Play music">
@@ -979,7 +960,7 @@ section[id]{scroll-margin-top:50px}
   <svg class="on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>
 </button>
 
-<div id="pdlg" class="pdlg" role="dialog" aria-modal="true" aria-label="পোস্টার" hidden><img id="pdlg-img" src="img/poster-bn.jpg" alt="" decoding="async"><button type="button" class="pdlg-x" aria-label="বন্ধ করুন" data-ia="pj.close">✕</button></div>
+<div id="pdlg" class="pdlg" role="dialog" aria-modal="true" aria-label="পোস্টার" hidden><img id="pdlg-img" alt="" decoding="async"><button type="button" class="pdlg-x" aria-label="বন্ধ করুন" data-ia="pj.close">✕</button></div>
 <dialog id="pj" aria-labelledby="pj-h">
   <div class="pj">
     <div class="pj-top"><span data-i="r.year">১৪৩৩ বঙ্গাব্দ</span><span id="pj-h" data-i="pj.month">কার্তিক</span></div>
@@ -1664,19 +1645,7 @@ if ("IntersectionObserver" in window) {
   const offs = new IntersectionObserver(es => es.forEach(e => e.target.classList.toggle("off", !e.isIntersecting)));
   [".marquee", "#goal", ".intro", ".sched", ".chanda", "#photos"].forEach(q => { const n = document.querySelector(q); if (n) offs.observe(n); });
 }
-/* the flowers fall only over the first two panels (title and invitation); further down they fade out and pause */
-(() => {
-  const j = document.querySelector(".jaba"), top = [document.querySelector(".hero"), document.querySelector(".intro")];
-  if (!j || !("IntersectionObserver" in window)) return;
-  const seen = new Set(); let tm;
-  const io = new IntersectionObserver(es => {
-    es.forEach(e => e.isIntersecting ? seen.add(e.target) : seen.delete(e.target));
-    clearTimeout(tm);
-    if (seen.size) j.classList.remove("gone", "rest");
-    else { j.classList.add("gone"); tm = setTimeout(() => j.classList.add("rest"), 900); }
-  });
-  top.forEach(x => x && io.observe(x));
-})();
+
 /* while the photo book is on screen the music button tucks half into the edge, so nothing covers the pages */
 (() => {
   const st = document.querySelector("#photos .stage"), mb = $("music");
@@ -1694,8 +1663,7 @@ if ("IntersectionObserver" in window) {
   const save = v => { want = v; try { localStorage.setItem("music", v ? "on" : "off"); } catch (e) {} };
   // bass meter: one small analyser, read once a frame only while playing; drives --beat on three elements
   let ctx, an, buf, raf = 0, lvl = 0, floor = .2, gustAt = -1e9;
-  const jaba = document.querySelector(".jaba");
-  const glow = [document.querySelector(".band"), document.querySelector(".marquee"), b, document.querySelector(".jaba")];
+  const glow = [document.querySelector(".band"), document.querySelector(".marquee"), b].filter(Boolean);
   let shown = "";
   const still = matchMedia("(prefers-reduced-motion:reduce)");
   const meter = () => {
@@ -1713,7 +1681,7 @@ if ("IntersectionObserver" in window) {
     const hit = Math.max(0, Math.min(1, (bass - floor) * 5));
     lvl = hit > lvl ? hit : lvl * .86;                                         // fast attack, slow fade
     const now = performance.now();                                            // a big hit (the drop) sends a soft gust through the flowers
-    if (hit > .75 && now - gustAt > 7000) { gustAt = now; jaba.style.setProperty("--g", 1); setTimeout(() => jaba.style.setProperty("--g", 0), 1700); }
+    
     const v = lvl.toFixed(2); if (v !== shown) { shown = v; glow.forEach(g => g && g.style.setProperty("--beat", v)); }
     raf = requestAnimationFrame(loop);
   };
@@ -1883,7 +1851,7 @@ let bookRerender = () => {};
     // the whole photo, never cropped; around it a soft blurred copy of itself instead of black
     const img = el("img", { src: p.src, alt: typeof cap === "string" ? cap : "", decoding: "async", loading: "lazy" });
     const bd = el("span", { className: "bd", "aria-hidden": "true" });
-    img.addEventListener("load", () => { bd.style.backgroundImage = `url("${p.src}")`; bd.classList.add("in"); }, { once: true });
+    img.addEventListener("load", () => { bd.style.backgroundImage = `url("${img.currentSrc || p.src}")`; bd.classList.add("in"); }, { once: true });
     PAN.add(img, rev);                                                  // glides across; one photo left to right, the next right to left
     const ov = el("div", { className: "ov" });
     if (big) ov.append(el("div", { className: "yr" + (word ? " word" : ""), textContent: big }));
@@ -2076,7 +2044,7 @@ function applyStatic(){
   let order = SITE.live.map((_, i) => i), cards = [];
   SITE.live.forEach((p, i) => {
     const f = document.createElement("figure"); f.className = "card"; f.setAttribute("role", "listitem");
-    f.innerHTML = `<img src="${p.src}" alt="" loading="lazy" style="object-position:${p.pos}"><figcaption data-i="${p.cap}"></figcaption>`;
+    f.innerHTML = `<img src="${p.src}"${__ss(p.src, "(max-width:760px) 84vw, 430px")} alt="" loading="lazy" style="object-position:${p.pos}"><figcaption data-i="${p.cap}"></figcaption>`;
     f.querySelector("figcaption").textContent = t(p.cap); f.querySelector("img").alt = t(p.cap);
     f.style.transform = "translateY(40px) scale(.85)"; f.style.opacity = "0";
     box.appendChild(f); cards.push(f);
@@ -2136,7 +2104,7 @@ function applyStatic(){
     return l; };
   const build = () => { list = apart(shuffle(SITE.art.filter(k => !filt || k[0] === filt)));
     strip.replaceChildren(...list.map((k, i) => { const b = document.createElement("button"); b.type = "button"; b.dataset.k = k;
-      b.innerHTML = `<img src="${src(k)}" alt="" loading="lazy">`; b.onclick = () => { show(i); play(); }; return b; }));
+      b.innerHTML = `<img src="${src(k)}"${__ss(src(k), "64px")} alt="" loading="lazy">`; b.onclick = () => { show(i); play(); }; return b; }));
     show(0); play(); };
   st.querySelector(".prev").onclick = () => { show(pos - 1); play(); };
   st.querySelector(".next").onclick = () => { show(pos + 1); play(); };

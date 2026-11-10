@@ -7,6 +7,9 @@ To bring back an older version of the page: `git checkout <id> -- index.html`, t
 
 ## 2026-11-11
 
+- Falling jaba flowers removed (markup, CSS, JS, beat gust); restore from commit d7af3f5.
+- Adaptive photos: every photo also saved at 640 px and 1200 px (name@640.jpg / name@1200.jpg, list in img/sizes.json); the page gives each <img> a srcset, so phones download the small copy and large screens the full original. Originals untouched. Blurred book backdrop reuses the downloaded copy; full poster loads only when opened.
+- Falling jaba flowers removed (markup, CSS, JS and the beat gust); restore point commit d7af3f5. Speed: heavy photos recompressed (~1.3 MB less), full-size poster no longer downloaded until opened.
 - Drawings, group A (a1–a7): each paper perspective-corrected onto a true A-size sheet (1:1.414), nothing trimmed; paper whitened, colours lifted slightly. a7 from a fresh flat scan.
 - Drawings: c3 (the swirl drawing, group C) replaced with a clean flat scan, upright.
 

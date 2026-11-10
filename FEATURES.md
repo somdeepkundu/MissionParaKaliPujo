@@ -70,6 +70,7 @@ and stops with `FAIL` if anything has gone missing. Items without ✓ need a qui
 
 ## 2026-11-11
 
+- Drawings, group A (a1–a7): each paper perspective-corrected onto a true A-size sheet (1:1.414), nothing trimmed; paper whitened, colours lifted slightly. a7 from a fresh flat scan.
 - Drawings: c3 (the swirl drawing, group C) replaced with a clean flat scan, upright.
 
 ## 2026-11-10

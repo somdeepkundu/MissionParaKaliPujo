@@ -70,6 +70,7 @@ and stops with `FAIL` if anything has gone missing. Items without ✓ need a qui
 
 ## 2026-11-11
 
+- Photo book: "Cooking the bhog" now marked 2025.
 - Drawings: a5 (the thatched house, group A) replaced with a fresh flat scan.
 - Falling jaba flowers removed (markup, CSS, JS, beat gust); restore from commit d7af3f5.
 - Adaptive photos: every photo also saved at 640 px and 1200 px (name@640.jpg / name@1200.jpg, list in img/sizes.json); the page gives each <img> a srcset, so phones download the small copy and large screens the full original. Originals untouched. Blurred book backdrop reuses the downloaded copy; full poster loads only when opened.

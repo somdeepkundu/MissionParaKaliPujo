@@ -7,6 +7,7 @@ To bring back an older version of the page: `git checkout <id> -- index.html`, t
 
 ## 2026-11-11
 
+- Drawings: a5 (the thatched house, group A) replaced with a fresh flat scan.
 - Falling jaba flowers removed (markup, CSS, JS, beat gust); restore from commit d7af3f5.
 - Adaptive photos: every photo also saved at 640 px and 1200 px (name@640.jpg / name@1200.jpg, list in img/sizes.json); the page gives each <img> a srcset, so phones download the small copy and large screens the full original. Originals untouched. Blurred book backdrop reuses the downloaded copy; full poster loads only when opened.
 - Falling jaba flowers removed (markup, CSS, JS and the beat gust); restore point commit d7af3f5. Speed: heavy photos recompressed (~1.3 MB less), full-size poster no longer downloaded until opened.

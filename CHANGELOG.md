@@ -7,6 +7,8 @@ To bring back an older version of the page: `git checkout <id> -- index.html`, t
 
 ## 2026-11-11
 
+- Drawings: group A (a1–a6) redone as flat scan-style crops: straightened to the paper edges, seat background removed, paper whitened, colours lifted slightly.
+- Drawings: a7 (the night-sky drawing, group A) replaced with a clean flat scan.
 - Drawings: c3 (the swirl drawing, group C) replaced with a clean flat scan, upright.
 
 ## 2026-11-10

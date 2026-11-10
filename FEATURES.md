@@ -70,6 +70,7 @@ and stops with `FAIL` if anything has gone missing. Items without ✓ need a qui
 
 ## 2026-11-10
 
+- Final chanda: ₹52,883 from 102 receipts (last ones 77–80 added).
 - Countdown to next Kali Puja (Thu 28 Oct 2027, 6:30 pm assumed; SITE.nextPuja): the bhar shows days/hours/minutes/seconds "until next Kali Puja", and the top line reads "See you next year · N days to go".
 - Photo deck: 8 photos of the games, sindoor khela and bisarjan added at the front (3 languages).
 

@@ -70,6 +70,7 @@ and stops with `FAIL` if anything has gone missing. Items without ✓ need a qui
 
 ## 2026-11-12
 
+- Prize section: winners of shankha, candle lighting and gems-clip (1st–3rd), a link up to the Sit & Draw drawings (#anko), and a thank-you card in the photo wall's empty slot ("your participation makes this puja ours").
 - New section #puroskar "পুরস্কার বিতরণ": 13 photos from the prize giving on bisarjan evening (9 Nov), in time order, camera date stamp cropped off; photo wall, tap for full size; 3 languages.
 
 ## 2026-11-11

@@ -68,6 +68,10 @@ and stops with `FAIL` if anything has gone missing. Items without ✓ need a qui
 - Every looping animation pauses off screen; only transform / opacity / filter change each frame
 - ✓ No broken images, no script errors; ✓ share preview image (og.jpg)
 
+## 2026-11-12
+
+- New section #puroskar "পুরস্কার বিতরণ": 13 photos from the prize giving on bisarjan evening (9 Nov), in time order, camera date stamp cropped off; photo wall, tap for full size; 3 languages.
+
 ## 2026-11-11
 
 - Photo book: "Cooking the bhog" now marked 2025.

@@ -5,6 +5,10 @@ Every published version, newest first (from the git history). Good points to go 
 
 To bring back an older version of the page: `git checkout <id> -- index.html`, then commit.
 
+## 2026-11-12
+
+- New section #puroskar "পুরস্কার বিতরণ": 13 photos from the prize giving on bisarjan evening (9 Nov), in time order, camera date stamp cropped off; photo wall, tap for full size; 3 languages.
+
 ## 2026-11-11
 
 - Photo book: "Cooking the bhog" now marked 2025.
